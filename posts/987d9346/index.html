@@ -1,0 +1,188 @@
+<!DOCTYPE html><html lang="zh-CN"><head><!-- hexo injector head_begin start --><link href="https://fastly.jsdelivr.net/npm/hexo-tag-common@0.2.0/css/index.css" rel="stylesheet"/><!-- hexo injector head_begin end --><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="theme-color" content="#0078E7"><meta name="author" content="Zephyr Heather"><meta name="copyright" content="Zephyr Heather"><meta name="generator" content="Hexo 6.2.0"><meta name="theme" content="hexo-theme-yun"><title>tmux MIT2 | Zephyr's Blog</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@900&amp;display=swap" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/star-markdown-css@0.3.3/dist/yun/yun-markdown.min.css"><link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/prism-theme-vars/base.css"><script src="https://fastly.jsdelivr.net/npm/scrollreveal/dist/scrollreveal.min.js" defer></script><script>function initScrollReveal() {
+  [".post-card",".markdown-body img"].forEach((target)=> {
+    ScrollReveal().reveal(target);
+  })
+}
+document.addEventListener("DOMContentLoaded", initScrollReveal);
+document.addEventListener("pjax:success", initScrollReveal);
+</script><script src="https://fastly.jsdelivr.net/npm/pjax@latest/pjax.min.js" defer></script><script src="/js/pjax.js" defer type="module"></script><script src="https://fastly.jsdelivr.net/npm/vue@2.6.14"></script><link rel="icon" type="image/png" href="/zephyr.jpg"><link rel="mask-icon" href="/zephyr.jpg" color="#0078E7"><link rel="preload" href="/css/hexo-theme-yun.css" as="style"><link rel="prefetch" href="/js/sidebar.js" as="script"><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="preconnect" href="https://fastly.jsdelivr.net/npm/" crossorigin><script id="yun-config">
+    window.Yun = {}
+    window.CONFIG = {"hostname":"zephyrheather.github.io","root":"/","title":"风彳亍的小站","version":"1.10.4","mode":"auto","copycode":true,"page":{"isPost":true},"i18n":{"placeholder":"搜索...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）"},"anonymous_image":"https://cdn.yunyoujun.cn/img/avatar/none.jpg","say":{"api":"https://el-bot-api.vercel.app/api/words/young"},"local_search":{"path":"/search.xml"},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"fireworks":{"colors":null},"waline":{"config":{"enable":true,"serverURL":"https://wal-ok0hrvbo0-zephyrheather.vercel.app/","comment":true,"visitor":true,"locale":{"placeholder":"填写邮箱，可以收到回复通知哦～"},"el":"#waline","lang":"zh-CN"},"cdn":"https://fastly.jsdelivr.net/npm/@waline/client@v2/dist/waline.js","dark":"html.dark"},"vendors":{"darken":"https://fastly.jsdelivr.net/npm/darken@1.5.0"}};
+  </script><link rel="stylesheet" href="/css/hexo-theme-yun.css"><script src="/js/hexo-theme-yun.js" type="module"></script><link rel="alternate" href="/atom.xml" title="Zephyr's Blog" type="application/atom+xml"><meta name="description" content="前言上一次我们解决了tty中的中文显示和输入问题，fbterm的表现良好。可是在实际工作中，我们往往需要分屏同时进行一些操作和查看信息，有时还需要复制粘贴一些信息。 不使用tmux的尝试vim也可以调用终端实现分屏。在命令行模式执行term，就可以打开一个竖直方向的终端，加上修饰vertical，即vertical term就可以打开一个水平方向的终端。term在vim中仍被视为一个vim的进程，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="tmux MIT2">
+<meta property="og:url" content="http://zephyrheather.github.io/posts/987d9346/index.html">
+<meta property="og:site_name" content="Zephyr&#39;s Blog">
+<meta property="og:description" content="前言上一次我们解决了tty中的中文显示和输入问题，fbterm的表现良好。可是在实际工作中，我们往往需要分屏同时进行一些操作和查看信息，有时还需要复制粘贴一些信息。 不使用tmux的尝试vim也可以调用终端实现分屏。在命令行模式执行term，就可以打开一个竖直方向的终端，加上修饰vertical，即vertical term就可以打开一个水平方向的终端。term在vim中仍被视为一个vim的进程，">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-04-02T12:02:01.000Z">
+<meta property="article:modified_time" content="2022-04-02T12:02:01.000Z">
+<meta property="article:author" content="Zephyr Heather">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="Moonlight in Twilight">
+<meta name="twitter:card" content="summary"><script>(function() {
+  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+  const setting = localStorage.getItem('darken-mode') || 'auto'
+  if (setting === 'dark' || (prefersDark && setting !== 'light'))
+    document.documentElement.classList.toggle('dark', true)
+})()</script></head><body><script src="https://code.iconify.design/2/2.1.1/iconify.min.js"></script><script>// Define global variable
+IconifyProviders = {
+  // Empty prefix: overwrite default API provider configuration
+  '': {
+    // Use custom API first, use Iconify public API as backup
+    resources: [
+        'https://api.iconify.design',
+    ],
+    // Wait for 1 second before switching API hosts
+    rotate: 1000,
+  },
+};</script><script defer src="https://fastly.jsdelivr.net/npm/animejs@latest"></script><script defer src="/js/ui/fireworks.js" type="module"></script><canvas class="fireworks"></canvas><div class="container"><a class="sidebar-toggle hty-icon-button" id="menu-btn"><div class="hamburger hamburger--spin" type="button"><span class="hamburger-box"><span class="hamburger-inner"></span></span></div></a><div class="sidebar-toggle sidebar-overlay"></div><aside class="sidebar"><script src="/js/sidebar.js" type="module"></script><ul class="sidebar-nav"><li class="sidebar-nav-item sidebar-nav-toc hty-icon-button sidebar-nav-active" data-target="post-toc-wrap" title="文章目录"><span class="icon iconify" data-icon="ri:list-ordered"></span></li><li class="sidebar-nav-item sidebar-nav-overview hty-icon-button" data-target="site-overview-wrap" title="站点概览"><span class="icon iconify" data-icon="ri:passport-line"></span></li></ul><div class="sidebar-panel" id="site-overview-wrap"><div class="site-info fix-top"><a class="site-author-avatar" href="/about/" title="Zephyr Heather"><img width="96" loading="lazy" src="/zephyr.jpg" alt="Zephyr Heather"></a><div class="site-author-name"><a href="/about/">Zephyr Heather</a></div><a class="site-name" href="/about/site.html">Zephyr's Blog</a><sub class="site-subtitle"></sub><div class="site-description"></div></div><nav class="site-state"><a class="site-state-item hty-icon-button icon-home" href="/" title="首页"><span class="site-state-item-icon"><span class="icon iconify" data-icon="ri:home-4-line"></span></span></a><div class="site-state-item"><a href="/archives/" title="归档"><span class="site-state-item-icon"><span class="icon iconify" data-icon="ri:archive-line"></span></span><span class="site-state-item-count">14</span></a></div><div class="site-state-item"><a href="/categories/" title="分类"><span class="site-state-item-icon"><span class="icon iconify" data-icon="ri:folder-2-line"></span></span><span class="site-state-item-count">3</span></a></div><div class="site-state-item"><a href="/tags/" title="标签"><span class="site-state-item-icon"><span class="icon iconify" data-icon="ri:price-tag-3-line"></span></span><span class="site-state-item-count">9</span></a></div><a class="site-state-item hty-icon-button" href="/null" title="在建中"><span class="site-state-item-icon"><span class="icon iconify" data-icon="ri:settings-line"></span></span></a></nav><hr style="margin-bottom:0.5rem"><div class="links-of-author"><a class="links-of-author-item hty-icon-button" rel="noopener" href="/atom.xml" title="RSS" target="_blank" style="color:orange"><span class="icon iconify" data-icon="ri:rss-line"></span></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://github.com/ZephyrHeather" title="GitHub" target="_blank" style="color:#6e5494"><span class="icon iconify" data-icon="ri:github-line"></span></a></div><hr style="margin:0.5rem 1rem"><div class="links"><a class="links-item hty-icon-button" href="/links/" title="我的小伙伴们" style="color:dodgerblue"><span class="icon iconify" data-icon="ri:genderless-line"></span></a></div><br><a class="links-item hty-icon-button" id="toggle-mode-btn" href="javascript:;" title="Mode" style="color: #f1cb64"><span class="icon iconify" data-icon="ri:contrast-2-line"></span></a></div><div class="sidebar-panel sidebar-panel-active" id="post-toc-wrap"><div class="post-toc"><div class="post-toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8D%E4%BD%BF%E7%94%A8tmux%E7%9A%84%E5%B0%9D%E8%AF%95"><span class="toc-number">1.1.</span> <span class="toc-text">不使用tmux的尝试</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Tmux"><span class="toc-number">2.</span> <span class="toc-text">Tmux</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85%E5%92%8C%E9%85%8D%E7%BD%AE"><span class="toc-number">2.1.</span> <span class="toc-text">安装和配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8"><span class="toc-number">2.2.</span> <span class="toc-text">简单使用</span></a></li></ol></li></ol></div></div></div></aside><main class="sidebar-translate" id="content"><div id="post"><article class="hty-card post-block" itemscope itemtype="https://schema.org/Article" style="--smc-primary:#0078E7;"><link itemprop="mainEntityOfPage" href="http://zephyrheather.github.io/posts/987d9346/"><span hidden itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="Zephyr Heather"><meta itemprop="description"></span><span hidden itemprop="publisher" itemscope itemtype="https://schema.org/Organization"><meta itemprop="name" content="Zephyr's Blog"></span><header class="post-header"><h1 class="post-title" itemprop="name headline">tmux MIT2</h1><div class="post-meta"><div class="post-time" style="display:block"><span class="post-meta-item-icon"><span class="icon iconify" data-icon="ri:calendar-line"></span></span> <time title="创建时间：2022-04-02 20:02:01" itemprop="dateCreated datePublished" datetime="2022-04-02T20:02:01+08:00">2022-04-02</time></div><span class="post-count"><span class="post-symbolcount"><span class="post-meta-item-icon" title="本文字数"><span class="icon iconify" data-icon="ri:file-word-line"></span></span> <span title="本文字数">1.6k</span><span class="post-meta-divider">-</span><span class="post-meta-item-icon" title="阅读时长"><span class="icon iconify" data-icon="ri:timer-line"></span></span> <span title="阅读时长">6m</span></span></span><span class="leancloud_visitors" id="/posts/987d9346/" data-flag-title="tmux MIT2"><span class="post-meta-divider">-</span><span class="post-meta-item-icon" title="阅读次数"><span class="icon iconify" data-icon="ri:eye-line"></span> <span class="leancloud-visitors-count"></span></span></span><span class="post-meta-divider">-</span><a href="#comment"><span class="post-meta-item-icon" title="评论数"><span class="icon iconify" data-icon="ri:chat-3-line"></span> <span class="waline-comment-count" id="/posts/987d9346/"></span></span></a><div class="post-classify"><span class="post-category"> <span class="post-meta-item-icon" style="margin-right:3px;"><span class="icon iconify" data-icon="ri:folder-line"></span></span><span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a class="category-item" href="/categories/GNU-Linux/" style="--text-color:var(--hty-text-color)" itemprop="url" rel="index"><span itemprop="text">GNU/Linux</span></a></span></span><span class="post-tag"><span class="post-meta-divider">-</span><a class="tag-item" href="/tags/Linux/" style="--text-color:var(--hty-text-color)"><span class="post-meta-item-icon"><span class="icon iconify" data-icon="ri:price-tag-3-line"></span></span><span class="tag-name">Linux</span></a><a class="tag-item" href="/tags/Moonlight-in-Twilight/" style="--text-color:var(--hty-text-color)"><span class="post-meta-item-icon"><span class="icon iconify" data-icon="ri:price-tag-3-line"></span></span><span class="tag-name">Moonlight in Twilight</span></a></span></div></div></header><section class="post-body" itemprop="articleBody"><div class="post-content markdown-body"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>上一次我们解决了tty中的中文显示和输入问题，fbterm的表现良好。可是在实际工作中，我们往往需要分屏同时进行一些操作和查看信息，有时还需要复制粘贴一些信息。</p>
+<h2 id="不使用tmux的尝试"><a href="#不使用tmux的尝试" class="headerlink" title="不使用tmux的尝试"></a>不使用tmux的尝试</h2><p>vim也可以调用终端实现分屏。在命令行模式执行<code>term</code>，就可以打开一个竖直方向的终端，加上修饰<code>vertical</code>，即<code>vertical term</code>就可以打开一个水平方向的终端。<br>term在vim中仍被视为一个vim的进程，甚至也有不同的模式，可以使用vim的快捷键在不同的窗口跳转。使用<code>Ctrl+D</code>或者<code>exit</code>退出用户时默认退出了term。</p>
+<p>在vim的term中也可以执行一定的复制粘贴操作，需要用快捷键<code>Ctrl+\ Ctrl+N</code>从Insert模式转换到Normal模式。但是只能从term复制内容而不能在term粘贴内容，尝试粘贴的时候会显示<code>E21: Cannot make changes, &#39;modifiable&#39; is off</code>，按下<code>i</code>重新回到term中执行命令。</p>
+<p>其实用vim来实现分屏是个不错的选择，设置一些快捷键之后可以比较方便。但是如果只是想同时运行多个命令就不得不先打开vim，但这实在是有点鸡肋。</p>
+<h1 id="Tmux"><a href="#Tmux" class="headerlink" title="Tmux"></a>Tmux</h1><p>tmux是一个终端复用器，tmux就是terminal muliplexer的缩写，可以使窗口和会话解绑。</p>
+<p>命令行的典型使用方式是，打开一个终端窗口（terminal window，以下简称”窗口”），在里面输入命令。用户与计算机的这种临时的交互，称为一次”会话”（session）。</p>
+<p>会话的一个重要特点是，窗口与其中启动的进程是连在一起的。打开窗口，会话开始；关闭窗口，会话结束，会话内部的进程也会随之终止，不管有没有运行完。</p>
+<p>一个典型的例子就是，SSH 登录远程计算机，打开一个远程窗口执行命令。这时，网络突然断线 ，再次登录的时候，是找不回上一次执行的命令的。因为上一次 SSH 会话已经终止了，里面的进程也随之消失了。</p>
+<p>为了解决这个问题，会话与窗口可以”解绑”：窗口关闭时，会话并不终止，而是继续运行，等到以后需要的时候，再让会话”绑定”其他窗口。</p>
+<p>Tmux 就是会话与窗口的”解绑”工具，将它们彻底分离。</p>
+<ol>
+<li><p>它允许在单个窗口中，同时访问多个会话。这对于同时运行多个命令行程序很有用。</p>
+</li>
+<li><p>它可以让新窗口”接入”已经存在的会话。</p>
+</li>
+<li><p>它允许每个会话有多个连接窗口，因此可以多人实时共享会话。</p>
+</li>
+<li><p>它还支持窗口任意的垂直和水平拆分。</p>
+</li>
+</ol>
+<p>类似的终端复用器还有 GNU Screen。Tmux 与它功能相似，但是更易用，也更强大。</p>
+<p>以上内容参考自<a target="_blank" rel="noopener" href="https://www.ruanyifeng.com/blog/2019/10/tmux.html">&lt;Tmux 使用教程 - 阮一峰的网络日志&gt;</a></p>
+<p>简单总结一下，就是通常的会话（也就是我们运行的命令和计算机进行交互）是与窗口绑定的，关闭窗口的时候会话就会终止，导致我们正在运行的命令也随之终止，而tmux将会话单独保存，可以指定不同的窗口连接会话。就像是本来用碗盛一碗水，碗摔碎了，水也就没了。有了tmux这个冰箱，把会话变成了冰，碗随便摔，冰不会没有，还会放到冰箱里贴上标签一直运行，等你想拿出来的时候可以重新拿一只碗来，什么东西都不会变。</p>
+<h2 id="安装和配置"><a href="#安装和配置" class="headerlink" title="安装和配置"></a>安装和配置</h2><p><code>pacman -S tmux</code>即可安装tmux，配置文件需要自己创建，用户私人配置文件在~&#x2F;.tmux.conf, 全局配置文件在 &#x2F;etc&#x2F;tmux.conf。</p>
+<p>默认的tmux快捷键并没有想象中的友好，我们先参考archwiki上建议的一份配置文件进行vim风格化</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment">#Prefix is Ctrl-a</span>
+<span class="token builtin class-name">set</span> -g prefix C-a
+<span class="token builtin class-name">bind</span> C-a send-prefix
+unbind C-b
+
+<span class="token builtin class-name">set</span> -sg escape-time <span class="token number">1</span>
+<span class="token builtin class-name">set</span> -g base-index <span class="token number">1</span>
+setw -g pane-base-index <span class="token number">1</span>
+
+<span class="token builtin class-name">set</span> -g mode-keys <span class="token function">vi</span>
+<span class="token builtin class-name">set</span> -g history-limit <span class="token number">10000</span>
+
+<span class="token comment"># y and p as in vim</span>
+<span class="token builtin class-name">bind</span> Escape copy-mode
+unbind p
+<span class="token builtin class-name">bind</span> p paste-buffer
+bind-key -T copy-mode-vi <span class="token string">'v'</span> send -X begin-selection
+bind-key -T copy-mode-vi <span class="token string">'y'</span> send -X copy-selection
+bind-key -T copy-mode-vi <span class="token string">'Space'</span> send -X halfpage-down
+bind-key -T copy-mode-vi <span class="token string">'Bspace'</span> send -X halfpage-up
+
+<span class="token comment"># easy-to-remember split pane commands</span>
+<span class="token builtin class-name">bind</span> <span class="token operator">|</span> split-window -h
+<span class="token builtin class-name">bind</span> - split-window -v
+unbind <span class="token string">'"'</span>
+unbind %
+
+<span class="token comment"># moving between panes with vim movement keys</span>
+<span class="token builtin class-name">bind</span> h select-pane -L
+<span class="token builtin class-name">bind</span> j select-pane -D
+<span class="token builtin class-name">bind</span> k select-pane -U
+<span class="token builtin class-name">bind</span> l select-pane -R
+
+<span class="token comment"># moving between windows with vim movement keys</span>
+<span class="token builtin class-name">bind</span> -r C-h select-window -t :-
+<span class="token builtin class-name">bind</span> -r C-l select-window -t :+
+
+<span class="token comment"># resize panes with vim movement keys</span>
+<span class="token builtin class-name">bind</span> -r H resize-pane -L <span class="token number">5</span>
+<span class="token builtin class-name">bind</span> -r J resize-pane -D <span class="token number">5</span>
+<span class="token builtin class-name">bind</span> -r K resize-pane -U <span class="token number">5</span>
+<span class="token builtin class-name">bind</span> -r L resize-pane -R <span class="token number">5</span></code></pre>
+
+<p>接下来的就基于上面的配置进行简单的说明。</p>
+<ul>
+<li>首先是设置前缀键为<code>Ctrl-a</code>，然后设置按键风格为vim，可以使用<code>hjkl</code>进行移动。</li>
+<li>对<code>copy-paste</code>的模式，使用<code>C-a Esc</code>进入，通过<code>v</code>和<code>y</code>来选择和复制，<code>C-a p</code>进行粘贴。</li>
+<li>将窗口分割的快捷键调整为<code>C-a |</code>竖直分割，<code>C-a -</code>水平分割。</li>
+<li><code>C-a h,j,k,l</code>进行各个pane的跳转</li>
+<li><code>C-a H,J,K,L</code>调整各个pane的大小</li>
+</ul>
+<p>还有其他一些快捷键可以通过<code>C-a ?</code>查看，man上面也给出了不少说明。</p>
+<p>对于256色的终端需要设置<code>TERM</code>变量以显示正确的颜色，具体看<a target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/Tmux">archwiki</a>。</p>
+<p>一个简单省事的方式是直接在<code>conf</code>中加上<code>set -g default-terminal &quot;tmux-256color&quot; </code>。</p>
+<h2 id="简单使用"><a href="#简单使用" class="headerlink" title="简单使用"></a>简单使用</h2><ol>
+<li><p>新建会话<code>tmux new -s my_session</code></p>
+</li>
+<li><p>在 Tmux 窗口运行所需的程序</p>
+</li>
+<li><p>按下快捷键<code>Ctrl-a d</code>将会话分离</p>
+</li>
+<li><p>下次使用时，重新连接到会话<code>tmux attach-session -t my_session</code>。</p>
+</li>
+</ol>
+<p>一些涉及窗口操作的快捷键</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash">Ctrl-a c  创建一个新窗口，状态栏会显示多个窗口的信息。
+Ctrl-b p  切换到上一个窗口（按照状态栏上的顺序）。
+Ctrl-b n  切换到下一个窗口。
+Ctrl-b <span class="token operator">&lt;</span>number<span class="token operator">></span>  切换到指定编号的窗口，其中的<span class="token operator">&lt;</span>number<span class="token operator">></span>是状态栏上的窗口编号。
+Ctrl-b w  从列表中选择窗口。
+Ctrl-b ,  窗口重命名。</code></pre>
+
+<hr>
+<p>具体怎么使用大家慢慢探索吧！</p>
+</div></section><div id="reward-container"><span class="hty-icon-button button-glow" id="reward-button" title="打赏" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === &quot;none&quot;) ? &quot;block&quot; : &quot;none&quot;;"><span class="icon iconify" data-icon="ri:hand-coin-line"></span></span><div id="reward-comment">I'm so cute. Please give me money.</div><div id="qr" style="display:none;"><div style="display:inline-block"><a href="/alipay.jpg"><img loading="lazy" src="/alipay.jpg" alt="支付宝" title="支付宝"></a><div><span style="color:#00A3EE"><span class="icon iconify" data-icon="ri:alipay-line"></span></span></div></div><div style="display:inline-block"><a href="/wechatpay.jpg"><img loading="lazy" src="/wechatpay.jpg" alt="微信支付" title="微信支付"></a><div><span style="color:#2DC100"><span class="icon iconify" data-icon="ri:wechat-pay-line"></span></span></div></div></div></div><ul class="post-copyright"><li class="post-copyright-author"><strong>本文作者：</strong>Zephyr Heather</li><li class="post-copyright-link"><strong>本文链接：</strong><a href="http://zephyrheather.github.io/posts/987d9346/" title="tmux MIT2">http://zephyrheather.github.io/posts/987d9346/</a></li><li class="post-copyright-license"><strong>版权声明：</strong>本博客所有文章除特别声明外，均默认采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener" title="CC BY-NC-SA 4.0 "><span class="icon iconify" data-icon="ri:creative-commons-line"></span><span class="icon iconify" data-icon="ri:creative-commons-by-line"></span><span class="icon iconify" data-icon="ri:creative-commons-nc-line"></span><span class="icon iconify" data-icon="ri:creative-commons-sa-line"></span></a> 许可协议。</li></ul></article><div class="post-nav"><div class="post-nav-item"><a class="post-nav-prev" href="/posts/e49049b6/" rel="prev" title="muscic and ramroot MIT3"><span class="icon iconify" data-icon="ri:arrow-left-s-line"></span><span class="post-nav-text">muscic and ramroot MIT3</span></a></div><div class="post-nav-item"><a class="post-nav-next" href="/posts/72d67d3f/" rel="next" title="fbterm MIT1"><span class="post-nav-text">fbterm MIT1</span><span class="icon iconify" data-icon="ri:arrow-right-s-line"></span></a></div></div></div><div class="hty-card" id="comment"><div id="waline"></div><link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/@waline/client@v2/dist/waline.css"><script>window.CONFIG.waline.config.path = "/posts/987d9346/"</script><div class="js-Pjax"><script src="/js/comments/waline.js" type="module" defer></script></div></div></main><footer class="sidebar-translate" id="footer"><div class="copyright"><span>&copy; 2021 – 2022 </span><span class="with-love" id="animate"><span class="icon iconify" data-icon="ri:cloud-line"></span></span><span class="author"> Zephyr Heather</span></div><div class="powered"><span>由 <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> 驱动 v6.2.0</span><span class="footer-separator">|</span><span>主题 - <a rel="noopener" href="https://github.com/YunYouJun/hexo-theme-yun" target="_blank"><span>Yun</span></a> v1.10.4</span></div><div class="live-time"><span>本博客已萌萌哒地运行</span><span id="display_live_time"></span><span class="moe-text">(●'◡'●)</span><script>function blog_live_time() {
+  setTimeout(blog_live_time, 1000);
+  const start = new Date('2021-07-10T16:57:41');
+  const now = new Date();
+  const timeDiff = (now.getTime() - start.getTime());
+  const msPerMinute = 60 * 1000;
+  const msPerHour = 60 * msPerMinute;
+  const msPerDay = 24 * msPerHour;
+  const passDay = Math.floor(timeDiff / msPerDay);
+  const passHour = Math.floor((timeDiff % msPerDay) / 60 / 60 / 1000);
+  const passMinute = Math.floor((timeDiff % msPerHour) / 60 / 1000);
+  const passSecond = Math.floor((timeDiff % msPerMinute) / 1000);
+  display_live_time.innerHTML = ` ${passDay} 天 ${passHour} 小时 ${passMinute} 分 ${passSecond} 秒`;
+}
+blog_live_time();
+</script></div></footer></div><a class="hty-icon-button" id="back-to-top" aria-label="back-to-top" href="#"><span class="icon iconify" data-icon="ri:arrow-up-s-line"></span><svg class="progress-circle-container" viewBox="0 0 100 100"><circle class="progress-circle" id="progressCircle" cx="50" cy="50" r="48" fill="none" stroke="#0078E7" stroke-width="2" stroke-linecap="round"></circle></svg></a><a class="popup-trigger hty-icon-button icon-search" id="search" href="javascript:;" title="搜索"><span class="site-state-item-icon"><span class="icon iconify" data-icon="ri:search-line"></span></span></a><script>window.addEventListener("DOMContentLoaded", () => {
+  // Handle and trigger popup window
+  document.querySelector(".popup-trigger").addEventListener("click", () => {
+    document.querySelector(".popup").classList.add("show");
+    setTimeout(() => {
+      document.querySelector(".search-input").focus();
+    }, 100);
+  });
+
+  // Monitor main search box
+  const onPopupClose = () => {
+    document.querySelector(".popup").classList.remove("show");
+  };
+
+  document.querySelector(".popup-btn-close").addEventListener("click", () => {
+    onPopupClose();
+  });
+
+  window.addEventListener("keyup", event => {
+    if (event.key === "Escape") {
+      onPopupClose();
+    }
+  });
+});
+</script><script src="https://fastly.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js"></script><script src="/js/search/local-search.js" defer type="module"></script><div class="popup search-popup"><div class="search-header"><span class="popup-btn-close close-icon hty-icon-button"><span class="icon iconify" data-icon="ri:close-line"></span></span></div><div class="search-input-container"><input class="search-input" id="local-search-input" type="text" placeholder="搜索..." value=""></div><div class="search-result-container"></div></div><script>function initMourn() {
+  const date = new Date();
+  const today = (date.getMonth() + 1) + "-" + date.getDate()
+  const mourn_days = ["4-4","9-18","8-3"]
+  if (mourn_days.includes(today)) {
+    document.documentElement.style.filter = "grayscale(1)";
+  }
+}
+initMourn();</script><script src="https://fastly.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js"></script><script>const images = [...document.querySelectorAll('.markdown-body img')]
+mediumZoom(images)</script><style>.medium-zoom-image {
+  z-index: 99;
+}</style><!-- hexo injector body_end start --><script src="https://fastly.jsdelivr.net/npm/hexo-tag-common@0.2.0/js/index.js"></script><!-- hexo injector body_end end --></body></html>

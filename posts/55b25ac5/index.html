@@ -1,0 +1,323 @@
+<!DOCTYPE html><html lang="zh-CN"><head><!-- hexo injector head_begin start --><link href="https://fastly.jsdelivr.net/npm/hexo-tag-common@0.2.0/css/index.css" rel="stylesheet"/><!-- hexo injector head_begin end --><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="theme-color" content="#0078E7"><meta name="author" content="Zephyr Heather"><meta name="copyright" content="Zephyr Heather"><meta name="generator" content="Hexo 6.2.0"><meta name="theme" content="hexo-theme-yun"><title>Arch Linux USB(配置篇) | Zephyr's Blog</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@900&amp;display=swap" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/star-markdown-css@0.3.3/dist/yun/yun-markdown.min.css"><link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/prism-theme-vars/base.css"><script src="https://fastly.jsdelivr.net/npm/scrollreveal/dist/scrollreveal.min.js" defer></script><script>function initScrollReveal() {
+  [".post-card",".markdown-body img"].forEach((target)=> {
+    ScrollReveal().reveal(target);
+  })
+}
+document.addEventListener("DOMContentLoaded", initScrollReveal);
+document.addEventListener("pjax:success", initScrollReveal);
+</script><script src="https://fastly.jsdelivr.net/npm/pjax@latest/pjax.min.js" defer></script><script src="/js/pjax.js" defer type="module"></script><script src="https://fastly.jsdelivr.net/npm/vue@2.6.14"></script><link rel="icon" type="image/png" href="/zephyr.jpg"><link rel="mask-icon" href="/zephyr.jpg" color="#0078E7"><link rel="preload" href="/css/hexo-theme-yun.css" as="style"><link rel="prefetch" href="/js/sidebar.js" as="script"><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="preconnect" href="https://fastly.jsdelivr.net/npm/" crossorigin><script id="yun-config">
+    window.Yun = {}
+    window.CONFIG = {"hostname":"zephyrheather.github.io","root":"/","title":"风彳亍的小站","version":"1.10.4","mode":"auto","copycode":true,"page":{"isPost":true},"i18n":{"placeholder":"搜索...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）"},"anonymous_image":"https://cdn.yunyoujun.cn/img/avatar/none.jpg","say":{"api":"https://el-bot-api.vercel.app/api/words/young"},"local_search":{"path":"/search.xml"},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"fireworks":{"colors":null},"waline":{"config":{"enable":true,"serverURL":"https://wal-ok0hrvbo0-zephyrheather.vercel.app/","comment":true,"visitor":true,"locale":{"placeholder":"填写邮箱，可以收到回复通知哦～"},"el":"#waline","lang":"zh-CN"},"cdn":"https://fastly.jsdelivr.net/npm/@waline/client@v2/dist/waline.js","dark":"html.dark"},"vendors":{"darken":"https://fastly.jsdelivr.net/npm/darken@1.5.0"}};
+  </script><link rel="stylesheet" href="/css/hexo-theme-yun.css"><script src="/js/hexo-theme-yun.js" type="module"></script><link rel="alternate" href="/atom.xml" title="Zephyr's Blog" type="application/atom+xml"><meta name="description" content="前言这篇文章看一看作是Arch Linux USB(安装篇)的后续，不过archlinux的自由度很高，每一个人都能配置出高度个人定制化的东西，所以这里也只是结合archwiki和我个人的一些配置简单介绍一下。 参考：General recommendations (简体中文)(这个页面还特地做了#中国大陆用户的推荐解决方案) 以下引文不加注释都引自General recommendations">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Arch Linux USB(配置篇)">
+<meta property="og:url" content="http://zephyrheather.github.io/posts/55b25ac5/index.html">
+<meta property="og:site_name" content="Zephyr&#39;s Blog">
+<meta property="og:description" content="前言这篇文章看一看作是Arch Linux USB(安装篇)的后续，不过archlinux的自由度很高，每一个人都能配置出高度个人定制化的东西，所以这里也只是结合archwiki和我个人的一些配置简单介绍一下。 参考：General recommendations (简体中文)(这个页面还特地做了#中国大陆用户的推荐解决方案) 以下引文不加注释都引自General recommendations">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-02-18T07:20:03.000Z">
+<meta property="article:modified_time" content="2022-02-18T07:20:03.000Z">
+<meta property="article:author" content="Zephyr Heather">
+<meta property="article:tag" content="Arch Linux">
+<meta property="article:tag" content="Linux配置">
+<meta name="twitter:card" content="summary"><script>(function() {
+  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+  const setting = localStorage.getItem('darken-mode') || 'auto'
+  if (setting === 'dark' || (prefersDark && setting !== 'light'))
+    document.documentElement.classList.toggle('dark', true)
+})()</script></head><body><script src="https://code.iconify.design/2/2.1.1/iconify.min.js"></script><script>// Define global variable
+IconifyProviders = {
+  // Empty prefix: overwrite default API provider configuration
+  '': {
+    // Use custom API first, use Iconify public API as backup
+    resources: [
+        'https://api.iconify.design',
+    ],
+    // Wait for 1 second before switching API hosts
+    rotate: 1000,
+  },
+};</script><script defer src="https://fastly.jsdelivr.net/npm/animejs@latest"></script><script defer src="/js/ui/fireworks.js" type="module"></script><canvas class="fireworks"></canvas><div class="container"><a class="sidebar-toggle hty-icon-button" id="menu-btn"><div class="hamburger hamburger--spin" type="button"><span class="hamburger-box"><span class="hamburger-inner"></span></span></div></a><div class="sidebar-toggle sidebar-overlay"></div><aside class="sidebar"><script src="/js/sidebar.js" type="module"></script><ul class="sidebar-nav"><li class="sidebar-nav-item sidebar-nav-toc hty-icon-button sidebar-nav-active" data-target="post-toc-wrap" title="文章目录"><span class="icon iconify" data-icon="ri:list-ordered"></span></li><li class="sidebar-nav-item sidebar-nav-overview hty-icon-button" data-target="site-overview-wrap" title="站点概览"><span class="icon iconify" data-icon="ri:passport-line"></span></li></ul><div class="sidebar-panel" id="site-overview-wrap"><div class="site-info fix-top"><a class="site-author-avatar" href="/about/" title="Zephyr Heather"><img width="96" loading="lazy" src="/zephyr.jpg" alt="Zephyr Heather"></a><div class="site-author-name"><a href="/about/">Zephyr Heather</a></div><a class="site-name" href="/about/site.html">Zephyr's Blog</a><sub class="site-subtitle"></sub><div class="site-description"></div></div><nav class="site-state"><a class="site-state-item hty-icon-button icon-home" href="/" title="首页"><span class="site-state-item-icon"><span class="icon iconify" data-icon="ri:home-4-line"></span></span></a><div class="site-state-item"><a href="/archives/" title="归档"><span class="site-state-item-icon"><span class="icon iconify" data-icon="ri:archive-line"></span></span><span class="site-state-item-count">14</span></a></div><div class="site-state-item"><a href="/categories/" title="分类"><span class="site-state-item-icon"><span class="icon iconify" data-icon="ri:folder-2-line"></span></span><span class="site-state-item-count">3</span></a></div><div class="site-state-item"><a href="/tags/" title="标签"><span class="site-state-item-icon"><span class="icon iconify" data-icon="ri:price-tag-3-line"></span></span><span class="site-state-item-count">9</span></a></div><a class="site-state-item hty-icon-button" href="/null" title="在建中"><span class="site-state-item-icon"><span class="icon iconify" data-icon="ri:settings-line"></span></span></a></nav><hr style="margin-bottom:0.5rem"><div class="links-of-author"><a class="links-of-author-item hty-icon-button" rel="noopener" href="/atom.xml" title="RSS" target="_blank" style="color:orange"><span class="icon iconify" data-icon="ri:rss-line"></span></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://github.com/ZephyrHeather" title="GitHub" target="_blank" style="color:#6e5494"><span class="icon iconify" data-icon="ri:github-line"></span></a></div><hr style="margin:0.5rem 1rem"><div class="links"><a class="links-item hty-icon-button" href="/links/" title="我的小伙伴们" style="color:dodgerblue"><span class="icon iconify" data-icon="ri:genderless-line"></span></a></div><br><a class="links-item hty-icon-button" id="toggle-mode-btn" href="javascript:;" title="Mode" style="color: #f1cb64"><span class="icon iconify" data-icon="ri:contrast-2-line"></span></a></div><div class="sidebar-panel sidebar-panel-active" id="post-toc-wrap"><div class="post-toc"><div class="post-toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E5%92%8C%E8%BD%AF%E4%BB%B6%E5%8C%85%E7%AE%A1%E7%90%86"><span class="toc-number">2.</span> <span class="toc-text">系统和软件包管理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86"><span class="toc-number">2.1.</span> <span class="toc-text">系统管理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BD%AF%E4%BB%B6%E5%8C%85%E7%AE%A1%E7%90%86"><span class="toc-number">2.2.</span> <span class="toc-text">软件包管理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%BE%E5%BD%A2%E7%95%8C%E9%9D%A2"><span class="toc-number">3.</span> <span class="toc-text">图形界面</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8E%E5%AD%97%E7%AC%A6%E5%88%B0%E5%9B%BE%E5%BD%A2"><span class="toc-number">3.1.</span> <span class="toc-text">从字符到图形</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8"><span class="toc-number">3.2.</span> <span class="toc-text">浏览器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8E%E8%8B%B1%E6%96%87%E5%88%B0%E4%B8%AD%E6%96%87"><span class="toc-number">3.3.</span> <span class="toc-text">从英文到中文</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A3%B0%E9%9F%B3"><span class="toc-number">3.4.</span> <span class="toc-text">声音</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BE%93%E5%85%A5%E6%B3%95"><span class="toc-number">3.5.</span> <span class="toc-text">输入法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B6%E4%BB%96"><span class="toc-number">3.6.</span> <span class="toc-text">其他</span></a></li></ol></li></ol></div></div></div></aside><main class="sidebar-translate" id="content"><div id="post"><article class="hty-card post-block" itemscope itemtype="https://schema.org/Article" style="--smc-primary:#0078E7;"><link itemprop="mainEntityOfPage" href="http://zephyrheather.github.io/posts/55b25ac5/"><span hidden itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="Zephyr Heather"><meta itemprop="description"></span><span hidden itemprop="publisher" itemscope itemtype="https://schema.org/Organization"><meta itemprop="name" content="Zephyr's Blog"></span><header class="post-header"><h1 class="post-title" itemprop="name headline">Arch Linux USB(配置篇)</h1><div class="post-meta"><div class="post-time" style="display:block"><span class="post-meta-item-icon"><span class="icon iconify" data-icon="ri:calendar-line"></span></span> <time title="创建时间：2022-02-18 15:20:03" itemprop="dateCreated datePublished" datetime="2022-02-18T15:20:03+08:00">2022-02-18</time></div><span class="post-count"><span class="post-symbolcount"><span class="post-meta-item-icon" title="本文字数"><span class="icon iconify" data-icon="ri:file-word-line"></span></span> <span title="本文字数">3.2k</span><span class="post-meta-divider">-</span><span class="post-meta-item-icon" title="阅读时长"><span class="icon iconify" data-icon="ri:timer-line"></span></span> <span title="阅读时长">13m</span></span></span><span class="leancloud_visitors" id="/posts/55b25ac5/" data-flag-title="Arch Linux USB(配置篇)"><span class="post-meta-divider">-</span><span class="post-meta-item-icon" title="阅读次数"><span class="icon iconify" data-icon="ri:eye-line"></span> <span class="leancloud-visitors-count"></span></span></span><span class="post-meta-divider">-</span><a href="#comment"><span class="post-meta-item-icon" title="评论数"><span class="icon iconify" data-icon="ri:chat-3-line"></span> <span class="waline-comment-count" id="/posts/55b25ac5/"></span></span></a><div class="post-classify"><span class="post-category"> <span class="post-meta-item-icon" style="margin-right:3px;"><span class="icon iconify" data-icon="ri:folder-line"></span></span><span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a class="category-item" href="/categories/GNU-Linux/" style="--text-color:var(--hty-text-color)" itemprop="url" rel="index"><span itemprop="text">GNU/Linux</span></a></span></span><span class="post-tag"><span class="post-meta-divider">-</span><a class="tag-item" href="/tags/Arch-Linux/" style="--text-color:var(--hty-text-color)"><span class="post-meta-item-icon"><span class="icon iconify" data-icon="ri:price-tag-3-line"></span></span><span class="tag-name">Arch Linux</span></a><a class="tag-item" href="/tags/Linux%E9%85%8D%E7%BD%AE/" style="--text-color:var(--hty-text-color)"><span class="post-meta-item-icon"><span class="icon iconify" data-icon="ri:price-tag-3-line"></span></span><span class="tag-name">Linux配置</span></a></span></div></div></header><section class="post-body" itemprop="articleBody"><div class="post-content markdown-body"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这篇文章看一看作是<a href="https://zephyrheather.github.io/2021/07/16/arch-linux-usb-an-zhuang-pian/">Arch Linux USB(安装篇)</a>的后续，不过archlinux的自由度很高，每一个人都能配置出高度个人定制化的东西，所以这里也只是结合archwiki和我个人的一些配置简单介绍一下。</p>
+<p>参考：<a target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/General_recommendations_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)#%E4%B8%AD%E5%9B%BD%E5%A4%A7%E9%99%86%E7%94%A8%E6%88%B7%E7%9A%84%E6%8E%A8%E8%8D%90%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88">General recommendations (简体中文)</a>(这个页面还特地做了<a target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/General_recommendations_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)#%E4%B8%AD%E5%9B%BD%E5%A4%A7%E9%99%86%E7%94%A8%E6%88%B7%E7%9A%84%E6%8E%A8%E8%8D%90%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88">#中国大陆用户的推荐解决方案</a>)</p>
+<p>以下引文不加注释都引自<a target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/General_recommendations_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)#%E4%B8%AD%E5%9B%BD%E5%A4%A7%E9%99%86%E7%94%A8%E6%88%B7%E7%9A%84%E6%8E%A8%E8%8D%90%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88">General recommendations (简体中文)</a></p>
+<h2 id="系统和软件包管理"><a href="#系统和软件包管理" class="headerlink" title="系统和软件包管理"></a>系统和软件包管理</h2><h3 id="系统管理"><a href="#系统管理" class="headerlink" title="系统管理"></a>系统管理</h3><blockquote>
+<p>新安装的系统只有一个<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Superuser">超级用户</a>，即 root。使用 root 进行日常操作是不安全的。应当<a target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/User_Management_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">创建</a>普通用户进行日常操作，仅在管理系统时使用 root。不要在服务器上给 root 开放<a target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/SSH">SSH</a>登录权限。普通用户的创建方法请参阅 <a target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/Users_and_groups_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">用户和用户组</a>。</p>
+<p><a target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/Users_and_groups_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">用户和用户组</a>是GNU&#x2F;Linux 权限控制机制的基础。管理员通过调整用户组的成员、所有者，可以控制用户使用系统资源。</p>
+</blockquote>
+<p>换言之，平常用普通用户，只有涉及系统管理时使用root的权限。可以用<code>sudo</code>命令获取临时的root权限，只要在命令前加上<code>sudo</code>就可以。而<code>su</code>命令则是以指定用户登录一个新的shell，比如<code>su - xxx</code>就是登录用户名为xxx的用户，而默认<code>su -</code>登录的就是root。使用<code>exit</code>退出<code>su</code>命令登录的用户，回到原来的shell。</p>
+<p>服务管理：</p>
+<blockquote>
+<p>Arch Linux 使用 <a target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/Systemd_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">systemd (简体中文)</a> 管理系统服务。新用户有必要了解其基本使用方法。通常使用 <code># systemctl</code> 命令进行系统管理，参见<a target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/Systemd_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)#systemd_%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7">此文</a>。</p>
+</blockquote>
+<p>注意，新的服务都需要用户重新设置和管理，设置哪些服务开机自启动，哪些服务在用的时候手动启动，可以减少资源浪费。</p>
+<p>系统维护：</p>
+<blockquote>
+<p>Arch 是滚动发行系统，软件包的更新速度很快，用户需要花些时间进行 <a target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/System_maintenance">系统维护</a>。 <a target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/Security">安全</a>页面也给出了很多加强系统安全性的建议和技巧。</p>
+</blockquote>
+<p>微软总是催着你windows系统更新，但是Arch是自己手动更新的。经常看到有人说Arch这样的滚动发行版不稳定，容易滚挂。我反正从来没遇到过，Arch更新虽然是整个系统重新安装的，但是速度很快，而且也很稳定。</p>
+<p>更新系统的时候使用<code>pacman -Syu</code>(要root权限)，注意不要在一堆服务和进程在运行的时候更新系统，最好在刚开机的时候在字符界面就更新，更新之后<code>reboot</code>重启就行。</p>
+<p>虽然一般建议Arch经常更新，但是我曾经半年没更也没什么。就是有时候<code>pacman -Sy</code>安装软件的时候发现lib库和软件已经对不上了，那就更新系统吧。</p>
+<p>另外，安装在USB或者移动硬盘等可移动介质的同学一定要注意，在使用过程中不要拔插，关机前最后一件事一定是<code>sync</code>确保数据同步写入。</p>
+<h3 id="软件包管理"><a href="#软件包管理" class="headerlink" title="软件包管理"></a>软件包管理</h3><p>具体看archwiki学习</p>
+<p>Arch拥有Linux中最丰富的软件包资源，由官方软件仓库和非官方软件仓库(AUR)组成。</p>
+<p>Pacman 是Arch 的软件包管理器(简称包管理器)<br>下面列一些我常用的命令</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash">pacman -Sy 		<span class="token comment"># 更新软件源并安装</span>
+pacman -Ss		<span class="token comment"># 搜索软件</span>
+pacman -Si 		<span class="token comment"># 查看软件包具体信息</span>
+pacman -Syu		<span class="token comment">#更新系统及所有包</span>
+pacman -Qs		<span class="token comment"># 搜索已安装的包</span>
+pacman -Qi		<span class="token comment"># 查看已安装的包的信息</span>
+pacman -Rs		<span class="token comment"># 删除软件包及其依赖</span></code></pre>
+
+<p>有关pacman的一些配置在&#x2F;etc&#x2F;pacman.conf，贴一下我的配置</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment">#</span>
+<span class="token comment"># /etc/pacman.conf</span>
+<span class="token comment">#</span>
+<span class="token comment"># See the pacman.conf(5) manpage for option and repository directives</span>
+
+<span class="token comment">#</span>
+<span class="token comment"># GENERAL OPTIONS</span>
+<span class="token comment">#</span>
+<span class="token punctuation">[</span>options<span class="token punctuation">]</span>
+<span class="token comment"># The following paths are commented out with their default values listed.</span>
+<span class="token comment"># If you wish to use different paths, uncomment and update the paths.</span>
+<span class="token comment">#RootDir     = /</span>
+<span class="token comment">#DBPath      = /var/lib/pacman/</span>
+<span class="token comment">#CacheDir    = /var/cache/pacman/pkg/</span>
+<span class="token comment">#LogFile     = /var/log/pacman.log</span>
+<span class="token comment">#GPGDir      = /etc/pacman.d/gnupg/</span>
+<span class="token comment">#HookDir     = /etc/pacman.d/hooks/</span>
+HoldPkg     <span class="token operator">=</span> pacman glibc
+<span class="token comment">#XferCommand = /usr/bin/curl -L -C - -f -o %o %u</span>
+<span class="token comment">#XferCommand = /usr/bin/wget --passive-ftp -c -O %o %u</span>
+<span class="token comment">#CleanMethod = KeepInstalled</span>
+Architecture <span class="token operator">=</span> auto
+
+<span class="token comment"># Pacman won't upgrade packages listed in IgnorePkg and members of IgnoreGroup</span>
+<span class="token comment">#IgnorePkg   =</span>
+<span class="token comment">#IgnoreGroup =</span>
+
+<span class="token comment">#NoUpgrade   =</span>
+<span class="token comment">#NoExtract   =</span>
+
+<span class="token comment"># Misc options</span>
+<span class="token comment">#UseSyslog</span>
+Color
+ILoveCandy
+<span class="token comment">#TotalDownload</span>
+CheckSpace
+<span class="token comment">#VerbosePkgLists</span>
+
+<span class="token comment"># By default, pacman accepts packages signed by keys that its local keyring</span>
+<span class="token comment"># trusts (see pacman-key and its man page), as well as unsigned packages.</span>
+SigLevel    <span class="token operator">=</span> Required DatabaseOptional
+LocalFileSigLevel <span class="token operator">=</span> Optional
+<span class="token comment">#RemoteFileSigLevel = Required</span>
+
+<span class="token comment"># NOTE: You must run `pacman-key --init` before first using pacman; the local</span>
+<span class="token comment"># keyring can then be populated with the keys of all official Arch Linux</span>
+<span class="token comment"># packagers with `pacman-key --populate archlinux`.</span>
+
+<span class="token comment">#</span>
+<span class="token comment"># REPOSITORIES</span>
+<span class="token comment">#   - can be defined here or included from another file</span>
+<span class="token comment">#   - pacman will search repositories in the order defined here</span>
+<span class="token comment">#   - local/custom mirrors can be added here or in separate files</span>
+<span class="token comment">#   - repositories listed first will take precedence when packages</span>
+<span class="token comment">#     have identical names, regardless of version number</span>
+<span class="token comment">#   - URLs will have $repo replaced by the name of the current repo</span>
+<span class="token comment">#   - URLs will have $arch replaced by the name of the architecture</span>
+<span class="token comment">#</span>
+<span class="token comment"># Repository entries are of the format:</span>
+<span class="token comment">#       [repo-name]</span>
+<span class="token comment">#       Server = ServerName</span>
+<span class="token comment">#       Include = IncludePath</span>
+<span class="token comment">#</span>
+<span class="token comment"># The header [repo-name] is crucial - it must be present and</span>
+<span class="token comment"># uncommented to enable the repo.</span>
+<span class="token comment">#</span>
+
+<span class="token comment"># The testing repositories are disabled by default. To enable, uncomment the</span>
+<span class="token comment"># repo name header and Include lines. You can add preferred servers immediately</span>
+<span class="token comment"># after the header, and they will be used before the default mirrors.</span>
+
+<span class="token comment">#[testing]</span>
+<span class="token comment">#Include = /etc/pacman.d/mirrorlist</span>
+
+<span class="token punctuation">[</span>core<span class="token punctuation">]</span>
+Include <span class="token operator">=</span> /etc/pacman.d/mirrorlist
+
+<span class="token punctuation">[</span>extra<span class="token punctuation">]</span>
+Include <span class="token operator">=</span> /etc/pacman.d/mirrorlist
+
+<span class="token comment">#[community-testing]</span>
+<span class="token comment">#Include = /etc/pacman.d/mirrorlist</span>
+
+<span class="token punctuation">[</span>community<span class="token punctuation">]</span>
+Include <span class="token operator">=</span> /etc/pacman.d/mirrorlist
+
+<span class="token comment"># If you want to run 32 bit applications on your x86_64 system,</span>
+<span class="token comment"># enable the multilib repositories as required here.</span>
+
+<span class="token comment">#[multilib-testing]</span>
+<span class="token comment">#Include = /etc/pacman.d/mirrorlist</span>
+
+<span class="token comment">#[multilib]</span>
+<span class="token comment">#Include = /etc/pacman.d/mirrorlist</span>
+
+<span class="token comment"># An example of a custom package repository.  See the pacman manpage for</span>
+<span class="token comment"># tips on creating your own repositories.</span>
+<span class="token comment">#[custom]</span>
+<span class="token comment">#SigLevel = Optional TrustAll</span>
+<span class="token comment">#Server = file:///home/custompkgs</span>
+
+<span class="token punctuation">[</span>archlinuxcn<span class="token punctuation">]</span>
+SigLevel <span class="token operator">=</span> Never
+Server <span class="token operator">=</span> https://mirrors.ustc.edu.cn/archlinuxcn/<span class="token variable">$arch</span></code></pre>
+
+<p>我的配置主要就是取消了<code>Color</code>前的注释，是Pacman 的输出是彩色的更易识别，然后<code>ILoveCandy</code>是我自己加上的，这是Pacman 的一个彩蛋，因为pacman也是那款叫作吃豆人的著名游戏，加上<code>ILoveCandy</code>后会出现吃豆人。</p>
+<p>最后加上了archlinuxcn的源，因为里面提供了更多为中国用户进行优化的软件包，用的是科大的源，加上之后需要<code>pacman -S archlinuxcn-keyring</code>安装对应的密钥。</p>
+<p>主要的pacman 镜像我用的是北外的镜像，在<code>/etc/pacman.d/mirrorlist</code>中更改，一般里面已经按照速度排序排好了，如果没有，可以参见 <a target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/Mirrors_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)#%E9%95%9C%E5%83%8F%E7%8A%B6%E6%80%81">#镜像状态</a> 和 <a target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/Mirrors_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)#%E6%8C%89%E9%80%9F%E5%BA%A6%E6%8E%92%E5%BA%8F">#按速度排序</a> 查看帮助选择镜像的工具。</p>
+<p>当然也可以和我一样用北外的镜像(不推荐清华的镜像，至少我自己的使用不佳)</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash">Server <span class="token operator">=</span> https://mirrors.bfsu.edu.cn/archlinux/<span class="token variable">$repo</span>/os/<span class="token variable">$arch</span></code></pre>
+
+<p>其他镜像</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment">## China</span>
+<span class="token comment">#Server = http://mirrors.163.com/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = http://mirrors.aliyun.com/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = https://mirrors.aliyun.com/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = http://mirrors.bfsu.edu.cn/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = https://mirrors.bfsu.edu.cn/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = http://mirrors.cqu.edu.cn/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = https://mirrors.cqu.edu.cn/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = http://mirrors.dgut.edu.cn/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = https://mirrors.dgut.edu.cn/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = http://mirrors.hit.edu.cn/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = https://mirrors.hit.edu.cn/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = http://mirror.lzu.edu.cn/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = http://mirrors.neusoft.edu.cn/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = https://mirrors.neusoft.edu.cn/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = http://mirrors.nju.edu.cn/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = https://mirrors.nju.edu.cn/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = http://mirror.redrock.team/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = https://mirror.redrock.team/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = https://mirrors.sjtug.sjtu.edu.cn/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = http://mirrors.tuna.tsinghua.edu.cn/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = https://mirrors.tuna.tsinghua.edu.cn/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = http://mirrors.ustc.edu.cn/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = https://mirrors.ustc.edu.cn/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = http://mirrors.wsyu.edu.cn/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = https://mirrors.wsyu.edu.cn/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = https://mirrors.xjtu.edu.cn/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = http://mirrors.zju.edu.cn/archlinux/$repo/os/$arch</span></code></pre>
+
+<p>记得<code>pacman -S archlinux-keyring</code></p>
+<hr>
+<p>然后是<a target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/Arch_User_Repository_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">AUR</a> 的包。</p>
+<blockquote>
+<p>Arch 编译系统提供了编译官方库软件的脚本，而 <a target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/Arch_User_Repository_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">AUR</a> 则提供了用户提交的、非官方的软件包编译脚本。这是一个基于 <a target="_blank" rel="noopener" href="https://aur.archlinux.org/index.php">web 界面</a>或通过 <a target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/AUR_helper_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">AUR 工具</a>访问的非官方软件仓库。</p>
+</blockquote>
+<p>aur里面有更多的软件包可以选择，当然由于是非官方，也会有无人维护的情况。</p>
+<p>基于web界面是指，aur的包可以到<a target="_blank" rel="noopener" href="https://aur.archlinux.org/">https://aur.archlinux.org/</a> 这个网页上去查找相关信息。</p>
+<p>由于aur的包不能由pacman 直接安装，所以需要采取一下方法：</p>
+<ol>
+<li>从 AUR 下载包含 <a target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/PKGBUILD_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">PKGBUILD</a> 和其他安装文件（比如 <a target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/Systemd">systemd</a> 和补丁，通常不是实际代码）的 tar 包。</li>
+<li>用命令 <code>tar -xvf packagename.tar.gz</code> 解包到一个仅用于编译 AUR 的空闲文件夹。</li>
+<li>验证 <a target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/PKGBUILD_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">PKGBUILD</a> 和其它相关文件，确保其中不含有恶意代码。</li>
+<li>在上述文件夹中运行 <code>makepkg -si</code>。命令会自动调用 <a target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/Pacman_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">pacman</a> 解决依赖关系，然后下载代码、编译并打包。然后安装软件包。</li>
+</ol>
+<p>我一般跳过了验证那一步，<del>(懒得验证)</del>，对AUR受信用户（简称 TU）展现出充分的信任</p>
+<p>当然，使用<a target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/AUR_helper_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">AUR 工具</a> 会简单一些(因为上面那个方法其实也蛮简单了)</p>
+<p>具体查看wiki，我用过yay，因为已经pacman封装了，所以语法和pacman一样。</p>
+<h2 id="图形界面"><a href="#图形界面" class="headerlink" title="图形界面"></a>图形界面</h2><h3 id="从字符到图形"><a href="#从字符到图形" class="headerlink" title="从字符到图形"></a>从字符到图形</h3><p><code>pacman -Sy xorg-server</code>安装X服务器</p>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/X_Window_System">X 窗口管理系统</a>(<strong>X11</strong>或者<strong>X</strong>) 是基于网络的显示协议，提供了窗口功能，包含建立图形用户界面(GUI)的标准工具和协议。<a target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/Xorg_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">Xorg</a>是X窗口系统11版本的开源实现，提供图形用户界面, 安装和配置请阅读<a target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/Xorg_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">Xorg</a>。</p>
+<p><a target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/Wayland_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">Wayland</a> 是新的显示服务协议，Weston 是参考实现。目前还处于开发阶段，支持的程序很少。</p>
+</blockquote>
+<p>只有X能够进入图形界面了，不过只有最基本的框架，需要配合 <a target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/%E6%A1%8C%E9%9D%A2%E7%8E%AF%E5%A2%83">桌面环境</a>(DE)才能使用。</p>
+<blockquote>
+<p>桌面环境通常提供图标、小程序（applets）、窗口、工具栏、文件夹、壁纸、应用程序和拖放等功能。使用<a target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/GNOME_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">GNOME</a>、<a target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/KDE_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">KDE</a>、<a target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/LXDE_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">LXDE</a>、<a target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/Xfce_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">Xfce</a>这类<a target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/%E6%A1%8C%E9%9D%A2%E7%8E%AF%E5%A2%83">桌面环境</a>，是最简单的配置方法. <a target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/Category:Desktop_environments">Category:Desktop environments</a> 包含了各种桌面环境。</p>
+</blockquote>
+<p>其中KDE和GNOME是两个功能完全的主流桌面环境，KDE体积更加大一点。由于U盘大小有限，我使用的是轻量化的Xfce。</p>
+<p>对于Xfce，只需要<code>pacman Sy xfce4</code>，我没有使用额外的显示管理器(也就是从图形界面登录用户并自动启动图形界面)，一方面从字符界面启动更加轻量，另一方面并不是每一次都有进入图形界面的需要。Xfce自带从字符界面启动的命令<code>startxfce4</code></p>
+<p>后来我更倾向于使用i3wm作为桌面环境，更加轻量快速， <a target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/Start_X_at_Login_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">Start X at Login</a> 提供了直接从终端启动的轻量方法。i3wm的定制化程度更高，也意味着配置需要一定的精力，这里就不展开了。</p>
+<h3 id="浏览器"><a href="#浏览器" class="headerlink" title="浏览器"></a>浏览器</h3><p>毫无疑问<code>pacman -Sy firefox</code></p>
+<p>当你打开浏览器输入诸如<code>www.baidu.com</code>之类的中文网页，你会发现一堆矩形之类的乱码。</p>
+<h3 id="从英文到中文"><a href="#从英文到中文" class="headerlink" title="从英文到中文"></a>从英文到中文</h3><p>因为你还没有安装字体，所以无法正常显示中文。</p>
+<p><code>pacman -Sy wqy-microhei</code>文泉驿的中文字体之一。还有其他字体，可以自己去发现。</p>
+<p>然后就能看到中文了。</p>
+<p>同时在启动桌面环境的命令前加上指定用中文启动，就可以以中文为默认语言使用桌面环境，例：<code>LANG=zh_CN.UTF-8 startxfce4</code></p>
+<h3 id="声音"><a href="#声音" class="headerlink" title="声音"></a>声音</h3><p>如果和我一样使用了轻量化的桌面环境，一般要手动调整声音，<code>pacman -Sy alsa-utils</code>安装声音配置相关的一些工具，其中<code>alsamixer</code>命令可以在终端中用类似图形化的方式调整声音</p>
+<p>有时候没有声音还要设置默认声卡，有时候没有混音还得自己手动开启dmix.这里就不展开了。</p>
+<h3 id="输入法"><a href="#输入法" class="headerlink" title="输入法"></a>输入法</h3><p>参见 <a target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/Fcitx_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">Fcitx (简体中文)</a> 、 <a target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/Fcitx5_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">Fcitx5 (简体中文)</a> 或 <a target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/IBus_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">Ibus</a>。</p>
+<p>我使用的是Fcitx5，是fcitx的最新版本，<code>pacman -Sy fcitx5-im fcitx5-chinese-addons</code>，里面有图形界面的配置工具</p>
+<p>欲在程序中正常启用 Fcitx5, 需设置以下环境变量，并重新登录：</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash">~/.pam_environment
+-------------------------------------------------
+GTK_IM_MODULE <span class="token assign-left variable">DEFAULT</span><span class="token operator">=</span>fcitx
+QT_IM_MODULE  <span class="token assign-left variable">DEFAULT</span><span class="token operator">=</span>fcitx
+<span class="token environment constant">XMODIFIERS</span>    <span class="token assign-left variable">DEFAULT</span><span class="token operator">=</span><span class="token punctuation">\</span>@im<span class="token operator">=</span>fcitx
+INPUT_METHOD  <span class="token assign-left variable">DEFAULT</span><span class="token operator">=</span>fcitx
+SDL_IM_MODULE <span class="token assign-left variable">DEFAULT</span><span class="token operator">=</span>fcitx
+GLFW_IM_MODULE <span class="token assign-left variable">DEFAULT</span><span class="token operator">=</span>ibus</code></pre>
+
+<p>还有一个小工具在fcitx5上可以使用搜狗输入法的皮肤，大家自己查吧</p>
+<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><p>类似于记事本的工具：leafpad或者mousepad</p>
+<p>音乐：netease-cloud-music, yesplaymusic, iease-music(后两个都是网易云的第三方客户端，非常漂亮)</p>
+<p>ofiice: <a target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/WPS_Office_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">WPS Office (简体中文)</a>或者<a target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/LibreOffice_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">LibreOffice (简体中文)</a></p>
+<p>视频音频的播放： <a target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/VLC_media_player">VLC</a></p>
+<p>邮件客户端：Mailspring (也是颜值很高，而且有一些实用的功能)</p>
+<p>终端模拟器：**<a target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/Tilda">Tilda</a>** — 可配置的下拉终端模拟器(很方便，可以随时唤出)</p>
+<p>其他的大家看<a target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/List_of_applications_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">List of applications</a>各取所需吧。</p>
+<hr>
+<p>希望看到大家自己的Arch！</p>
+</div></section><div id="reward-container"><span class="hty-icon-button button-glow" id="reward-button" title="打赏" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === &quot;none&quot;) ? &quot;block&quot; : &quot;none&quot;;"><span class="icon iconify" data-icon="ri:hand-coin-line"></span></span><div id="reward-comment">I'm so cute. Please give me money.</div><div id="qr" style="display:none;"><div style="display:inline-block"><a href="/alipay.jpg"><img loading="lazy" src="/alipay.jpg" alt="支付宝" title="支付宝"></a><div><span style="color:#00A3EE"><span class="icon iconify" data-icon="ri:alipay-line"></span></span></div></div><div style="display:inline-block"><a href="/wechatpay.jpg"><img loading="lazy" src="/wechatpay.jpg" alt="微信支付" title="微信支付"></a><div><span style="color:#2DC100"><span class="icon iconify" data-icon="ri:wechat-pay-line"></span></span></div></div></div></div><ul class="post-copyright"><li class="post-copyright-author"><strong>本文作者：</strong>Zephyr Heather</li><li class="post-copyright-link"><strong>本文链接：</strong><a href="http://zephyrheather.github.io/posts/55b25ac5/" title="Arch Linux USB(配置篇)">http://zephyrheather.github.io/posts/55b25ac5/</a></li><li class="post-copyright-license"><strong>版权声明：</strong>本博客所有文章除特别声明外，均默认采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener" title="CC BY-NC-SA 4.0 "><span class="icon iconify" data-icon="ri:creative-commons-line"></span><span class="icon iconify" data-icon="ri:creative-commons-by-line"></span><span class="icon iconify" data-icon="ri:creative-commons-nc-line"></span><span class="icon iconify" data-icon="ri:creative-commons-sa-line"></span></a> 许可协议。</li></ul></article><div class="post-nav"><div class="post-nav-item"><a class="post-nav-prev" href="/posts/14643401/" rel="prev" title="NirvanaArch的配置"><span class="icon iconify" data-icon="ri:arrow-left-s-line"></span><span class="post-nav-text">NirvanaArch的配置</span></a></div><div class="post-nav-item"><a class="post-nav-next" href="/posts/6b1091a3/" rel="next" title="Linux挂载Windows分区问题"><span class="post-nav-text">Linux挂载Windows分区问题</span><span class="icon iconify" data-icon="ri:arrow-right-s-line"></span></a></div></div></div><div class="hty-card" id="comment"><div id="waline"></div><link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/@waline/client@v2/dist/waline.css"><script>window.CONFIG.waline.config.path = "/posts/55b25ac5/"</script><div class="js-Pjax"><script src="/js/comments/waline.js" type="module" defer></script></div></div></main><footer class="sidebar-translate" id="footer"><div class="copyright"><span>&copy; 2021 – 2022 </span><span class="with-love" id="animate"><span class="icon iconify" data-icon="ri:cloud-line"></span></span><span class="author"> Zephyr Heather</span></div><div class="powered"><span>由 <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> 驱动 v6.2.0</span><span class="footer-separator">|</span><span>主题 - <a rel="noopener" href="https://github.com/YunYouJun/hexo-theme-yun" target="_blank"><span>Yun</span></a> v1.10.4</span></div><div class="live-time"><span>本博客已萌萌哒地运行</span><span id="display_live_time"></span><span class="moe-text">(●'◡'●)</span><script>function blog_live_time() {
+  setTimeout(blog_live_time, 1000);
+  const start = new Date('2021-07-10T16:57:41');
+  const now = new Date();
+  const timeDiff = (now.getTime() - start.getTime());
+  const msPerMinute = 60 * 1000;
+  const msPerHour = 60 * msPerMinute;
+  const msPerDay = 24 * msPerHour;
+  const passDay = Math.floor(timeDiff / msPerDay);
+  const passHour = Math.floor((timeDiff % msPerDay) / 60 / 60 / 1000);
+  const passMinute = Math.floor((timeDiff % msPerHour) / 60 / 1000);
+  const passSecond = Math.floor((timeDiff % msPerMinute) / 1000);
+  display_live_time.innerHTML = ` ${passDay} 天 ${passHour} 小时 ${passMinute} 分 ${passSecond} 秒`;
+}
+blog_live_time();
+</script></div></footer></div><a class="hty-icon-button" id="back-to-top" aria-label="back-to-top" href="#"><span class="icon iconify" data-icon="ri:arrow-up-s-line"></span><svg class="progress-circle-container" viewBox="0 0 100 100"><circle class="progress-circle" id="progressCircle" cx="50" cy="50" r="48" fill="none" stroke="#0078E7" stroke-width="2" stroke-linecap="round"></circle></svg></a><a class="popup-trigger hty-icon-button icon-search" id="search" href="javascript:;" title="搜索"><span class="site-state-item-icon"><span class="icon iconify" data-icon="ri:search-line"></span></span></a><script>window.addEventListener("DOMContentLoaded", () => {
+  // Handle and trigger popup window
+  document.querySelector(".popup-trigger").addEventListener("click", () => {
+    document.querySelector(".popup").classList.add("show");
+    setTimeout(() => {
+      document.querySelector(".search-input").focus();
+    }, 100);
+  });
+
+  // Monitor main search box
+  const onPopupClose = () => {
+    document.querySelector(".popup").classList.remove("show");
+  };
+
+  document.querySelector(".popup-btn-close").addEventListener("click", () => {
+    onPopupClose();
+  });
+
+  window.addEventListener("keyup", event => {
+    if (event.key === "Escape") {
+      onPopupClose();
+    }
+  });
+});
+</script><script src="https://fastly.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js"></script><script src="/js/search/local-search.js" defer type="module"></script><div class="popup search-popup"><div class="search-header"><span class="popup-btn-close close-icon hty-icon-button"><span class="icon iconify" data-icon="ri:close-line"></span></span></div><div class="search-input-container"><input class="search-input" id="local-search-input" type="text" placeholder="搜索..." value=""></div><div class="search-result-container"></div></div><script>function initMourn() {
+  const date = new Date();
+  const today = (date.getMonth() + 1) + "-" + date.getDate()
+  const mourn_days = ["4-4","9-18","8-3"]
+  if (mourn_days.includes(today)) {
+    document.documentElement.style.filter = "grayscale(1)";
+  }
+}
+initMourn();</script><script src="https://fastly.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js"></script><script>const images = [...document.querySelectorAll('.markdown-body img')]
+mediumZoom(images)</script><style>.medium-zoom-image {
+  z-index: 99;
+}</style><!-- hexo injector body_end start --><script src="https://fastly.jsdelivr.net/npm/hexo-tag-common@0.2.0/js/index.js"></script><!-- hexo injector body_end end --></body></html>

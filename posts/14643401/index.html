@@ -1,0 +1,601 @@
+<!DOCTYPE html><html lang="zh-CN"><head><!-- hexo injector head_begin start --><link href="https://fastly.jsdelivr.net/npm/hexo-tag-common@0.2.0/css/index.css" rel="stylesheet"/><!-- hexo injector head_begin end --><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="theme-color" content="#0078E7"><meta name="author" content="Zephyr Heather"><meta name="copyright" content="Zephyr Heather"><meta name="generator" content="Hexo 6.2.0"><meta name="theme" content="hexo-theme-yun"><title>NirvanaArch的配置 | Zephyr's Blog</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@900&amp;display=swap" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/star-markdown-css@0.3.3/dist/yun/yun-markdown.min.css"><link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/prism-theme-vars/base.css"><script src="https://fastly.jsdelivr.net/npm/scrollreveal/dist/scrollreveal.min.js" defer></script><script>function initScrollReveal() {
+  [".post-card",".markdown-body img"].forEach((target)=> {
+    ScrollReveal().reveal(target);
+  })
+}
+document.addEventListener("DOMContentLoaded", initScrollReveal);
+document.addEventListener("pjax:success", initScrollReveal);
+</script><script src="https://fastly.jsdelivr.net/npm/pjax@latest/pjax.min.js" defer></script><script src="/js/pjax.js" defer type="module"></script><script src="https://fastly.jsdelivr.net/npm/vue@2.6.14"></script><link rel="icon" type="image/png" href="/zephyr.jpg"><link rel="mask-icon" href="/zephyr.jpg" color="#0078E7"><link rel="preload" href="/css/hexo-theme-yun.css" as="style"><link rel="prefetch" href="/js/sidebar.js" as="script"><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="preconnect" href="https://fastly.jsdelivr.net/npm/" crossorigin><script id="yun-config">
+    window.Yun = {}
+    window.CONFIG = {"hostname":"zephyrheather.github.io","root":"/","title":"风彳亍的小站","version":"1.10.4","mode":"auto","copycode":true,"page":{"isPost":true},"i18n":{"placeholder":"搜索...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）"},"anonymous_image":"https://cdn.yunyoujun.cn/img/avatar/none.jpg","say":{"api":"https://el-bot-api.vercel.app/api/words/young"},"local_search":{"path":"/search.xml"},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"fireworks":{"colors":null},"waline":{"config":{"enable":true,"serverURL":"https://wal-ok0hrvbo0-zephyrheather.vercel.app/","comment":true,"visitor":true,"locale":{"placeholder":"填写邮箱，可以收到回复通知哦～"},"el":"#waline","lang":"zh-CN"},"cdn":"https://fastly.jsdelivr.net/npm/@waline/client@v2/dist/waline.js","dark":"html.dark"},"vendors":{"darken":"https://fastly.jsdelivr.net/npm/darken@1.5.0"}};
+  </script><link rel="stylesheet" href="/css/hexo-theme-yun.css"><script src="/js/hexo-theme-yun.js" type="module"></script><link rel="alternate" href="/atom.xml" title="Zephyr's Blog" type="application/atom+xml"><meta name="description" content="这是一次惨痛的经历，我的Arch在更新之后之后出现了无法关机的问题，并且我采用了不正确的方法处理——强制断电。最终的结果就是数据没有写入导致系统文件丢失。 于是我不得不重装一遍我的Arch，刚刚才写完Arch的配置篇没想到就用上了，但发现其实远远不够，许多配置根本想不起来了，所以谨以此文记录我的Arch重生之路的配置，以免下次又发生这样的惨剧。(系统更新后那一次非正常关机的问题仍无法解决，不过只存">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NirvanaArch的配置">
+<meta property="og:url" content="http://zephyrheather.github.io/posts/14643401/index.html">
+<meta property="og:site_name" content="Zephyr&#39;s Blog">
+<meta property="og:description" content="这是一次惨痛的经历，我的Arch在更新之后之后出现了无法关机的问题，并且我采用了不正确的方法处理——强制断电。最终的结果就是数据没有写入导致系统文件丢失。 于是我不得不重装一遍我的Arch，刚刚才写完Arch的配置篇没想到就用上了，但发现其实远远不够，许多配置根本想不起来了，所以谨以此文记录我的Arch重生之路的配置，以免下次又发生这样的惨剧。(系统更新后那一次非正常关机的问题仍无法解决，不过只存">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s1.ax1x.com/2022/06/27/jE65Y6.png">
+<meta property="article:published_time" content="2022-02-27T07:34:05.000Z">
+<meta property="article:modified_time" content="2022-02-27T07:34:05.000Z">
+<meta property="article:author" content="Zephyr Heather">
+<meta property="article:tag" content="Arch Linux">
+<meta property="article:tag" content="Linux配置">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s1.ax1x.com/2022/06/27/jE65Y6.png"><script>(function() {
+  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+  const setting = localStorage.getItem('darken-mode') || 'auto'
+  if (setting === 'dark' || (prefersDark && setting !== 'light'))
+    document.documentElement.classList.toggle('dark', true)
+})()</script></head><body><script src="https://code.iconify.design/2/2.1.1/iconify.min.js"></script><script>// Define global variable
+IconifyProviders = {
+  // Empty prefix: overwrite default API provider configuration
+  '': {
+    // Use custom API first, use Iconify public API as backup
+    resources: [
+        'https://api.iconify.design',
+    ],
+    // Wait for 1 second before switching API hosts
+    rotate: 1000,
+  },
+};</script><script defer src="https://fastly.jsdelivr.net/npm/animejs@latest"></script><script defer src="/js/ui/fireworks.js" type="module"></script><canvas class="fireworks"></canvas><div class="container"><a class="sidebar-toggle hty-icon-button" id="menu-btn"><div class="hamburger hamburger--spin" type="button"><span class="hamburger-box"><span class="hamburger-inner"></span></span></div></a><div class="sidebar-toggle sidebar-overlay"></div><aside class="sidebar"><script src="/js/sidebar.js" type="module"></script><ul class="sidebar-nav"><li class="sidebar-nav-item sidebar-nav-toc hty-icon-button sidebar-nav-active" data-target="post-toc-wrap" title="文章目录"><span class="icon iconify" data-icon="ri:list-ordered"></span></li><li class="sidebar-nav-item sidebar-nav-overview hty-icon-button" data-target="site-overview-wrap" title="站点概览"><span class="icon iconify" data-icon="ri:passport-line"></span></li></ul><div class="sidebar-panel" id="site-overview-wrap"><div class="site-info fix-top"><a class="site-author-avatar" href="/about/" title="Zephyr Heather"><img width="96" loading="lazy" src="/zephyr.jpg" alt="Zephyr Heather"></a><div class="site-author-name"><a href="/about/">Zephyr Heather</a></div><a class="site-name" href="/about/site.html">Zephyr's Blog</a><sub class="site-subtitle"></sub><div class="site-description"></div></div><nav class="site-state"><a class="site-state-item hty-icon-button icon-home" href="/" title="首页"><span class="site-state-item-icon"><span class="icon iconify" data-icon="ri:home-4-line"></span></span></a><div class="site-state-item"><a href="/archives/" title="归档"><span class="site-state-item-icon"><span class="icon iconify" data-icon="ri:archive-line"></span></span><span class="site-state-item-count">14</span></a></div><div class="site-state-item"><a href="/categories/" title="分类"><span class="site-state-item-icon"><span class="icon iconify" data-icon="ri:folder-2-line"></span></span><span class="site-state-item-count">3</span></a></div><div class="site-state-item"><a href="/tags/" title="标签"><span class="site-state-item-icon"><span class="icon iconify" data-icon="ri:price-tag-3-line"></span></span><span class="site-state-item-count">9</span></a></div><a class="site-state-item hty-icon-button" href="/null" title="在建中"><span class="site-state-item-icon"><span class="icon iconify" data-icon="ri:settings-line"></span></span></a></nav><hr style="margin-bottom:0.5rem"><div class="links-of-author"><a class="links-of-author-item hty-icon-button" rel="noopener" href="/atom.xml" title="RSS" target="_blank" style="color:orange"><span class="icon iconify" data-icon="ri:rss-line"></span></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://github.com/ZephyrHeather" title="GitHub" target="_blank" style="color:#6e5494"><span class="icon iconify" data-icon="ri:github-line"></span></a></div><hr style="margin:0.5rem 1rem"><div class="links"><a class="links-item hty-icon-button" href="/links/" title="我的小伙伴们" style="color:dodgerblue"><span class="icon iconify" data-icon="ri:genderless-line"></span></a></div><br><a class="links-item hty-icon-button" id="toggle-mode-btn" href="javascript:;" title="Mode" style="color: #f1cb64"><span class="icon iconify" data-icon="ri:contrast-2-line"></span></a></div><div class="sidebar-panel sidebar-panel-active" id="post-toc-wrap"><div class="post-toc"><div class="post-toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E5%B1%82%E9%9D%A2"><span class="toc-number">1.</span> <span class="toc-text">系统层面</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#The-initial-ramdisk"><span class="toc-number">1.1.</span> <span class="toc-text">The initial ramdisk</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Pacman"><span class="toc-number">1.2.</span> <span class="toc-text">Pacman</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#mirrorlist"><span class="toc-number">1.2.1.</span> <span class="toc-text">mirrorlist</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#conf"><span class="toc-number">1.2.2.</span> <span class="toc-text">conf</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Shell"><span class="toc-number">1.3.</span> <span class="toc-text">Shell</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#zsh"><span class="toc-number">1.3.1.</span> <span class="toc-text">zsh</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#zsh%E6%8F%92%E4%BB%B6%EF%BC%9A"><span class="toc-number">1.3.2.</span> <span class="toc-text">zsh插件：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%A8%E6%88%B7%E6%9D%83%E9%99%90"><span class="toc-number">1.4.</span> <span class="toc-text">用户权限</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sudo"><span class="toc-number">1.4.1.</span> <span class="toc-text">sudo</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#polkit"><span class="toc-number">1.4.2.</span> <span class="toc-text">polkit</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#grub"><span class="toc-number">1.5.</span> <span class="toc-text">grub</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%A1%8C%E9%9D%A2%E7%8E%AF%E5%A2%83-i3wm"><span class="toc-number">2.</span> <span class="toc-text">桌面环境(i3wm)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8"><span class="toc-number">2.1.</span> <span class="toc-text">启动</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Terminal"><span class="toc-number">2.2.</span> <span class="toc-text">Terminal</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE"><span class="toc-number">2.2.1.</span> <span class="toc-text">配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%97%E4%BD%93"><span class="toc-number">2.2.2.</span> <span class="toc-text">字体</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#dmenu"><span class="toc-number">2.3.</span> <span class="toc-text">dmenu</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#i3-gaps"><span class="toc-number">2.4.</span> <span class="toc-text">i3-gaps</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%90%AF%E5%8A%A8"><span class="toc-number">2.4.1.</span> <span class="toc-text">自启动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BF%AB%E6%8D%B7%E9%94%AE"><span class="toc-number">2.4.2.</span> <span class="toc-text">快捷键</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AA%97%E5%8F%A3%E6%A0%B7%E5%BC%8F"><span class="toc-number">2.4.3.</span> <span class="toc-text">窗口样式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#fcitx5"><span class="toc-number">2.5.</span> <span class="toc-text">fcitx5</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E9%85%8D%E7%BD%AE"><span class="toc-number">2.5.1.</span> <span class="toc-text">基本配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%8D%E5%BA%93"><span class="toc-number">2.5.2.</span> <span class="toc-text">词库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E9%A2%98"><span class="toc-number">2.5.3.</span> <span class="toc-text">主题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%81%94%E7%BD%91"><span class="toc-number">2.6.</span> <span class="toc-text">联网</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A3%B0%E9%9F%B3"><span class="toc-number">2.7.</span> <span class="toc-text">声音</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#alsa-Advanced-Linux-Sound-Architecture"><span class="toc-number">2.7.1.</span> <span class="toc-text">alsa(Advanced Linux Sound Architecture)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#dmix%E6%B7%B7%E9%9F%B3"><span class="toc-number">2.7.2.</span> <span class="toc-text">dmix混音</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#polybar"><span class="toc-number">2.8.</span> <span class="toc-text">polybar</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8-1"><span class="toc-number">2.8.1.</span> <span class="toc-text">启动</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE-1"><span class="toc-number">2.8.2.</span> <span class="toc-text">配置</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AD%97%E4%BD%93-1"><span class="toc-number">2.8.2.1.</span> <span class="toc-text">字体</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%94%AE%E7%9B%98%E6%8F%90%E7%A4%BA"><span class="toc-number">2.8.2.2.</span> <span class="toc-text">键盘提示</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%B0%83%E8%8A%82%E4%BA%AE%E5%BA%A6"><span class="toc-number">2.8.2.3.</span> <span class="toc-text">调节亮度</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#CPU%E7%BB%84%E4%BB%B6"><span class="toc-number">2.8.2.4.</span> <span class="toc-text">CPU组件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E7%BB%84%E4%BB%B6"><span class="toc-number">2.8.2.5.</span> <span class="toc-text">内存组件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A5%E6%9C%9F%E6%97%B6%E9%97%B4"><span class="toc-number">2.8.2.6.</span> <span class="toc-text">日期时间</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A3%B0%E9%9F%B3-1"><span class="toc-number">2.8.2.7.</span> <span class="toc-text">声音</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%94%B5%E6%BA%90"><span class="toc-number">2.8.2.8.</span> <span class="toc-text">电源</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%88%AA%E5%9B%BE"><span class="toc-number">2.9.</span> <span class="toc-text">截图</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Ranger"><span class="toc-number">2.10.</span> <span class="toc-text">Ranger</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E5%A0%86%E6%9D%82%E4%B8%83%E6%9D%82%E5%85%AB%E7%9A%84%E8%BD%AF%E4%BB%B6-%E6%97%A0%E9%9C%80%E9%85%8D%E7%BD%AE"><span class="toc-number">2.11.</span> <span class="toc-text">一堆杂七杂八的软件(无需配置)</span></a></li></ol></li></ol></div></div></div></aside><main class="sidebar-translate" id="content"><div id="post"><article class="hty-card post-block" itemscope itemtype="https://schema.org/Article" style="--smc-primary:#0078E7;"><link itemprop="mainEntityOfPage" href="http://zephyrheather.github.io/posts/14643401/"><span hidden itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="Zephyr Heather"><meta itemprop="description"></span><span hidden itemprop="publisher" itemscope itemtype="https://schema.org/Organization"><meta itemprop="name" content="Zephyr's Blog"></span><header class="post-header"><h1 class="post-title" itemprop="name headline">NirvanaArch的配置</h1><div class="post-meta"><div class="post-time" style="display:block"><span class="post-meta-item-icon"><span class="icon iconify" data-icon="ri:calendar-line"></span></span> <time title="创建时间：2022-02-27 15:34:05" itemprop="dateCreated datePublished" datetime="2022-02-27T15:34:05+08:00">2022-02-27</time></div><span class="post-count"><span class="post-symbolcount"><span class="post-meta-item-icon" title="本文字数"><span class="icon iconify" data-icon="ri:file-word-line"></span></span> <span title="本文字数">3.4k</span><span class="post-meta-divider">-</span><span class="post-meta-item-icon" title="阅读时长"><span class="icon iconify" data-icon="ri:timer-line"></span></span> <span title="阅读时长">15m</span></span></span><span class="leancloud_visitors" id="/posts/14643401/" data-flag-title="NirvanaArch的配置"><span class="post-meta-divider">-</span><span class="post-meta-item-icon" title="阅读次数"><span class="icon iconify" data-icon="ri:eye-line"></span> <span class="leancloud-visitors-count"></span></span></span><span class="post-meta-divider">-</span><a href="#comment"><span class="post-meta-item-icon" title="评论数"><span class="icon iconify" data-icon="ri:chat-3-line"></span> <span class="waline-comment-count" id="/posts/14643401/"></span></span></a><div class="post-classify"><span class="post-category"> <span class="post-meta-item-icon" style="margin-right:3px;"><span class="icon iconify" data-icon="ri:folder-line"></span></span><span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a class="category-item" href="/categories/GNU-Linux/" style="--text-color:var(--hty-text-color)" itemprop="url" rel="index"><span itemprop="text">GNU/Linux</span></a></span></span><span class="post-tag"><span class="post-meta-divider">-</span><a class="tag-item" href="/tags/Arch-Linux/" style="--text-color:var(--hty-text-color)"><span class="post-meta-item-icon"><span class="icon iconify" data-icon="ri:price-tag-3-line"></span></span><span class="tag-name">Arch Linux</span></a><a class="tag-item" href="/tags/Linux%E9%85%8D%E7%BD%AE/" style="--text-color:var(--hty-text-color)"><span class="post-meta-item-icon"><span class="icon iconify" data-icon="ri:price-tag-3-line"></span></span><span class="tag-name">Linux配置</span></a></span></div></div></header><section class="post-body" itemprop="articleBody"><div class="post-content markdown-body"><p>这是一次惨痛的经历，我的Arch在更新之后之后出现了无法关机的问题，并且我采用了不正确的方法处理——强制断电。最终的结果就是数据没有写入导致系统文件丢失。</p>
+<p>于是我不得不重装一遍我的Arch，刚刚才写完Arch的配置篇没想到就用上了，但发现其实远远不够，许多配置根本想不起来了，所以谨以此文记录我的Arch重生之路的配置，以免下次又发生这样的惨剧。(系统更新后那一次非正常关机的问题仍无法解决，不过只存在在我的Arch上，大家不用担心)</p>
+<p>下面描述一下重新配置的经过。(同样，下面引文不加说明均来自<a target="_blank" rel="noopener" href="https://wiki.archlinux.org/">ArchWiki</a>)</p>
+<h1 id="系统层面"><a href="#系统层面" class="headerlink" title="系统层面"></a>系统层面</h1><h2 id="The-initial-ramdisk"><a href="#The-initial-ramdisk" class="headerlink" title="The initial ramdisk"></a>The initial ramdisk</h2><blockquote>
+<p>初始内存盘本质上是一个很小的运行环境（早期用户空间），用于加载一些核心模块，并在 init  接管启动过程之前做必要的准备。有了这个环境，才能支持加密根文件系统、RAID上的根文件系统等高级功能。mkinicpio  支持自定义的钩子扩展、运行时自动检测以及其他功能。</p>
+</blockquote>
+<center>/etc/mkinitcpio.conf有关HOOK的修改</center>
+
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token assign-left variable">HOOKS</span><span class="token operator">=</span><span class="token punctuation">(</span>base udev block keyboard autodetect modconf filesystems <span class="token function">fsck</span><span class="token punctuation">)</span></code></pre>
+
+<h2 id="Pacman"><a href="#Pacman" class="headerlink" title="Pacman"></a>Pacman</h2><h3 id="mirrorlist"><a href="#mirrorlist" class="headerlink" title="mirrorlist"></a>mirrorlist</h3><center>/etc/pacman.d/mirrorlist 保留源</center>
+
+<pre class="language-bash" data-language="bash"><code class="language-bash">Server <span class="token operator">=</span> https://mirrors.bfsu.edu.cn/archlinux/<span class="token variable">$repo</span>/os/<span class="token variable">$arch</span>
+Server <span class="token operator">=</span> http://mirrors.bfsu.edu.cn/archlinux/<span class="token variable">$repo</span>/os/<span class="token variable">$arch</span></code></pre>
+
+<h3 id="conf"><a href="#conf" class="headerlink" title="conf"></a>conf</h3><center>/etc/pacman.conf中的增加和修改</center>
+
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># Misc options</span>
+<span class="token comment">#UseSyslog</span>
+Color
+ILoveCandy
+<span class="token comment">#NoProgressBar</span>
+CheckSpace
+<span class="token comment">#VerbosePkgLists</span>
+<span class="token comment">#ParallelDownloads = 5</span>
+
+<span class="token comment"># 末尾加上archlinuxcn的源</span>
+<span class="token punctuation">[</span>archlinuxcn<span class="token punctuation">]</span>
+SigLevel <span class="token operator">=</span> Never
+Server <span class="token operator">=</span> https://mirrors.ustc.edu.cn/archlinuxcn/<span class="token variable">$arch</span></code></pre>
+
+<p><strong>注意：之前不知道，所以也没有提醒，<code>pacman -Sc</code>命令可以删除已下载的旧的软件包的下载文件，建议每次升级Arch之后运行，<code>pacman -Scc</code>是清除所有已下载的软件包的下载文件</strong></p>
+<h2 id="Shell"><a href="#Shell" class="headerlink" title="Shell"></a>Shell</h2><h3 id="zsh"><a href="#zsh" class="headerlink" title="zsh"></a>zsh</h3><p>使用zsh作为默认shell: <code>pacman -S zsh</code>, 使用<code>oh-my-zsh</code>作为管理</p>
+<p><a target="_blank" rel="noopener" href="https://ohmyz.sh/">oh-my-zsh</a>提供了两种安装方法：</p>
+<center>Install oh-my-zsh via curl</center>
+
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">sh</span> -c <span class="token string">"<span class="token variable"><span class="token variable">$(</span><span class="token function">curl</span> -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh<span class="token variable">)</span></span>"</span></code></pre>
+
+<center>Install oh-my-zsh via wget</center>
+
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">sh</span> -c <span class="token string">"<span class="token variable"><span class="token variable">$(</span><span class="token function">wget</span> https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -<span class="token variable">)</span></span>"</span></code></pre>
+
+<p>但是raw.github对我不是很友好，所以我采用的手动安装了，先找到gitee的<a target="_blank" rel="noopener" href="https://gitee.com/mirrors/oh-my-zsh">oh-my-zsh</a></p>
+<p>在用户home目录</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">git</span> clone https://gitee.com/mirrors/oh-my-zsh.git ~/.oh-my-zsh</code></pre>
+
+<p>复制提供的模板来创建新的 zsh 配置文件</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">cp</span> ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc</code></pre>
+
+<p>手动安装需要自己修改用户的shell为zsh, 使用<code>chsh</code>命令：</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash">chsh -l		<span class="token comment"># 查看有哪些shell</span>
+chsh -s /bin/zsh 	<span class="token comment"># 切换到zsh</span>
+<span class="token builtin class-name">source</span> ~/.zshrc		<span class="token comment"># 读取zshrc的配置，可能需要重新登录用户才能起效</span></code></pre>
+
+<h3 id="zsh插件："><a href="#zsh插件：" class="headerlink" title="zsh插件："></a>zsh插件：</h3><ul>
+<li><p>zsh-autosuggestions命令自动补全插件</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">git</span> clone https://github.com/zsh-users/zsh-autosuggestions <span class="token variable">$&#123;ZSH_CUSTOM<span class="token operator">:-</span>~<span class="token operator">/</span>.oh-my-zsh<span class="token operator">/</span>custom&#125;</span>/plugins/zsh-autosuggestions</code></pre>
+
+
+</li>
+<li><p>zsh-syntax-highlighting高亮显示常用命令</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">git</span> clone https://github.com/zsh-users/zsh-syntax-highlighting.git <span class="token variable">$&#123;ZSH_CUSTOM<span class="token operator">:-</span>~<span class="token operator">/</span>.oh-my-zsh<span class="token operator">/</span>custom&#125;</span>/plugins/zsh-syntax-highlighting</code></pre></li>
+</ul>
+<p>在<code>~/.zshrc</code>中启用插件：</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token assign-left variable">plugins</span><span class="token operator">=</span><span class="token punctuation">(</span>git <span class="token function">sudo</span> zsh-syntax-highlighting zsh-autosuggestions z<span class="token punctuation">)</span></code></pre>
+
+<p>其中sudo是连续按两下<code>Esc</code>键在命令前加上<code>sudo</code>，<code>z</code>是快速目录跳转</p>
+<h2 id="用户权限"><a href="#用户权限" class="headerlink" title="用户权限"></a>用户权限</h2><h3 id="sudo"><a href="#sudo" class="headerlink" title="sudo"></a>sudo</h3><p>增加<code>sudo</code>权限的正确方法是使用<code>visudo</code></p>
+<blockquote>
+<p>sudo的配置文件是<code>/etc/sudoers</code>。<code>visudo</code>会锁住<code>sudoers</code>文件，保存修改到临时文件，然后检查文件格式，确保正确后才会覆盖<code>sudoers</code>文件。必须保证<code>sudoers</code>格式正确，否则sudo将无法运行。</p>
+</blockquote>
+<p>简单来说，使用<code>visudo</code>就是在文件保存是会检查文件格式</p>
+<blockquote>
+<p><code>visudo</code>调用的默认编辑器是<code>vi</code>。官方仓库里的 sudo 编译时开启了<code>--with-env-editor</code>，会采用环境变量 <code>VISUAL</code> 和 <code>EDITOR</code>的设置。如果设置了<code>VISUAL</code> 就不会使用<code>EDITOR</code>。</p>
+<p>如果要临时使用其他编辑器，在该命令前加上<code>EDITOR</code>环境变量即可。例如，要使用 <code>nano</code>，用root运行以下命令：</p>
+</blockquote>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token assign-left variable">EDITOR</span><span class="token operator">=</span>vim visudo</code></pre>
+
+<center>/etc/sudoers</center>
+
+<pre class="language-bash" data-language="bash"><code class="language-bash">%wheel      <span class="token assign-left variable">ALL</span><span class="token operator">=</span><span class="token punctuation">(</span>ALL<span class="token punctuation">)</span> NOPASSWD: ALL 	<span class="token comment"># 去掉其注释，是wheel组的用户有sudo权限</span></code></pre>
+
+<h3 id="polkit"><a href="#polkit" class="headerlink" title="polkit"></a>polkit</h3><blockquote>
+<p>Polkit 在系统层级进行权限控制，提供了一个低优先级进程和高优先级进程进行通讯的系统。和 sudo 等程序不同，Polkit 并没有赋予进程完全的 root 权限，而是通过一个集中的策略系统进行更精细的授权。</p>
+</blockquote>
+<p>我们在刚安装好Arch的时候，关机需要<code>sudo poweroff</code>，但是用了一会之后就发现突然不用<code>sudo</code>了，因为图形化环境<a target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/Cinnamon">Cinnamon</a>、<a target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/Deepin">Deepin</a>、<a target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/GNOME">GNOME</a>、<a target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/GNOME_Flashback">GNOME Flashback</a>、<a target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/KDE">KDE</a>、<a target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/LXDE">LXDE</a>、<a target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/LXQt">LXQt</a>、<a target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/MATE">MATE</a>、theShell 和 <a target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/Xfce">Xfce</a> 各自都已有认证组件——也就是对于的polkit。</p>
+<p>但是，我这次只使用i3wm作为桌面环境，所以需要<code>pacman -S polkit</code>以获取权限(包括在图形化界面使用NetworkManager的权限)</p>
+<h2 id="grub"><a href="#grub" class="headerlink" title="grub"></a>grub</h2><p>取消grub默认的静默启动和关机，便于出现问题时捕获。找到下面这一行，去掉quiet参数</p>
+<center>/etc/default/grub </center>
+
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token assign-left variable">GRUB_CMDLINE_LINUX_DEFAULT</span><span class="token operator">=</span><span class="token string">"loglevel=3"</span></code></pre>
+
+<p>重新生成grub.cfg</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">grub-mkconfig</span> -o /boot/grub/grub.cfg</code></pre>
+
+<h1 id="桌面环境-i3wm"><a href="#桌面环境-i3wm" class="headerlink" title="桌面环境(i3wm)"></a>桌面环境(i3wm)</h1><h2 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h2><pre class="language-bash" data-language="bash"><code class="language-bash">pacman -S xorg-server xorg-xinit i3-gaps	<span class="token comment"># xorg-xinit使用xinit启动i3</span></code></pre>
+
+<p>在<code>~/.xinitrc</code>的最后改成<code>exec i3</code></p>
+<h2 id="Terminal"><a href="#Terminal" class="headerlink" title="Terminal"></a>Terminal</h2><p>xfce4-terminal属于i3可自动识别的终端模拟器之一，也是xfce4的默认终端模拟器，轻量快速。同时在刚进入i3wm的时候第一个需求就是打开终端使用编辑器来编辑i3的config</p>
+<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><p>禁用滚动条(平常不用，看着难受)，透明背景0.7透明度</p>
+<h3 id="字体"><a href="#字体" class="headerlink" title="字体"></a>字体</h3><p>在终端使用<code>FreeMono Regular 15</code>，中文字体只安装霞鹜文楷(比微软雅黑好看)</p>
+<h2 id="dmenu"><a href="#dmenu" class="headerlink" title="dmenu"></a>dmenu</h2><p>dmenu是i3的默认的快速、轻量级的软件启动器，使用它来打开图形界面的应用</p>
+<h2 id="i3-gaps"><a href="#i3-gaps" class="headerlink" title="i3-gaps"></a>i3-gaps</h2><p>i3-gaps是i3wm的一个可调节窗口间隙的变种。</p>
+<p>我的部分配置如下：</p>
+<h3 id="自启动"><a href="#自启动" class="headerlink" title="自启动"></a>自启动</h3><pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># Start fcitx5</span>
+<span class="token builtin class-name">exec</span> --no-startup-id fcitx5		<span class="token comment"># 启动i3的时候fcitx5自启动</span>
+
+<span class="token comment"># Start ploybar</span>
+exec_always --no-startup-id <span class="token environment constant">$HOME</span>/.config/polybar/launch.sh		<span class="token comment"># 启动i3的时候polybar自启动(同时要注释掉i3config最后面的i3status)</span>
+
+<span class="token comment"># Start picom</span>
+<span class="token builtin class-name">exec</span> --no-startup-id picom -b		<span class="token comment"># 启动i3的时候picom自启动以支持窗口透明</span>
+
+<span class="token comment"># Start feh to use wallpaper</span>
+<span class="token builtin class-name">exec</span> --no-startup-id feh --bg-fill <span class="token environment constant">$HOME</span>/Pictures/Wallpaper/1.jpg		<span class="token comment"># 启动i3的时候feh启动壁纸，这里我只用了一张壁纸，并且用fill的方式填充</span>
+</code></pre>
+
+<h3 id="快捷键"><a href="#快捷键" class="headerlink" title="快捷键"></a>快捷键</h3><pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># start web browsers in private mod</span>
+bindsym <span class="token variable">$mod</span>+Shift+p <span class="token builtin class-name">exec</span> firefox --private		<span class="token comment"># 设置firefox隐私模式的快捷键，其他应用可以之间用dmenu打开，使用firefox的private可以减少cache的产生</span>
+
+<span class="token comment"># use maim to capture screen and save to $HOME/Pictures/Screenshot</span>
+<span class="token comment"># $(date +%s)格式不能错</span>
+<span class="token comment"># sreenshot the current active window</span>
+bindsym <span class="token variable">$mod</span>+i <span class="token builtin class-name">exec</span> maim -i <span class="token variable"><span class="token variable">$(</span>xdotool getactivewindow<span class="token variable">)</span></span> <span class="token environment constant">$HOME</span>/Pictures/Screenshot/<span class="token variable"><span class="token variable">$(</span><span class="token function">date</span> +%s<span class="token variable">)</span></span>.png		<span class="token comment"># 截取当前活动窗口</span>
+<span class="token comment"># screenshot the full screen</span>
+bindsym <span class="token variable">$mod</span>+Print <span class="token builtin class-name">exec</span> maim <span class="token environment constant">$HOME</span>/Pictures/Screenshot/<span class="token variable"><span class="token variable">$(</span><span class="token function">date</span> +%s<span class="token variable">)</span></span>.png		<span class="token comment"># 全屏截图</span>
+<span class="token comment"># screenshot a selected aera</span>
+bindsym <span class="token variable">$mod</span>+Shift+Print <span class="token builtin class-name">exec</span> maim -s <span class="token environment constant">$HOME</span>/Pictures/Screenshot/<span class="token variable"><span class="token variable">$(</span><span class="token function">date</span> +%s<span class="token variable">)</span></span>.png		<span class="token comment"># 自己选取截图区域</span>
+</code></pre>
+
+<h3 id="窗口样式"><a href="#窗口样式" class="headerlink" title="窗口样式"></a>窗口样式</h3><pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># design windows</span>
+default_border none		<span class="token comment"># 设置窗口没有边框</span>
+default_floating_border normal		<span class="token comment"># 浮动窗口边框正常</span>
+hide_edge_borders both		<span class="token comment"># 隐藏与屏幕边缘相邻的边框(其实已经没有边框了，上面是none)</span>
+
+gaps inner <span class="token number">9</span>		<span class="token comment"># 窗口之间的间距</span>
+gaps outer <span class="token number">3</span>		<span class="token comment"># 窗口与上下栏的距离(outer + inner)，如果outer设置为0,间距就和窗口之间一样</span>
+
+<span class="token comment"># 注意以下语法已经不再建议，并且将来可能不再支持</span>
+new_window none
+new_float normal
+</code></pre>
+
+<h2 id="fcitx5"><a href="#fcitx5" class="headerlink" title="fcitx5"></a>fcitx5</h2><h3 id="基本配置"><a href="#基本配置" class="headerlink" title="基本配置"></a>基本配置</h3><p>使用fcitx5作为输入法框架</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash">pacman -S fcitx5-im fcitx5-chinese-addons		<span class="token comment"># fcitx5-chinese-addons为中文输入法的引擎</span></code></pre>
+
+<p>设置以下环境变量，并重新登录：</p>
+<center>~/.pam_environment</center>
+
+<pre class="language-bash" data-language="bash"><code class="language-bash">GTK_IM_MODULE <span class="token assign-left variable">DEFAULT</span><span class="token operator">=</span>fcitx
+QT_IM_MODULE  <span class="token assign-left variable">DEFAULT</span><span class="token operator">=</span>fcitx
+<span class="token environment constant">XMODIFIERS</span>    <span class="token assign-left variable">DEFAULT</span><span class="token operator">=</span><span class="token punctuation">\</span>@im<span class="token operator">=</span>fcitx
+INPUT_METHOD  <span class="token assign-left variable">DEFAULT</span><span class="token operator">=</span>fcitx
+SDL_IM_MODULE <span class="token assign-left variable">DEFAULT</span><span class="token operator">=</span>fcitx
+GLFW_IM_MODULE <span class="token assign-left variable">DEFAULT</span><span class="token operator">=</span>ibus</code></pre>
+
+<h3 id="词库"><a href="#词库" class="headerlink" title="词库"></a>词库</h3><p><code>pacman -S fcitx5-pinyin-zhwiki fcitx5-pinyin-moegirl</code>分别是中文维基和萌娘百科的词库</p>
+<h3 id="主题"><a href="#主题" class="headerlink" title="主题"></a>主题</h3><p>使用<a target="_blank" rel="noopener" href="https://github.com/fkxxyz/ssfconv">ssfconv</a>将搜狗的皮肤转换成fcitx5的</p>
+<p>然后自己调配色、位置、图片之类的</p>
+<h2 id="联网"><a href="#联网" class="headerlink" title="联网"></a>联网</h2><p>在学校还是图形界面联网方便(特别是校园网)</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash">pacman -S networkmanager network-manager-applet 	<span class="token comment"># 注意还要装polkit以获取权限</span></code></pre>
+
+<h2 id="声音"><a href="#声音" class="headerlink" title="声音"></a>声音</h2><h3 id="alsa-Advanced-Linux-Sound-Architecture"><a href="#alsa-Advanced-Linux-Sound-Architecture" class="headerlink" title="alsa(Advanced Linux Sound Architecture)"></a>alsa(Advanced Linux Sound Architecture)</h3><pre class="language-bash" data-language="bash"><code class="language-bash">pacman -S alsa-utils	<span class="token comment"># 里面有alsamixer和amixer等</span></code></pre>
+
+<h3 id="dmix混音"><a href="#dmix混音" class="headerlink" title="dmix混音"></a>dmix混音</h3><p>使用alsa的时候两个应用不能同时使用声音，所以需要开启dmix作为软件混音，在alsa的配置文件中加入</p>
+<center>~/.asoundrc</center>
+
+<pre class="language-bash" data-language="bash"><code class="language-bash">pcm.card0<span class="token punctuation">&#123;</span>
+    <span class="token builtin class-name">type</span> hw
+    card <span class="token number">0</span>
+<span class="token punctuation">&#125;</span>
+
+pcm.<span class="token operator">!</span>default<span class="token punctuation">&#123;</span>
+    <span class="token builtin class-name">type</span> plug
+    slave.pcm <span class="token string">"dmix"</span>
+<span class="token punctuation">&#125;</span>
+</code></pre>
+
+<h2 id="polybar"><a href="#polybar" class="headerlink" title="polybar"></a>polybar</h2><p>作为i3bar的替代品</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash">pacman -S polybar
+<span class="token function">install</span> -Dm644 /usr/share/doc/polybar/config <span class="token environment constant">$HOME</span>/.config/polybar/config	<span class="token comment"># 拷贝配置文件(也可以用cp)</span>
+</code></pre>
+
+<h3 id="启动-1"><a href="#启动-1" class="headerlink" title="启动"></a>启动</h3><center>~/.config/polybar/launch.sh</center>
+
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token shebang important">#!/usr/bin/env bash</span>
+
+<span class="token comment"># Terminate already running bar instances</span>
+<span class="token function">killall</span> -q polybar
+<span class="token comment"># If all your bars have ipc enabled, you can also use </span>
+<span class="token comment"># polybar-msg cmd quit</span>
+
+<span class="token comment"># Launch bar1 and bar2</span>
+<span class="token builtin class-name">echo</span> <span class="token string">"---"</span> <span class="token operator">|</span> <span class="token function">tee</span> -a /tmp/polybar1.log /tmp/polybar2.log
+polybar example <span class="token operator"><span class="token file-descriptor important">2</span>></span><span class="token file-descriptor important">&amp;1</span> <span class="token operator">|</span> <span class="token function">tee</span> -a /tmp/polybar1.log <span class="token operator">&amp;</span> disown
+<span class="token comment"># polybar bar2 2>&amp;1 | tee -a /tmp/polybar2.log &amp; disown</span>
+</code></pre>
+
+<p>添加可执行权限：<code>chmod +x ~/.config/polybar/launch.sh</code></p>
+<p>在i3的配置文件中加入<code>exec_always --no-startup-id $HOME/.config/polybar/launch.sh	</code></p>
+<h3 id="配置-1"><a href="#配置-1" class="headerlink" title="配置"></a>配置</h3><h4 id="字体-1"><a href="#字体-1" class="headerlink" title="字体"></a>字体</h4><pre class="language-ini" data-language="ini"><code class="language-ini"><span class="token key attr-name">font-0</span> <span class="token punctuation">=</span> <span class="token value attr-value">fixed:pixelsize=10;1</span>
+<span class="token key attr-name">font-1</span> <span class="token punctuation">=</span> <span class="token value attr-value">FontAwesome6FreeSolid:pixelsize=12;1</span>
+<span class="token key attr-name">font-2</span> <span class="token punctuation">=</span> <span class="token value attr-value">FontAwesome6Brands:pixelsize=8;1</span>
+</code></pre>
+
+<h4 id="键盘提示"><a href="#键盘提示" class="headerlink" title="键盘提示"></a>键盘提示</h4><pre class="language-ini" data-language="ini"><code class="language-ini"><span class="token comment">; ===键盘提示===</span>
+<span class="token comment">; https://github.com/polybar/polybar/wiki/Module:-xkeyboard</span>
+<span class="token section"><span class="token punctuation">[</span><span class="token section-name selector">module/xkeyboard</span><span class="token punctuation">]</span></span>
+<span class="token key attr-name">type</span> <span class="token punctuation">=</span> <span class="token value attr-value">internal/xkeyboard</span>
+
+
+<span class="token comment">; 忽略列表</span>
+<span class="token key attr-name">blacklist-0</span> <span class="token punctuation">=</span> <span class="token value attr-value">scroll lock</span>
+
+<span class="token comment">; &lt;label-indicator></span>
+<span class="token key attr-name">format</span> <span class="token punctuation">=</span> <span class="token value attr-value">&lt;label-layout> &lt;label-indicator></span>
+<span class="token key attr-name">format-spacing</span> <span class="token punctuation">=</span> <span class="token value attr-value">1</span>
+
+<span class="token key attr-name">label-layout</span> <span class="token punctuation">=</span> <span class="token value attr-value"></span>
+<span class="token key attr-name">label-layout-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#93b5cf</span>
+<span class="token key attr-name">label-indicator-on-capslock</span> <span class="token punctuation">=</span> <span class="token value attr-value"></span>
+<span class="token key attr-name">label-indicator-off-capslock</span> <span class="token punctuation">=</span>
+<span class="token comment">;label-indicator-on-numlock = 🅽</span>
+<span class="token comment">;label-indicator-off-numlock =</span>
+
+<span class="token key attr-name">label-indicator-on-capslock-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#ff5555</span>
+
+</code></pre>
+
+<h4 id="调节亮度"><a href="#调节亮度" class="headerlink" title="调节亮度"></a>调节亮度</h4><pre class="language-ini" data-language="ini"><code class="language-ini"><span class="token comment">; ===屏幕亮度===</span>
+<span class="token comment">; https://github.com/polybar/polybar/wiki/Module:-xbacklight</span>
+<span class="token section"><span class="token punctuation">[</span><span class="token section-name selector">module/backlight</span><span class="token punctuation">]</span></span>
+<span class="token key attr-name">type</span> <span class="token punctuation">=</span> <span class="token value attr-value">internal/backlight</span>
+
+<span class="token comment">; 使用命令查询到设备文件:</span>
+<span class="token comment">; ls -1 /sys/class/backlight/</span>
+<span class="token key attr-name">card</span> <span class="token punctuation">=</span> <span class="token value attr-value">intel_backlight</span>
+
+<span class="token comment">; 滚轮调节亮度</span>
+<span class="token comment">; see /etc/udev/rules.d/backlight.rules</span>
+<span class="token comment">; Default: false</span>
+<span class="token key attr-name">enable-scroll</span> <span class="token punctuation">=</span> <span class="token value attr-value">true</span>
+
+<span class="token key attr-name">format</span> <span class="token punctuation">=</span> <span class="token value attr-value">&lt;ramp> &lt;label></span>
+
+<span class="token key attr-name">label</span> <span class="token punctuation">=</span> <span class="token value attr-value">%percentage%%</span>
+
+<span class="token comment">; 用于 &lt;ramp></span>
+<span class="token key attr-name">ramp-0</span> <span class="token punctuation">=</span> <span class="token value attr-value"></span> 
+<span class="token key attr-name">ramp-1</span> <span class="token punctuation">=</span> <span class="token value attr-value"></span>
+<span class="token key attr-name">ramp-2</span> <span class="token punctuation">=</span> <span class="token value attr-value"></span> 
+<span class="token key attr-name">ramp-3</span> <span class="token punctuation">=</span> <span class="token value attr-value"></span>
+<span class="token key attr-name">ramp-4</span> <span class="token punctuation">=</span> <span class="token value attr-value"></span>
+
+<span class="token key attr-name">ramp-0-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#3d3b4f</span>
+<span class="token comment">; 用于 &lt;bar></span>
+<span class="token key attr-name">bar-width</span> <span class="token punctuation">=</span> <span class="token value attr-value">10</span>
+<span class="token key attr-name">bar-indicator</span> <span class="token punctuation">=</span> <span class="token value attr-value">|</span>
+<span class="token key attr-name">bar-fill</span> <span class="token punctuation">=</span> <span class="token value attr-value">-</span>
+<span class="token key attr-name">bar-empty</span> <span class="token punctuation">=</span> <span class="token value attr-value">-</span>
+</code></pre>
+
+<p>其中调节亮度需要用户权限，根据<a target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/Backlight">xblight</a>，在创建文件</p>
+<center>/etc/udev/rules.d/backlight.rules</center>
+
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token assign-left variable">RUN</span><span class="token operator">+=</span><span class="token string">"/bin/chgrp wheel /sys/class/backlight/intel_backlight/brightness"</span>
+<span class="token assign-left variable">RUN</span><span class="token operator">+=</span><span class="token string">"/bin/chmod g+w /sys/class/backlight/intel_backlight/brightness"</span>
+</code></pre>
+
+<h4 id="CPU组件"><a href="#CPU组件" class="headerlink" title="CPU组件"></a>CPU组件</h4><pre class="language-ini" data-language="ini"><code class="language-ini"><span class="token comment">; ===CPU===</span>
+<span class="token comment">; https://github.com/polybar/polybar/wiki/Module:-cpu</span>
+<span class="token section"><span class="token punctuation">[</span><span class="token section-name selector">module/cpu</span><span class="token punctuation">]</span></span>
+<span class="token key attr-name">type</span> <span class="token punctuation">=</span> <span class="token value attr-value">internal/cpu</span>
+
+<span class="token comment">; 刷新间隔，默认: 1</span>
+<span class="token key attr-name">interval</span> <span class="token punctuation">=</span> <span class="token value attr-value">0.5</span>
+
+<span class="token comment">;format = &lt;label> &lt;ramp-coreload></span>
+<span class="token key attr-name">format</span> <span class="token punctuation">=</span> <span class="token value attr-value">&lt;label></span>
+
+<span class="token key attr-name">label</span> <span class="token punctuation">=</span> <span class="token value attr-value"> %percentage%%</span>
+<span class="token key attr-name">label-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#2e4e7e</span>
+
+<span class="token comment">; Spacing between individual per-core ramps</span>
+<span class="token key attr-name">ramp-coreload-spacing</span> <span class="token punctuation">=</span> <span class="token value attr-value">1</span>
+<span class="token key attr-name">ramp-coreload-0</span> <span class="token punctuation">=</span> <span class="token value attr-value">▁</span>
+<span class="token key attr-name">ramp-coreload-1</span> <span class="token punctuation">=</span> <span class="token value attr-value">▂</span>
+<span class="token key attr-name">ramp-coreload-2</span> <span class="token punctuation">=</span> <span class="token value attr-value">▃</span>
+<span class="token key attr-name">ramp-coreload-3</span> <span class="token punctuation">=</span> <span class="token value attr-value">▄</span>
+<span class="token key attr-name">ramp-coreload-4</span> <span class="token punctuation">=</span> <span class="token value attr-value">▅</span>
+<span class="token key attr-name">ramp-coreload-5</span> <span class="token punctuation">=</span> <span class="token value attr-value">▆</span>
+<span class="token key attr-name">ramp-coreload-6</span> <span class="token punctuation">=</span> <span class="token value attr-value">▇</span>
+<span class="token key attr-name">ramp-coreload-7</span> <span class="token punctuation">=</span> <span class="token value attr-value">█</span>
+
+<span class="token key attr-name">ramp-coreload-0-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#aaff77</span>
+<span class="token key attr-name">ramp-coreload-1-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#aaff77</span>
+<span class="token key attr-name">ramp-coreload-2-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#aaff77</span>
+<span class="token key attr-name">ramp-coreload-3-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#aaff77</span>
+<span class="token key attr-name">ramp-coreload-4-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#fba922</span>
+<span class="token key attr-name">ramp-coreload-5-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#fba922</span>
+<span class="token key attr-name">ramp-coreload-6-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#ff5555</span>
+<span class="token key attr-name">ramp-coreload-7-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#ff5555</span>
+</code></pre>
+
+<h4 id="内存组件"><a href="#内存组件" class="headerlink" title="内存组件"></a>内存组件</h4><pre class="language-ini" data-language="ini"><code class="language-ini"><span class="token comment">; ===内存===</span>
+<span class="token comment">; https://github.com/polybar/polybar/wiki/Module:-memory</span>
+<span class="token section"><span class="token punctuation">[</span><span class="token section-name selector">module/memory</span><span class="token punctuation">]</span></span>
+<span class="token key attr-name">type</span> <span class="token punctuation">=</span> <span class="token value attr-value">internal/memory</span>
+
+<span class="token comment">; 刷新间隔，默认: 1</span>
+<span class="token key attr-name">interval</span> <span class="token punctuation">=</span> <span class="token value attr-value">3</span>
+
+<span class="token comment">;format = &lt;label> &lt;ramp-used> &lt;ramp-free></span>
+<span class="token key attr-name">format</span> <span class="token punctuation">=</span> <span class="token value attr-value">&lt;label></span>
+
+<span class="token key attr-name">label</span> <span class="token punctuation">=</span> <span class="token value attr-value"> %gb_used%/%gb_free%</span>
+<span class="token key attr-name">label-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#065279</span>
+
+<span class="token comment">; 用于 &lt;ramp-used></span>
+<span class="token key attr-name">ramp-used-0</span> <span class="token punctuation">=</span> <span class="token value attr-value">▁</span>
+<span class="token key attr-name">ramp-used-1</span> <span class="token punctuation">=</span> <span class="token value attr-value">▂</span>
+<span class="token key attr-name">ramp-used-2</span> <span class="token punctuation">=</span> <span class="token value attr-value">▃</span>
+<span class="token key attr-name">ramp-used-3</span> <span class="token punctuation">=</span> <span class="token value attr-value">▄</span>
+<span class="token key attr-name">ramp-used-4</span> <span class="token punctuation">=</span> <span class="token value attr-value">▅</span>
+<span class="token key attr-name">ramp-used-5</span> <span class="token punctuation">=</span> <span class="token value attr-value">▆</span>
+<span class="token key attr-name">ramp-used-6</span> <span class="token punctuation">=</span> <span class="token value attr-value">▇</span>
+<span class="token key attr-name">ramp-used-7</span> <span class="token punctuation">=</span> <span class="token value attr-value">█</span>
+
+<span class="token key attr-name">ramp-used-0-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#aaff77</span>
+<span class="token key attr-name">ramp-used-1-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#aaff77</span>
+<span class="token key attr-name">ramp-used-2-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#aaff77</span>
+<span class="token key attr-name">ramp-used-3-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#aaff77</span>
+<span class="token key attr-name">ramp-used-4-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#fba922</span>
+<span class="token key attr-name">ramp-used-5-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#fba922</span>
+<span class="token key attr-name">ramp-used-6-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#ff5555</span>
+<span class="token key attr-name">ramp-used-7-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#ff5555</span>
+
+<span class="token comment">; 用于 &lt;ramp-free></span>
+<span class="token key attr-name">ramp-free-0</span> <span class="token punctuation">=</span> <span class="token value attr-value">▁</span>
+<span class="token key attr-name">ramp-free-1</span> <span class="token punctuation">=</span> <span class="token value attr-value">▂</span>
+<span class="token key attr-name">ramp-free-2</span> <span class="token punctuation">=</span> <span class="token value attr-value">▃</span>
+<span class="token key attr-name">ramp-free-3</span> <span class="token punctuation">=</span> <span class="token value attr-value">▄</span>
+<span class="token key attr-name">ramp-free-4</span> <span class="token punctuation">=</span> <span class="token value attr-value">▅</span>
+<span class="token key attr-name">ramp-free-5</span> <span class="token punctuation">=</span> <span class="token value attr-value">▆</span>
+<span class="token key attr-name">ramp-free-6</span> <span class="token punctuation">=</span> <span class="token value attr-value">▇</span>
+<span class="token key attr-name">ramp-free-7</span> <span class="token punctuation">=</span> <span class="token value attr-value">█</span>
+
+<span class="token key attr-name">ramp-free-0-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#ff5555</span>
+<span class="token key attr-name">ramp-free-1-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#ff5555</span>
+<span class="token key attr-name">ramp-free-2-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#fba922</span>
+<span class="token key attr-name">ramp-free-3-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#fba922</span>
+<span class="token key attr-name">ramp-free-4-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#aaff77</span>
+<span class="token key attr-name">ramp-free-5-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#aaff77</span>
+<span class="token key attr-name">ramp-free-6-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#aaff77</span>
+<span class="token key attr-name">ramp-free-7-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#aaff77</span>
+</code></pre>
+
+<h4 id="日期时间"><a href="#日期时间" class="headerlink" title="日期时间"></a>日期时间</h4><pre class="language-ini" data-language="ini"><code class="language-ini"><span class="token comment">; ===日期时间===</span>
+<span class="token comment">; https://github.com/polybar/polybar/wiki/Module:-date</span>
+<span class="token section"><span class="token punctuation">[</span><span class="token section-name selector">module/date</span><span class="token punctuation">]</span></span>
+<span class="token key attr-name">type</span> <span class="token punctuation">=</span> <span class="token value attr-value">internal/date</span>
+
+<span class="token comment">; 更新间隔, 默认: 1.0</span>
+<span class="token key attr-name">interval</span> <span class="token punctuation">=</span> <span class="token value attr-value">1.0</span>
+<span class="token key attr-name">format</span> <span class="token punctuation">=</span> <span class="token value attr-value">&lt;label></span>
+
+<span class="token key attr-name">date</span> <span class="token punctuation">=</span> <span class="token value attr-value">%Y-%m-%d%</span>
+<span class="token key attr-name">time</span> <span class="token punctuation">=</span> <span class="token value attr-value">%H:%M</span>
+
+<span class="token comment">; 另一种格式</span>
+<span class="token key attr-name">date-alt</span> <span class="token punctuation">=</span> <span class="token value attr-value">%A, %d %B %Y</span>
+<span class="token key attr-name">time-alt</span> <span class="token punctuation">=</span> <span class="token value attr-value">%H:%M:%S</span>
+
+<span class="token key attr-name">label</span> <span class="token punctuation">=</span> <span class="token value attr-value"> %date%  %time%</span>
+<span class="token key attr-name">label-font</span> <span class="token punctuation">=</span> <span class="token value attr-value">1</span>
+<span class="token key attr-name">label-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#eefafafa</span>
+</code></pre>
+
+<h4 id="声音-1"><a href="#声音-1" class="headerlink" title="声音"></a>声音</h4><pre class="language-ini" data-language="ini"><code class="language-ini"><span class="token comment">; ===音量===</span>
+<span class="token comment">; https://github.com/polybar/polybar/wiki/Module:-pulseaudio</span>
+<span class="token section"><span class="token punctuation">[</span><span class="token section-name selector">module/alsa</span><span class="token punctuation">]</span></span>
+<span class="token key attr-name">type</span> <span class="token punctuation">=</span> <span class="token value attr-value">internal/alsa</span>
+<span class="token key attr-name">sink</span> <span class="token punctuation">=</span> <span class="token value attr-value">alsa_output.pci-0000_12_00.3.analog-stereo</span>
+<span class="token key attr-name">use-ui-max</span> <span class="token punctuation">=</span> <span class="token value attr-value">true</span>
+<span class="token key attr-name">interval</span> <span class="token punctuation">=</span> <span class="token value attr-value">5</span>
+
+<span class="token key attr-name">format-volume</span> <span class="token punctuation">=</span> <span class="token value attr-value">&lt;ramp-volume> &lt;label-volume></span>
+
+<span class="token key attr-name">label-muted</span> <span class="token punctuation">=</span> <span class="token value attr-value"></span>
+<span class="token key attr-name">label-muted-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#a1afc9</span>
+
+<span class="token key attr-name">ramp-volume-0</span> <span class="token punctuation">=</span> <span class="token value attr-value"></span>
+<span class="token key attr-name">ramp-volume-1</span> <span class="token punctuation">=</span> <span class="token value attr-value"></span>
+<span class="token key attr-name">ramp-volume-2</span> <span class="token punctuation">=</span> <span class="token value attr-value"></span>
+
+<span class="token comment">; 左右键功能，pavucontrol 用于开关音量</span>
+<span class="token key attr-name">click-left</span> <span class="token punctuation">=</span> <span class="token value attr-value">pavucontrol</span>
+<span class="token comment">; click-middle =</span>
+</code></pre>
+
+<h4 id="电源"><a href="#电源" class="headerlink" title="电源"></a>电源</h4><pre class="language-ini" data-language="ini"><code class="language-ini"><span class="token comment">; ===电源提示===</span>
+<span class="token comment">; https://github.com/polybar/polybar/wiki/Module:-battery</span>
+<span class="token section"><span class="token punctuation">[</span><span class="token section-name selector">module/battery</span><span class="token punctuation">]</span></span>
+<span class="token key attr-name">type</span> <span class="token punctuation">=</span> <span class="token value attr-value">internal/battery</span>
+
+<span class="token comment">; 电量大于 99% 显示充电完成</span>
+<span class="token key attr-name">full-at</span> <span class="token punctuation">=</span> <span class="token value attr-value">99</span>
+
+<span class="token comment">; 使用以下命令列出电池和适配器:</span>
+<span class="token comment">; ls -1 /sys/class/power_supply/</span>
+<span class="token key attr-name">battery</span> <span class="token punctuation">=</span> <span class="token value attr-value">BAT1</span>
+<span class="token key attr-name">adapter</span> <span class="token punctuation">=</span> <span class="token value attr-value">ACAD</span>
+
+<span class="token key attr-name">poll-interval</span> <span class="token punctuation">=</span> <span class="token value attr-value">3</span>
+
+<span class="token comment">; 时间过格式,默认: %H:%M:%S</span>
+<span class="token key attr-name">time-format</span> <span class="token punctuation">=</span> <span class="token value attr-value">%H:%M</span>
+
+<span class="token comment">; 充电</span>
+<span class="token key attr-name">format-charging</span> <span class="token punctuation">=</span> <span class="token value attr-value"> &lt;animation-charging> &lt;label-charging></span>
+
+<span class="token comment">; 放电</span>
+<span class="token key attr-name">format-discharging</span> <span class="token punctuation">=</span> <span class="token value attr-value">&lt;ramp-capacity> &lt;label-discharging></span>
+
+<span class="token comment">; 充电完成</span>
+<span class="token key attr-name">format-full</span> <span class="token punctuation">=</span> <span class="token value attr-value">&lt;label-full></span>
+
+<span class="token comment">; 充电状态</span>
+<span class="token key attr-name">label-charging</span> <span class="token punctuation">=</span>  <span class="token value attr-value">%percentage%(%time%)</span>
+
+
+<span class="token comment">; 放电状态</span>
+<span class="token key attr-name">label-discharging</span> <span class="token punctuation">=</span> <span class="token value attr-value">%percentage%(%time%)</span>
+
+<span class="token comment">;充电完成</span>
+<span class="token key attr-name">label-full</span> <span class="token punctuation">=</span> <span class="token value attr-value"> %percentage%</span>
+<span class="token key attr-name">label-full-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#aaff77</span>
+
+<span class="token key attr-name">ramp-capacity-0</span> <span class="token punctuation">=</span> <span class="token value attr-value"></span>
+<span class="token key attr-name">ramp-capacity-1</span> <span class="token punctuation">=</span> <span class="token value attr-value"></span>
+<span class="token key attr-name">ramp-capacity-2</span> <span class="token punctuation">=</span> <span class="token value attr-value"></span>
+<span class="token key attr-name">ramp-capacity-3</span> <span class="token punctuation">=</span> <span class="token value attr-value"></span>
+<span class="token key attr-name">ramp-capacity-4</span> <span class="token punctuation">=</span> <span class="token value attr-value"></span>
+
+<span class="token key attr-name">ramp-capacity-0-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#ff461f</span> 
+<span class="token key attr-name">ramp-capacity-1-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#eaff56</span> 
+<span class="token key attr-name">ramp-capacity-2-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#bddd22</span>
+<span class="token key attr-name">ramp-capacity-3-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#7bcfa6</span>
+<span class="token key attr-name">ramp-capacity-4-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#3de1ad</span>
+
+<span class="token key attr-name">bar-capacity-width</span> <span class="token punctuation">=</span> <span class="token value attr-value">10</span>
+
+<span class="token key attr-name">animation-charging-0</span> <span class="token punctuation">=</span> <span class="token value attr-value"></span>
+<span class="token key attr-name">animation-charging-1</span> <span class="token punctuation">=</span> <span class="token value attr-value"></span>
+<span class="token key attr-name">animation-charging-2</span> <span class="token punctuation">=</span> <span class="token value attr-value"></span>
+<span class="token key attr-name">animation-charging-3</span> <span class="token punctuation">=</span> <span class="token value attr-value"></span>
+<span class="token key attr-name">animation-charging-4</span> <span class="token punctuation">=</span> <span class="token value attr-value"></span>
+
+<span class="token key attr-name">animation-charging-0-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#ff461f</span> 
+<span class="token key attr-name">animation-charging-1-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#eaff56</span> 
+<span class="token key attr-name">animation-charging-2-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#bddd22</span>
+<span class="token key attr-name">animation-charging-3-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#7bcfa6</span>
+<span class="token key attr-name">animation-charging-4-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#3de1ad</span>
+<span class="token comment">; 动画帧率(毫秒)</span>
+<span class="token key attr-name">animation-charging-framerate</span> <span class="token punctuation">=</span> <span class="token value attr-value">750</span>
+
+<span class="token comment">;animation-discharging-0 = </span>
+<span class="token comment">;animation-discharging-1 = </span>
+<span class="token comment">;animation-discharging-2 = </span>
+<span class="token comment">;animation-discharging-3 = </span>
+<span class="token comment">;animation-discharging-4 = </span>
+<span class="token comment">; 动画帧率(毫秒)</span>
+<span class="token comment">;animation-discharging-framerate = 500</span>
+</code></pre>
+
+<h2 id="截图"><a href="#截图" class="headerlink" title="截图"></a>截图</h2><p>图形界面的截图工具太冗余了，所以使用<a target="_blank" rel="noopener" href="https://github.com/naelstrof/maim">maim</a>作为命令行截图工具，再加上i3的快捷键设置即可</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 其中$(date +%s)是自1970年以来经过的秒数，所以独一无二并且易排序，需要安装xdotool残能截取当前活动窗口</span>
+
+maim -i <span class="token variable"><span class="token variable">$(</span>xdotool getactivewindow<span class="token variable">)</span></span> <span class="token environment constant">$HOME</span>/Pictures/Screenshot/<span class="token variable"><span class="token variable">$(</span><span class="token function">date</span> +%s<span class="token variable">)</span></span>.png		<span class="token comment"># 截取当前活动窗口</span>
+
+maim <span class="token environment constant">$HOME</span>/Pictures/Screenshot/<span class="token variable"><span class="token variable">$(</span><span class="token function">date</span> +%s<span class="token variable">)</span></span>.png		<span class="token comment"># 全屏截图</span>
+
+maim -s <span class="token environment constant">$HOME</span>/Pictures/Screenshot/<span class="token variable"><span class="token variable">$(</span><span class="token function">date</span> +%s<span class="token variable">)</span></span>.png		<span class="token comment"># 自己选取截图区域</span></code></pre>
+
+<h2 id="Ranger"><a href="#Ranger" class="headerlink" title="Ranger"></a>Ranger</h2><p>首先运行<code>ranger --copy-config=all</code>生成配置文件</p>
+<p>编辑配置修改配色方案：</p>
+<center>~/.config/ranger/rc.conf</center>
+
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># Which colorscheme to use?  These colorschemes are available by default:</span>
+<span class="token comment"># default, jungle, snow, solarized</span>
+<span class="token builtin class-name">set</span> colorscheme solarized</code></pre>
+
+
+
+<h2 id="一堆杂七杂八的软件-无需配置"><a href="#一堆杂七杂八的软件-无需配置" class="headerlink" title="一堆杂七杂八的软件(无需配置)"></a>一堆杂七杂八的软件(无需配置)</h2><pre class="language-bash" data-language="bash"><code class="language-bash">ristretto		<span class="token comment"># 图片查看</span>
+vlc				 <span class="token comment"># 视频播放</span>
+firefox			<span class="token comment"># 浏览器</span>
+typora			<span class="token comment"># markdown编辑器，Linux下永久免费</span>
+pandoc			<span class="token comment"># 文件转换</span>
+netease-cloud-music		<span class="token comment"># 网易云</span>
+bat					<span class="token comment"># cat的替代品</span>
+thunar			<span class="token comment"># 文件管理器(虽然很少用)</span>
+neofetch		<span class="token comment"># 用来展示系统信息的</span>
+ncdu			<span class="token comment"># 磁盘空间查看</span>
+xclip				<span class="token comment"># 用来与剪切板交互</span>
+arch-install-scripts	<span class="token comment"># 用于安装arch</span></code></pre>
+
+<hr>
+<p>附上我的i3截图：</p>
+<p><img src="https://s1.ax1x.com/2022/06/27/jE65Y6.png" alt="i3" loading="lazy"><em>i3</em></p>
+</div></section><div id="reward-container"><span class="hty-icon-button button-glow" id="reward-button" title="打赏" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === &quot;none&quot;) ? &quot;block&quot; : &quot;none&quot;;"><span class="icon iconify" data-icon="ri:hand-coin-line"></span></span><div id="reward-comment">I'm so cute. Please give me money.</div><div id="qr" style="display:none;"><div style="display:inline-block"><a href="/alipay.jpg"><img loading="lazy" src="/alipay.jpg" alt="支付宝" title="支付宝"></a><div><span style="color:#00A3EE"><span class="icon iconify" data-icon="ri:alipay-line"></span></span></div></div><div style="display:inline-block"><a href="/wechatpay.jpg"><img loading="lazy" src="/wechatpay.jpg" alt="微信支付" title="微信支付"></a><div><span style="color:#2DC100"><span class="icon iconify" data-icon="ri:wechat-pay-line"></span></span></div></div></div></div><ul class="post-copyright"><li class="post-copyright-author"><strong>本文作者：</strong>Zephyr Heather</li><li class="post-copyright-link"><strong>本文链接：</strong><a href="http://zephyrheather.github.io/posts/14643401/" title="NirvanaArch的配置">http://zephyrheather.github.io/posts/14643401/</a></li><li class="post-copyright-license"><strong>版权声明：</strong>本博客所有文章除特别声明外，均默认采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener" title="CC BY-NC-SA 4.0 "><span class="icon iconify" data-icon="ri:creative-commons-line"></span><span class="icon iconify" data-icon="ri:creative-commons-by-line"></span><span class="icon iconify" data-icon="ri:creative-commons-nc-line"></span><span class="icon iconify" data-icon="ri:creative-commons-sa-line"></span></a> 许可协议。</li></ul></article><div class="post-nav"><div class="post-nav-item"><a class="post-nav-prev" href="/posts/c2cc92a9/" rel="prev" title="在分区上创建Arch启动盘"><span class="icon iconify" data-icon="ri:arrow-left-s-line"></span><span class="post-nav-text">在分区上创建Arch启动盘</span></a></div><div class="post-nav-item"><a class="post-nav-next" href="/posts/55b25ac5/" rel="next" title="Arch Linux USB(配置篇)"><span class="post-nav-text">Arch Linux USB(配置篇)</span><span class="icon iconify" data-icon="ri:arrow-right-s-line"></span></a></div></div></div><div class="hty-card" id="comment"><div id="waline"></div><link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/@waline/client@v2/dist/waline.css"><script>window.CONFIG.waline.config.path = "/posts/14643401/"</script><div class="js-Pjax"><script src="/js/comments/waline.js" type="module" defer></script></div></div></main><footer class="sidebar-translate" id="footer"><div class="copyright"><span>&copy; 2021 – 2022 </span><span class="with-love" id="animate"><span class="icon iconify" data-icon="ri:cloud-line"></span></span><span class="author"> Zephyr Heather</span></div><div class="powered"><span>由 <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> 驱动 v6.2.0</span><span class="footer-separator">|</span><span>主题 - <a rel="noopener" href="https://github.com/YunYouJun/hexo-theme-yun" target="_blank"><span>Yun</span></a> v1.10.4</span></div><div class="live-time"><span>本博客已萌萌哒地运行</span><span id="display_live_time"></span><span class="moe-text">(●'◡'●)</span><script>function blog_live_time() {
+  setTimeout(blog_live_time, 1000);
+  const start = new Date('2021-07-10T16:57:41');
+  const now = new Date();
+  const timeDiff = (now.getTime() - start.getTime());
+  const msPerMinute = 60 * 1000;
+  const msPerHour = 60 * msPerMinute;
+  const msPerDay = 24 * msPerHour;
+  const passDay = Math.floor(timeDiff / msPerDay);
+  const passHour = Math.floor((timeDiff % msPerDay) / 60 / 60 / 1000);
+  const passMinute = Math.floor((timeDiff % msPerHour) / 60 / 1000);
+  const passSecond = Math.floor((timeDiff % msPerMinute) / 1000);
+  display_live_time.innerHTML = ` ${passDay} 天 ${passHour} 小时 ${passMinute} 分 ${passSecond} 秒`;
+}
+blog_live_time();
+</script></div></footer></div><a class="hty-icon-button" id="back-to-top" aria-label="back-to-top" href="#"><span class="icon iconify" data-icon="ri:arrow-up-s-line"></span><svg class="progress-circle-container" viewBox="0 0 100 100"><circle class="progress-circle" id="progressCircle" cx="50" cy="50" r="48" fill="none" stroke="#0078E7" stroke-width="2" stroke-linecap="round"></circle></svg></a><a class="popup-trigger hty-icon-button icon-search" id="search" href="javascript:;" title="搜索"><span class="site-state-item-icon"><span class="icon iconify" data-icon="ri:search-line"></span></span></a><script>window.addEventListener("DOMContentLoaded", () => {
+  // Handle and trigger popup window
+  document.querySelector(".popup-trigger").addEventListener("click", () => {
+    document.querySelector(".popup").classList.add("show");
+    setTimeout(() => {
+      document.querySelector(".search-input").focus();
+    }, 100);
+  });
+
+  // Monitor main search box
+  const onPopupClose = () => {
+    document.querySelector(".popup").classList.remove("show");
+  };
+
+  document.querySelector(".popup-btn-close").addEventListener("click", () => {
+    onPopupClose();
+  });
+
+  window.addEventListener("keyup", event => {
+    if (event.key === "Escape") {
+      onPopupClose();
+    }
+  });
+});
+</script><script src="https://fastly.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js"></script><script src="/js/search/local-search.js" defer type="module"></script><div class="popup search-popup"><div class="search-header"><span class="popup-btn-close close-icon hty-icon-button"><span class="icon iconify" data-icon="ri:close-line"></span></span></div><div class="search-input-container"><input class="search-input" id="local-search-input" type="text" placeholder="搜索..." value=""></div><div class="search-result-container"></div></div><script>function initMourn() {
+  const date = new Date();
+  const today = (date.getMonth() + 1) + "-" + date.getDate()
+  const mourn_days = ["4-4","9-18","8-3"]
+  if (mourn_days.includes(today)) {
+    document.documentElement.style.filter = "grayscale(1)";
+  }
+}
+initMourn();</script><script src="https://fastly.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js"></script><script>const images = [...document.querySelectorAll('.markdown-body img')]
+mediumZoom(images)</script><style>.medium-zoom-image {
+  z-index: 99;
+}</style><!-- hexo injector body_end start --><script src="https://fastly.jsdelivr.net/npm/hexo-tag-common@0.2.0/js/index.js"></script><!-- hexo injector body_end end --></body></html>

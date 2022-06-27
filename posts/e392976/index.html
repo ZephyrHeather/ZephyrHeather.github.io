@@ -1,0 +1,180 @@
+<!DOCTYPE html><html lang="zh-CN"><head><!-- hexo injector head_begin start --><link href="https://fastly.jsdelivr.net/npm/hexo-tag-common@0.2.0/css/index.css" rel="stylesheet"/><!-- hexo injector head_begin end --><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="theme-color" content="#0078E7"><meta name="author" content="Zephyr Heather"><meta name="copyright" content="Zephyr Heather"><meta name="generator" content="Hexo 6.2.0"><meta name="theme" content="hexo-theme-yun"><title>命令行小工具 | Zephyr's Blog</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@900&amp;display=swap" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/star-markdown-css@0.3.3/dist/yun/yun-markdown.min.css"><link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/prism-theme-vars/base.css"><script src="https://fastly.jsdelivr.net/npm/scrollreveal/dist/scrollreveal.min.js" defer></script><script>function initScrollReveal() {
+  [".post-card",".markdown-body img"].forEach((target)=> {
+    ScrollReveal().reveal(target);
+  })
+}
+document.addEventListener("DOMContentLoaded", initScrollReveal);
+document.addEventListener("pjax:success", initScrollReveal);
+</script><script src="https://fastly.jsdelivr.net/npm/pjax@latest/pjax.min.js" defer></script><script src="/js/pjax.js" defer type="module"></script><script src="https://fastly.jsdelivr.net/npm/vue@2.6.14"></script><link rel="icon" type="image/png" href="/zephyr.jpg"><link rel="mask-icon" href="/zephyr.jpg" color="#0078E7"><link rel="preload" href="/css/hexo-theme-yun.css" as="style"><link rel="prefetch" href="/js/sidebar.js" as="script"><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="preconnect" href="https://fastly.jsdelivr.net/npm/" crossorigin><script id="yun-config">
+    window.Yun = {}
+    window.CONFIG = {"hostname":"zephyrheather.github.io","root":"/","title":"风彳亍的小站","version":"1.10.4","mode":"auto","copycode":true,"page":{"isPost":true},"i18n":{"placeholder":"搜索...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）"},"anonymous_image":"https://cdn.yunyoujun.cn/img/avatar/none.jpg","say":{"api":"https://el-bot-api.vercel.app/api/words/young"},"local_search":{"path":"/search.xml"},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"fireworks":{"colors":null},"waline":{"config":{"enable":true,"serverURL":"https://wal-ok0hrvbo0-zephyrheather.vercel.app/","comment":true,"visitor":true,"locale":{"placeholder":"填写邮箱，可以收到回复通知哦～"},"el":"#waline","lang":"zh-CN"},"cdn":"https://fastly.jsdelivr.net/npm/@waline/client@v2/dist/waline.js","dark":"html.dark"},"vendors":{"darken":"https://fastly.jsdelivr.net/npm/darken@1.5.0"}};
+  </script><link rel="stylesheet" href="/css/hexo-theme-yun.css"><script src="/js/hexo-theme-yun.js" type="module"></script><link rel="alternate" href="/atom.xml" title="Zephyr's Blog" type="application/atom+xml"><meta name="description" content="命令行小工具前言好久没有更新blog了，愈发认清了当年“教授”对我的教导。趁着寒假还没有结束，赶紧水一篇文章。  不像在Windows中(上次看到有人Mac竟然不知道Terminal)，在Unix&#x2F;Linux中，命令行就是生产力。之前我自己配置Arch的时候，光顾着图形界面了，现在回过头来，还是命令行快啊。 举个例子，写程序用什么编辑器，什么C语言用VS(Visual Studio)，p">
+<meta property="og:type" content="article">
+<meta property="og:title" content="命令行小工具">
+<meta property="og:url" content="http://zephyrheather.github.io/posts/e392976/index.html">
+<meta property="og:site_name" content="Zephyr&#39;s Blog">
+<meta property="og:description" content="命令行小工具前言好久没有更新blog了，愈发认清了当年“教授”对我的教导。趁着寒假还没有结束，赶紧水一篇文章。  不像在Windows中(上次看到有人Mac竟然不知道Terminal)，在Unix&#x2F;Linux中，命令行就是生产力。之前我自己配置Arch的时候，光顾着图形界面了，现在回过头来，还是命令行快啊。 举个例子，写程序用什么编辑器，什么C语言用VS(Visual Studio)，p">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://camo.githubusercontent.com/d3ca3f081c1ba73086f60f91f8c32a6c488d79a72e1f9990b5bf83f539151643/68747470733a2f2f642e70722f692f6a4b6c7563302e676966">
+<meta property="article:published_time" content="2022-02-07T14:45:28.000Z">
+<meta property="article:modified_time" content="2022-02-07T14:45:28.000Z">
+<meta property="article:author" content="Zephyr Heather">
+<meta property="article:tag" content="Arch Linux">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://camo.githubusercontent.com/d3ca3f081c1ba73086f60f91f8c32a6c488d79a72e1f9990b5bf83f539151643/68747470733a2f2f642e70722f692f6a4b6c7563302e676966"><script>(function() {
+  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+  const setting = localStorage.getItem('darken-mode') || 'auto'
+  if (setting === 'dark' || (prefersDark && setting !== 'light'))
+    document.documentElement.classList.toggle('dark', true)
+})()</script></head><body><script src="https://code.iconify.design/2/2.1.1/iconify.min.js"></script><script>// Define global variable
+IconifyProviders = {
+  // Empty prefix: overwrite default API provider configuration
+  '': {
+    // Use custom API first, use Iconify public API as backup
+    resources: [
+        'https://api.iconify.design',
+    ],
+    // Wait for 1 second before switching API hosts
+    rotate: 1000,
+  },
+};</script><script defer src="https://fastly.jsdelivr.net/npm/animejs@latest"></script><script defer src="/js/ui/fireworks.js" type="module"></script><canvas class="fireworks"></canvas><div class="container"><a class="sidebar-toggle hty-icon-button" id="menu-btn"><div class="hamburger hamburger--spin" type="button"><span class="hamburger-box"><span class="hamburger-inner"></span></span></div></a><div class="sidebar-toggle sidebar-overlay"></div><aside class="sidebar"><script src="/js/sidebar.js" type="module"></script><ul class="sidebar-nav"><li class="sidebar-nav-item sidebar-nav-toc hty-icon-button sidebar-nav-active" data-target="post-toc-wrap" title="文章目录"><span class="icon iconify" data-icon="ri:list-ordered"></span></li><li class="sidebar-nav-item sidebar-nav-overview hty-icon-button" data-target="site-overview-wrap" title="站点概览"><span class="icon iconify" data-icon="ri:passport-line"></span></li></ul><div class="sidebar-panel" id="site-overview-wrap"><div class="site-info fix-top"><a class="site-author-avatar" href="/about/" title="Zephyr Heather"><img width="96" loading="lazy" src="/zephyr.jpg" alt="Zephyr Heather"></a><div class="site-author-name"><a href="/about/">Zephyr Heather</a></div><a class="site-name" href="/about/site.html">Zephyr's Blog</a><sub class="site-subtitle"></sub><div class="site-description"></div></div><nav class="site-state"><a class="site-state-item hty-icon-button icon-home" href="/" title="首页"><span class="site-state-item-icon"><span class="icon iconify" data-icon="ri:home-4-line"></span></span></a><div class="site-state-item"><a href="/archives/" title="归档"><span class="site-state-item-icon"><span class="icon iconify" data-icon="ri:archive-line"></span></span><span class="site-state-item-count">14</span></a></div><div class="site-state-item"><a href="/categories/" title="分类"><span class="site-state-item-icon"><span class="icon iconify" data-icon="ri:folder-2-line"></span></span><span class="site-state-item-count">3</span></a></div><div class="site-state-item"><a href="/tags/" title="标签"><span class="site-state-item-icon"><span class="icon iconify" data-icon="ri:price-tag-3-line"></span></span><span class="site-state-item-count">9</span></a></div><a class="site-state-item hty-icon-button" href="/null" title="在建中"><span class="site-state-item-icon"><span class="icon iconify" data-icon="ri:settings-line"></span></span></a></nav><hr style="margin-bottom:0.5rem"><div class="links-of-author"><a class="links-of-author-item hty-icon-button" rel="noopener" href="/atom.xml" title="RSS" target="_blank" style="color:orange"><span class="icon iconify" data-icon="ri:rss-line"></span></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://github.com/ZephyrHeather" title="GitHub" target="_blank" style="color:#6e5494"><span class="icon iconify" data-icon="ri:github-line"></span></a></div><hr style="margin:0.5rem 1rem"><div class="links"><a class="links-item hty-icon-button" href="/links/" title="我的小伙伴们" style="color:dodgerblue"><span class="icon iconify" data-icon="ri:genderless-line"></span></a></div><br><a class="links-item hty-icon-button" id="toggle-mode-btn" href="javascript:;" title="Mode" style="color: #f1cb64"><span class="icon iconify" data-icon="ri:contrast-2-line"></span></a></div><div class="sidebar-panel sidebar-panel-active" id="post-toc-wrap"><div class="post-toc"><div class="post-toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%B0%8F%E5%B7%A5%E5%85%B7"><span class="toc-number">1.</span> <span class="toc-text">命令行小工具</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#htop"><span class="toc-number">1.2.</span> <span class="toc-text">htop</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#glances"><span class="toc-number">1.3.</span> <span class="toc-text">glances</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Bat"><span class="toc-number">1.4.</span> <span class="toc-text">Bat</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ranger"><span class="toc-number">1.5.</span> <span class="toc-text">ranger</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ncdu"><span class="toc-number">1.6.</span> <span class="toc-text">ncdu</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Alpine"><span class="toc-number">1.7.</span> <span class="toc-text">Alpine</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#asciinema"><span class="toc-number">1.8.</span> <span class="toc-text">asciinema</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#oh-my-zsh"><span class="toc-number">1.9.</span> <span class="toc-text">oh-my-zsh</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">1.10.</span> <span class="toc-text">总结</span></a></li></ol></li></ol></div></div></div></aside><main class="sidebar-translate" id="content"><div id="post"><article class="hty-card post-block" itemscope itemtype="https://schema.org/Article" style="--smc-primary:#0078E7;"><link itemprop="mainEntityOfPage" href="http://zephyrheather.github.io/posts/e392976/"><span hidden itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="Zephyr Heather"><meta itemprop="description"></span><span hidden itemprop="publisher" itemscope itemtype="https://schema.org/Organization"><meta itemprop="name" content="Zephyr's Blog"></span><header class="post-header"><h1 class="post-title" itemprop="name headline">命令行小工具</h1><div class="post-meta"><div class="post-time" style="display:block"><span class="post-meta-item-icon"><span class="icon iconify" data-icon="ri:calendar-line"></span></span> <time title="创建时间：2022-02-07 22:45:28" itemprop="dateCreated datePublished" datetime="2022-02-07T22:45:28+08:00">2022-02-07</time></div><span class="post-count"><span class="post-symbolcount"><span class="post-meta-item-icon" title="本文字数"><span class="icon iconify" data-icon="ri:file-word-line"></span></span> <span title="本文字数">2.3k</span><span class="post-meta-divider">-</span><span class="post-meta-item-icon" title="阅读时长"><span class="icon iconify" data-icon="ri:timer-line"></span></span> <span title="阅读时长">8m</span></span></span><span class="leancloud_visitors" id="/posts/e392976/" data-flag-title="命令行小工具"><span class="post-meta-divider">-</span><span class="post-meta-item-icon" title="阅读次数"><span class="icon iconify" data-icon="ri:eye-line"></span> <span class="leancloud-visitors-count"></span></span></span><span class="post-meta-divider">-</span><a href="#comment"><span class="post-meta-item-icon" title="评论数"><span class="icon iconify" data-icon="ri:chat-3-line"></span> <span class="waline-comment-count" id="/posts/e392976/"></span></span></a><div class="post-classify"><span class="post-category"> <span class="post-meta-item-icon" style="margin-right:3px;"><span class="icon iconify" data-icon="ri:folder-line"></span></span><span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a class="category-item" href="/categories/GNU-Linux/" style="--text-color:var(--hty-text-color)" itemprop="url" rel="index"><span itemprop="text">GNU/Linux</span></a></span></span><span class="post-tag"><span class="post-meta-divider">-</span><a class="tag-item" href="/tags/Arch-Linux/" style="--text-color:var(--hty-text-color)"><span class="post-meta-item-icon"><span class="icon iconify" data-icon="ri:price-tag-3-line"></span></span><span class="tag-name">Arch Linux</span></a></span></div></div></header><section class="post-body" itemprop="articleBody"><div class="post-content markdown-body"><h1 id="命令行小工具"><a href="#命令行小工具" class="headerlink" title="命令行小工具"></a>命令行小工具</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>好久没有更新blog了，愈发认清了当年“教授”对我的教导。趁着寒假还没有结束，赶紧水一篇文章。</p>
+<hr>
+<p>不像在Windows中(上次看到有人Mac竟然不知道Terminal)，在Unix&#x2F;Linux中，命令行就是生产力。之前我自己配置Arch的时候，光顾着图形界面了，现在回过头来，还是命令行快啊。</p>
+<p>举个例子，写程序用什么编辑器，什么C语言用VS(Visual Studio)，python用Pycharm的，还有vscode大法。当然，这些IDE(集成开发环境)好是好，从语法知识到项目管理一应俱全。但是其中大部分功能都用不到，一堆插件自己都不知道什么时候装的。甚至还有同学一个学期C语言课上下来，认为只有VS才能运行C语言，还必须要有一堆.??的文件。但事实上，C语言最省事了，随便来个编辑器加个编译器就行，没必要把一堆东西集成吧。这个学期的C语言作业，我都是在字符界面里用vim写，然后用gcc编译的。简单方便，隔壁同学还在问我创建一个新项目要点哪里的时候，我的代码都写了一半了。</p>
+<p>但是许多命令行工具都和vim一样，学习成本高，毕竟没有图形界面这么友好，时不时要看看help&#x2F;man&#x2F;info之类的。不过呢，倘若一个人真要把VS的角角落落都熟悉，这精力估计能把C语言学得不错了。</p>
+<p>还是回到正题，介绍一下最近遇到的不错的小工具。</p>
+<h2 id="htop"><a href="#htop" class="headerlink" title="htop"></a>htop</h2><p>在进程管理的时候经常要借助top和ps来查看各个进程的运行状态，类似于windows的任务管理器。ps 命令可以一次性给出当前系统中进程状态，但使用此方式得到的信息缺乏时效性，并且，如果需要实时监控进程运行情况，就必须不停地执行 ps 命令，这显然是缺乏效率的。top 命令可以动态地持续监听进程地运行状态，与此同时，该命令还提供了一个交互界面，用户可以根据需要，人性化地定制自己的输出，进而更清楚地了进程的运行状态。</p>
+<p>而htop有着更加友好的输出，甚至可以用鼠标点击。htop可以更改配色方案，过滤进程，跟踪进程等等。</p>
+<p>GitHub: <a target="_blank" rel="noopener" href="https://github.com/hishamhm/htop">htop</a></p>
+<p>官网: <a target="_blank" rel="noopener" href="https://htop.dev/">htop</a></p>
+<h2 id="glances"><a href="#glances" class="headerlink" title="glances"></a>glances</h2><p>glance也是一个系统监控工具，用python编写。它的主要功能为(摘录自Linux中国):</p>
+<ul>
+<li>可以监控系统上的 15 个之多的指标（包括 Docker 容器）。</li>
+<li>灵活的使用模式：单机模式、客户端-服务器模式、通过 SSH 和 Web 模式。</li>
+<li>可用于集成的各种 REST API 和 XML-RPC API。</li>
+<li>支持将数据轻松导出到不同的服务和数据库。</li>
+<li>高度的可配置性和适应不同的需求。</li>
+<li>非常全面的文档。</li>
+</ul>
+<p>当我使用它的时候，我还以为它也像htop一样可以用鼠标，结果不行，于是以为它是vim风格的，按下了k，结果它问我是否杀死该进程。</p>
+<p>虽然glance的功能强大，但还是得先好好学习一下如何使用。</p>
+<p>让大家看一下top, htop, glances的对比：</p>
+<script id="asciicast-wERQLPd8x2vxuyahPmABCDIi7" src="https://asciinema.org/a/wERQLPd8x2vxuyahPmABCDIi7.js" async></script>
+
+<p>GitHub: <a target="_blank" rel="noopener" href="https://github.com/nicolargo/glances">glances</a></p>
+<p>官网: <a target="_blank" rel="noopener" href="https://nicolargo.github.io/glances/">An Eye on your system</a></p>
+<h2 id="Bat"><a href="#Bat" class="headerlink" title="Bat"></a>Bat</h2><p>正如cat不是指猫咪，bat也不是指蝙蝠(当然也不是球棒之类的)。cat的全拼是concatenate，用于连接文件并打印到标准输出设备上。学C语言的getchar&amp;putchar的时候曾经写过一个类似的脚本，就是把文字输出到stdout流里。简单来说，最常用的就是<code>cat [filename]</code>将一个文件的内容在屏幕上打印出来。就是不像打开编辑器，只是看看里面的内容。当然也可以配合重定向符使用，实现更多的功能。</p>
+<p>而bat则在cat的基础上增加了语法高亮、文本对齐、自动分页、git集成，还可以修改主题。bat给我的感觉更像是less或者more这样的文本查看工具，可是它不止是简单的文本查看，还做到了更加友好的输出。</p>
+<p>cat, bat, cat+less, 自己写的C程序练习对比:</p>
+<script id="asciicast-4eJYXeiVLgJTuywJIS4i07gzi" src="https://asciinema.org/a/4eJYXeiVLgJTuywJIS4i07gzi.js" async></script>
+
+<p>GitHub: <a target="_blank" rel="noopener" href="https://github.com/sharkdp/bat">A cat(1) clone with wings.</a></p>
+<h2 id="ranger"><a href="#ranger" class="headerlink" title="ranger"></a>ranger</h2><blockquote>
+<p>Ranger，这是我在nethack里最喜欢玩的一个角色。 –请忽略</p>
+</blockquote>
+<p>有时候，鼠标点来点去太麻烦了，而且查看文件属性也不方便，这是图形界面的文件管理器，在Unix&#x2F;Linux中我真的很少用。于是就是cd+ls，再加上mkdir, mv, rm，文件管理还不简单，还有find命令，总之比图形界面舒服多了。</p>
+<p>而ranger是终端文件管理器。并且是vim风格！还提供文件预览！</p>
+<p>效果如下：</p>
+<script id="asciicast-qmLX2uEPBJMznJBcvrkIWThN1" src="https://asciinema.org/a/qmLX2uEPBJMznJBcvrkIWThN1.js" async></script>
+
+<p>ArchWiki: <a target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/Ranger">Ranger</a></p>
+<p>GitHub: <a target="_blank" rel="noopener" href="https://github.com/ranger/ranger">ranger</a></p>
+<h2 id="ncdu"><a href="#ncdu" class="headerlink" title="ncdu"></a>ncdu</h2><p>经典的 Linux 命令 df 和 du 是快速了解硬盘上的内容的方法，它们提供了一个可靠的报告，易于解析和处理。这对脚本和处理来说是很好的，但我们对数百行的原始数据并不总是反应良好。</p>
+<p>我的Arch装在这个32G U盘上已经这么久了，前段时间只剩下2G的空间了。之前一直用df命令试图找到可以瘦身的地方，但是效果不佳(也可能是自己太烂了)。当我发现ncdu的时候，我以为它没什么用处，但没想到今天一用，立马查出了一堆已经不用的东西，可用空间重回5Gb，在这里提醒大家垃圾要及时清理！</p>
+<p>ncdu用可视化的方法将文件夹和文件按照大小排序，十分方便(也是vim风格)：</p>
+<script id="asciicast-NG5QUNUNOOLdba7e0yFzAbY9o" src="https://asciinema.org/a/NG5QUNUNOOLdba7e0yFzAbY9o.js" async></script>
+
+<p>Github: <a target="_blank" rel="noopener" href="https://github.com/rofl0r/ncdu">inofficial fork of “NCurses Disk Usage”</a></p>
+<p>官网: <a target="_blank" rel="noopener" href="https://dev.yorhel.nl/ncdu">NCurses Disk Usage</a></p>
+<h2 id="Alpine"><a href="#Alpine" class="headerlink" title="Alpine"></a>Alpine</h2><p>之前把没用的程序删除，把邮件客户端也给删除了(之前用的是mailspring其实很好，界面美观，功能强大，开源免费)。但是用网页版的outlook打开实在太慢了，而且内容繁杂(看到那个和微软账户登录一模一样的东西就没好感了)，于是去archwiki上找了个邮件客户端。</p>
+<p>Alpine历史悠久，配置也说不上简单。</p>
+<p>参见    <a target="_blank" rel="noopener" href="https://scateu.me/">Scateu Blog - S.B.</a>的<a target="_blank" rel="noopener" href="https://scateu.me/2015/08/23/alpine.html">推荐使用邮件客户端Alpine</a></p>
+<p>作为一个命令行下的邮件客户端，我认为它的表现十分出色，我需要的功能都有了，而且启动快，只要键盘使用，有许多快捷键。但是我配置Outlook的邮箱配置了好久，这里留个小坑，如果有同学想试一试Alpine，可以自己查一查怎么处理，如果有问题的话可以留言或者直接联系我。</p>
+<p>ArchWiki: <a target="_blank" rel="noopener" href="https://wiki.archlinux.org/title/Alpine">Alpine</a></p>
+<p>官网: <a target="_blank" rel="noopener" href="https://alpine.x10host.com/alpine/release/">Alpine Email Program</a></p>
+<h2 id="asciinema"><a href="#asciinema" class="headerlink" title="asciinema"></a>asciinema</h2><p>先上官方宣传视频(怀疑它是嵌套录制了)：</p>
+<script id="asciicast-335480" src="https://asciinema.org/a/335480.js" async></script>
+
+<p>asciinema *[as-kee-nuh-muh]*是一个免费的开源解决方案，用于记录终端会话并在网络上共享它们。</p>
+<ul>
+<li><p>录制简单：在您工作的地方录制 - 在终端中。开始只是运行<code>asciinema rec</code>，完成击中Ctrl-D或键入<code>exit</code>。</p>
+</li>
+<li><p>复制粘贴：每当您在自己的终端中看到想要尝试的命令时，只需暂停播放器并复制粘贴您想要的内容。毕竟只是一个文本！</p>
+</li>
+<li><p>嵌入：在您的博客文章、项目文档页面或会议演讲幻灯片中轻松嵌入 asciicast 播放器。</p>
+</li>
+</ul>
+<p>大家应该已经注意到之前的演示都是用asciinema做的吧，是不是非常棒？(不是说我的视频啦，是说这个终端录制)</p>
+<p>而且偶然发现，asciinema生成的gif用作微信表情包也不错，送大家一只鹦鹉：</p>
+<p><img src="https://camo.githubusercontent.com/d3ca3f081c1ba73086f60f91f8c32a6c488d79a72e1f9990b5bf83f539151643/68747470733a2f2f642e70722f692f6a4b6c7563302e676966" alt="parrot" loading="lazy"></p>
+<p>GitHub: <a target="_blank" rel="noopener" href="https://github.com/asciinema">asciinema</a></p>
+<p>官网: <a target="_blank" rel="noopener" href="https://asciinema.org/">asciinema</a></p>
+<h2 id="oh-my-zsh"><a href="#oh-my-zsh" class="headerlink" title="oh-my-zsh"></a>oh-my-zsh</h2><p>这个就不讲了，大家熟的很，只是觉得网上人人都说ys主题好，要么就是cloud主题，上面每次终端录制采用的都是random的zsh主题，大家完全可以试试看有什么好的主题，然后再做决定，也可以取长补短自己制作自己的theme,到时候别忘了分享给我。</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">echo</span> <span class="token variable">$RANDOM_THEME</span> <span class="token operator">>></span> path/zshtheme</code></pre>
+
+<blockquote>
+<p>tips: 这样可以记录自己当前的主题到zshtheme文件中慢慢搜集哦</p>
+</blockquote>
+<p>GitHub: <a target="_blank" rel="noopener" href="https://github.com/ohmyzsh/ohmyzsh">ohmyzsh</a></p>
+<p>官网: <a target="_blank" rel="noopener" href="https://ohmyz.sh/">Oh My ZSH!</a></p>
+<hr>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>水一篇文章水了一天，难以想象那些春节日更“水文”，平常周更技术贴的公众号是怎么做到的。</p>
+<p>今天下大雪，也是年初，送大家新年礼物。</p>
+<p>终端字体推荐：</p>
+<ul>
+<li>字母： Freemono(gnu-free-fonts)</li>
+<li>中文：霞鹜文楷(ttf-lxgw-wenkai)</li>
+</ul>
+<p>翻遍了网上的最佳编程字体，结果阴差阳错安装别的东西的时候作为依赖安装了gnu-free-fonts，里面的Freemono字体正和我意，唯一一个符合我的要求的字体：免费开源，字符集大，最重要的是o和0和O分辨清晰并且没有中间的横杠，唯一的缺憾是1和l的分辨在于1的头是斜的。至于霞鹜文楷也是一款不错的开源字体，兼有仿宋和楷体的特点，可读性高。</p>
+<p>给大家拜年啦！</p>
+</div></section><div id="reward-container"><span class="hty-icon-button button-glow" id="reward-button" title="打赏" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === &quot;none&quot;) ? &quot;block&quot; : &quot;none&quot;;"><span class="icon iconify" data-icon="ri:hand-coin-line"></span></span><div id="reward-comment">I'm so cute. Please give me money.</div><div id="qr" style="display:none;"><div style="display:inline-block"><a href="/alipay.jpg"><img loading="lazy" src="/alipay.jpg" alt="支付宝" title="支付宝"></a><div><span style="color:#00A3EE"><span class="icon iconify" data-icon="ri:alipay-line"></span></span></div></div><div style="display:inline-block"><a href="/wechatpay.jpg"><img loading="lazy" src="/wechatpay.jpg" alt="微信支付" title="微信支付"></a><div><span style="color:#2DC100"><span class="icon iconify" data-icon="ri:wechat-pay-line"></span></span></div></div></div></div><ul class="post-copyright"><li class="post-copyright-author"><strong>本文作者：</strong>Zephyr Heather</li><li class="post-copyright-link"><strong>本文链接：</strong><a href="http://zephyrheather.github.io/posts/e392976/" title="命令行小工具">http://zephyrheather.github.io/posts/e392976/</a></li><li class="post-copyright-license"><strong>版权声明：</strong>本博客所有文章除特别声明外，均默认采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener" title="CC BY-NC-SA 4.0 "><span class="icon iconify" data-icon="ri:creative-commons-line"></span><span class="icon iconify" data-icon="ri:creative-commons-by-line"></span><span class="icon iconify" data-icon="ri:creative-commons-nc-line"></span><span class="icon iconify" data-icon="ri:creative-commons-sa-line"></span></a> 许可协议。</li></ul></article><div class="post-nav"><div class="post-nav-item"><a class="post-nav-prev" href="/posts/6b1091a3/" rel="prev" title="Linux挂载Windows分区问题"><span class="icon iconify" data-icon="ri:arrow-left-s-line"></span><span class="post-nav-text">Linux挂载Windows分区问题</span></a></div><div class="post-nav-item"><a class="post-nav-next" href="/posts/9ce795e5/" rel="next" title="Trackpy--Walkthrough"><span class="post-nav-text">Trackpy--Walkthrough</span><span class="icon iconify" data-icon="ri:arrow-right-s-line"></span></a></div></div></div><div class="hty-card" id="comment"><div id="waline"></div><link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/@waline/client@v2/dist/waline.css"><script>window.CONFIG.waline.config.path = "/posts/e392976/"</script><div class="js-Pjax"><script src="/js/comments/waline.js" type="module" defer></script></div></div></main><footer class="sidebar-translate" id="footer"><div class="copyright"><span>&copy; 2021 – 2022 </span><span class="with-love" id="animate"><span class="icon iconify" data-icon="ri:cloud-line"></span></span><span class="author"> Zephyr Heather</span></div><div class="powered"><span>由 <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> 驱动 v6.2.0</span><span class="footer-separator">|</span><span>主题 - <a rel="noopener" href="https://github.com/YunYouJun/hexo-theme-yun" target="_blank"><span>Yun</span></a> v1.10.4</span></div><div class="live-time"><span>本博客已萌萌哒地运行</span><span id="display_live_time"></span><span class="moe-text">(●'◡'●)</span><script>function blog_live_time() {
+  setTimeout(blog_live_time, 1000);
+  const start = new Date('2021-07-10T16:57:41');
+  const now = new Date();
+  const timeDiff = (now.getTime() - start.getTime());
+  const msPerMinute = 60 * 1000;
+  const msPerHour = 60 * msPerMinute;
+  const msPerDay = 24 * msPerHour;
+  const passDay = Math.floor(timeDiff / msPerDay);
+  const passHour = Math.floor((timeDiff % msPerDay) / 60 / 60 / 1000);
+  const passMinute = Math.floor((timeDiff % msPerHour) / 60 / 1000);
+  const passSecond = Math.floor((timeDiff % msPerMinute) / 1000);
+  display_live_time.innerHTML = ` ${passDay} 天 ${passHour} 小时 ${passMinute} 分 ${passSecond} 秒`;
+}
+blog_live_time();
+</script></div></footer></div><a class="hty-icon-button" id="back-to-top" aria-label="back-to-top" href="#"><span class="icon iconify" data-icon="ri:arrow-up-s-line"></span><svg class="progress-circle-container" viewBox="0 0 100 100"><circle class="progress-circle" id="progressCircle" cx="50" cy="50" r="48" fill="none" stroke="#0078E7" stroke-width="2" stroke-linecap="round"></circle></svg></a><a class="popup-trigger hty-icon-button icon-search" id="search" href="javascript:;" title="搜索"><span class="site-state-item-icon"><span class="icon iconify" data-icon="ri:search-line"></span></span></a><script>window.addEventListener("DOMContentLoaded", () => {
+  // Handle and trigger popup window
+  document.querySelector(".popup-trigger").addEventListener("click", () => {
+    document.querySelector(".popup").classList.add("show");
+    setTimeout(() => {
+      document.querySelector(".search-input").focus();
+    }, 100);
+  });
+
+  // Monitor main search box
+  const onPopupClose = () => {
+    document.querySelector(".popup").classList.remove("show");
+  };
+
+  document.querySelector(".popup-btn-close").addEventListener("click", () => {
+    onPopupClose();
+  });
+
+  window.addEventListener("keyup", event => {
+    if (event.key === "Escape") {
+      onPopupClose();
+    }
+  });
+});
+</script><script src="https://fastly.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js"></script><script src="/js/search/local-search.js" defer type="module"></script><div class="popup search-popup"><div class="search-header"><span class="popup-btn-close close-icon hty-icon-button"><span class="icon iconify" data-icon="ri:close-line"></span></span></div><div class="search-input-container"><input class="search-input" id="local-search-input" type="text" placeholder="搜索..." value=""></div><div class="search-result-container"></div></div><script>function initMourn() {
+  const date = new Date();
+  const today = (date.getMonth() + 1) + "-" + date.getDate()
+  const mourn_days = ["4-4","9-18","8-3"]
+  if (mourn_days.includes(today)) {
+    document.documentElement.style.filter = "grayscale(1)";
+  }
+}
+initMourn();</script><script src="https://fastly.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js"></script><script>const images = [...document.querySelectorAll('.markdown-body img')]
+mediumZoom(images)</script><style>.medium-zoom-image {
+  z-index: 99;
+}</style><!-- hexo injector body_end start --><script src="https://fastly.jsdelivr.net/npm/hexo-tag-common@0.2.0/js/index.js"></script><!-- hexo injector body_end end --></body></html>

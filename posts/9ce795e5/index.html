@@ -1,0 +1,602 @@
+<!DOCTYPE html><html lang="zh-CN"><head><!-- hexo injector head_begin start --><link href="https://fastly.jsdelivr.net/npm/hexo-tag-common@0.2.0/css/index.css" rel="stylesheet"/><!-- hexo injector head_begin end --><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="theme-color" content="#0078E7"><meta name="author" content="Zephyr Heather"><meta name="copyright" content="Zephyr Heather"><meta name="generator" content="Hexo 6.2.0"><meta name="theme" content="hexo-theme-yun"><title>Trackpy--Walkthrough | Zephyr's Blog</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@900&amp;display=swap" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/star-markdown-css@0.3.3/dist/yun/yun-markdown.min.css"><link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/prism-theme-vars/base.css"><script src="https://fastly.jsdelivr.net/npm/scrollreveal/dist/scrollreveal.min.js" defer></script><script>function initScrollReveal() {
+  [".post-card",".markdown-body img"].forEach((target)=> {
+    ScrollReveal().reveal(target);
+  })
+}
+document.addEventListener("DOMContentLoaded", initScrollReveal);
+document.addEventListener("pjax:success", initScrollReveal);
+</script><link rel="stylesheet" type="text/css" href="https://fastly.jsdelivr.net/npm/katex@latest/dist/katex.min.css"><script defer src="https://fastly.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script><link rel="stylesheet" type="text/css" href="https://fastly.jsdelivr.net/npm/katex@latest/dist/contrib/copy-tex.min.css"><script defer src="https://fastly.jsdelivr.net/npm/katex@latest/dist/contrib/copy-tex.min.js"></script><script defer src="https://fastly.jsdelivr.net/npm/katex@latest/dist/contrib/auto-render.min.js"></script><script type="module">import { renderKatex } from '/js/utils.js'
+document.addEventListener("DOMContentLoaded", () => {
+  renderKatex({
+    ...{},
+    ...true?.options,
+  });
+});</script><script src="https://fastly.jsdelivr.net/npm/pjax@latest/pjax.min.js" defer></script><script src="/js/pjax.js" defer type="module"></script><script src="https://fastly.jsdelivr.net/npm/vue@2.6.14"></script><link rel="icon" type="image/png" href="/zephyr.jpg"><link rel="mask-icon" href="/zephyr.jpg" color="#0078E7"><link rel="preload" href="/css/hexo-theme-yun.css" as="style"><link rel="prefetch" href="/js/sidebar.js" as="script"><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><link rel="preconnect" href="https://fastly.jsdelivr.net/npm/" crossorigin><script id="yun-config">
+    window.Yun = {}
+    window.CONFIG = {"hostname":"zephyrheather.github.io","root":"/","title":"风彳亍的小站","version":"1.10.4","mode":"auto","copycode":true,"page":{"isPost":true},"i18n":{"placeholder":"搜索...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）"},"anonymous_image":"https://cdn.yunyoujun.cn/img/avatar/none.jpg","say":{"api":"https://el-bot-api.vercel.app/api/words/young"},"local_search":{"path":"/search.xml"},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"fireworks":{"colors":null},"waline":{"config":{"enable":true,"serverURL":"https://wal-ok0hrvbo0-zephyrheather.vercel.app/","comment":true,"visitor":true,"locale":{"placeholder":"填写邮箱，可以收到回复通知哦～"},"el":"#waline","lang":"zh-CN"},"cdn":"https://fastly.jsdelivr.net/npm/@waline/client@v2/dist/waline.js","dark":"html.dark"},"vendors":{"darken":"https://fastly.jsdelivr.net/npm/darken@1.5.0"}};
+  </script><link rel="stylesheet" href="/css/hexo-theme-yun.css"><script src="/js/hexo-theme-yun.js" type="module"></script><link rel="alternate" href="/atom.xml" title="Zephyr's Blog" type="application/atom+xml"><meta name="description" content="本文翻译自trackpy文档，仅供学习参考  Walkthrough分析纳米颗粒在水中的流动，跟踪轨迹并计算水滴粘度。 In [1]: from __future__ import division, unicode_literals, print_fuction	# 为了兼容python2和python3，主要是python提前使用python的函数 import matplotlib as">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Trackpy--Walkthrough">
+<meta property="og:url" content="http://zephyrheather.github.io/posts/9ce795e5/index.html">
+<meta property="og:site_name" content="Zephyr&#39;s Blog">
+<meta property="og:description" content="本文翻译自trackpy文档，仅供学习参考  Walkthrough分析纳米颗粒在水中的流动，跟踪轨迹并计算水滴粘度。 In [1]: from __future__ import division, unicode_literals, print_fuction	# 为了兼容python2和python3，主要是python提前使用python的函数 import matplotlib as">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s1.ax1x.com/2022/06/27/jE6XTI.png">
+<meta property="og:image" content="https://s1.ax1x.com/2022/06/27/jE6vkt.png">
+<meta property="og:image" content="https://s1.ax1x.com/2022/06/27/jE6zff.png">
+<meta property="og:image" content="https://s1.ax1x.com/2022/06/27/jEc91S.png">
+<meta property="og:image" content="https://s1.ax1x.com/2022/06/27/jE6zff.png">
+<meta property="og:image" content="https://s1.ax1x.com/2022/06/27/jEcVkq.png">
+<meta property="og:image" content="https://s1.ax1x.com/2022/06/27/jEcZt0.png">
+<meta property="og:image" content="https://s1.ax1x.com/2022/06/27/jEcnpT.png">
+<meta property="og:image" content="https://s1.ax1x.com/2022/06/27/jEcu1U.png">
+<meta property="og:image" content="https://s1.ax1x.com/2022/06/27/jEc1B9.png">
+<meta property="og:image" content="https://s1.ax1x.com/2022/06/27/jEcJtx.png">
+<meta property="og:image" content="https://s1.ax1x.com/2022/06/27/jEcYh6.png">
+<meta property="og:image" content="https://s1.ax1x.com/2022/06/27/jEcN9K.png">
+<meta property="og:image" content="https://s1.ax1x.com/2022/06/27/jEc0nH.png">
+<meta property="og:image" content="https://s1.ax1x.com/2022/06/27/jEcyNt.png">
+<meta property="article:published_time" content="2021-11-04T16:07:03.000Z">
+<meta property="article:modified_time" content="2021-11-04T16:07:03.000Z">
+<meta property="article:author" content="Zephyr Heather">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="图像追踪">
+<meta property="article:tag" content="数据处理">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s1.ax1x.com/2022/06/27/jE6XTI.png"><script>(function() {
+  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+  const setting = localStorage.getItem('darken-mode') || 'auto'
+  if (setting === 'dark' || (prefersDark && setting !== 'light'))
+    document.documentElement.classList.toggle('dark', true)
+})()</script></head><body><script src="https://code.iconify.design/2/2.1.1/iconify.min.js"></script><script>// Define global variable
+IconifyProviders = {
+  // Empty prefix: overwrite default API provider configuration
+  '': {
+    // Use custom API first, use Iconify public API as backup
+    resources: [
+        'https://api.iconify.design',
+    ],
+    // Wait for 1 second before switching API hosts
+    rotate: 1000,
+  },
+};</script><script defer src="https://fastly.jsdelivr.net/npm/animejs@latest"></script><script defer src="/js/ui/fireworks.js" type="module"></script><canvas class="fireworks"></canvas><div class="container"><a class="sidebar-toggle hty-icon-button" id="menu-btn"><div class="hamburger hamburger--spin" type="button"><span class="hamburger-box"><span class="hamburger-inner"></span></span></div></a><div class="sidebar-toggle sidebar-overlay"></div><aside class="sidebar"><script src="/js/sidebar.js" type="module"></script><ul class="sidebar-nav"><li class="sidebar-nav-item sidebar-nav-toc hty-icon-button sidebar-nav-active" data-target="post-toc-wrap" title="文章目录"><span class="icon iconify" data-icon="ri:list-ordered"></span></li><li class="sidebar-nav-item sidebar-nav-overview hty-icon-button" data-target="site-overview-wrap" title="站点概览"><span class="icon iconify" data-icon="ri:passport-line"></span></li></ul><div class="sidebar-panel" id="site-overview-wrap"><div class="site-info fix-top"><a class="site-author-avatar" href="/about/" title="Zephyr Heather"><img width="96" loading="lazy" src="/zephyr.jpg" alt="Zephyr Heather"></a><div class="site-author-name"><a href="/about/">Zephyr Heather</a></div><a class="site-name" href="/about/site.html">Zephyr's Blog</a><sub class="site-subtitle"></sub><div class="site-description"></div></div><nav class="site-state"><a class="site-state-item hty-icon-button icon-home" href="/" title="首页"><span class="site-state-item-icon"><span class="icon iconify" data-icon="ri:home-4-line"></span></span></a><div class="site-state-item"><a href="/archives/" title="归档"><span class="site-state-item-icon"><span class="icon iconify" data-icon="ri:archive-line"></span></span><span class="site-state-item-count">14</span></a></div><div class="site-state-item"><a href="/categories/" title="分类"><span class="site-state-item-icon"><span class="icon iconify" data-icon="ri:folder-2-line"></span></span><span class="site-state-item-count">3</span></a></div><div class="site-state-item"><a href="/tags/" title="标签"><span class="site-state-item-icon"><span class="icon iconify" data-icon="ri:price-tag-3-line"></span></span><span class="site-state-item-count">9</span></a></div><a class="site-state-item hty-icon-button" href="/null" title="在建中"><span class="site-state-item-icon"><span class="icon iconify" data-icon="ri:settings-line"></span></span></a></nav><hr style="margin-bottom:0.5rem"><div class="links-of-author"><a class="links-of-author-item hty-icon-button" rel="noopener" href="/atom.xml" title="RSS" target="_blank" style="color:orange"><span class="icon iconify" data-icon="ri:rss-line"></span></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://github.com/ZephyrHeather" title="GitHub" target="_blank" style="color:#6e5494"><span class="icon iconify" data-icon="ri:github-line"></span></a></div><hr style="margin:0.5rem 1rem"><div class="links"><a class="links-item hty-icon-button" href="/links/" title="我的小伙伴们" style="color:dodgerblue"><span class="icon iconify" data-icon="ri:genderless-line"></span></a></div><br><a class="links-item hty-icon-button" id="toggle-mode-btn" href="javascript:;" title="Mode" style="color: #f1cb64"><span class="icon iconify" data-icon="ri:contrast-2-line"></span></a></div><div class="sidebar-panel sidebar-panel-active" id="post-toc-wrap"><div class="post-toc"><div class="post-toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Walkthrough"><span class="toc-number">1.</span> <span class="toc-text">Walkthrough</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Step-1-Read-the-Data"><span class="toc-number">1.1.</span> <span class="toc-text">Step 1: Read the Data</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Step-2-Locate-Features"><span class="toc-number">1.2.</span> <span class="toc-text">Step 2: Locate Features</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Refine-parameters-to-elminate-spurious-features"><span class="toc-number">1.2.1.</span> <span class="toc-text">Refine parameters to elminate spurious features</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Check-for-subpixel-accuracy"><span class="toc-number">1.2.2.</span> <span class="toc-text">Check for subpixel accuracy</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Locate-features-in-all-frames"><span class="toc-number">1.2.3.</span> <span class="toc-text">Locate features in all frames</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Step-3-Link-features-into-particle-trajectories"><span class="toc-number">1.3.</span> <span class="toc-text">Step 3: Link features into particle trajectories</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Filter-spurious-trajectories"><span class="toc-number">1.3.1.</span> <span class="toc-text">Filter spurious trajectories</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Remove-overall-drift"><span class="toc-number">1.3.2.</span> <span class="toc-text">Remove overall drift</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Step-4-Analyze-trajectories"><span class="toc-number">1.4.</span> <span class="toc-text">Step 4: Analyze trajectories</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Mean-Squared-Displacement-of-Individal-Probes"><span class="toc-number">1.4.1.</span> <span class="toc-text">Mean Squared Displacement of Individal Probes</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Ensemble-Mean-Squared-Displacement"><span class="toc-number">1.4.2.</span> <span class="toc-text">Ensemble Mean Squared Displacement</span></a></li></ol></li></ol></li></ol></div></div></div></aside><main class="sidebar-translate" id="content"><div id="post"><article class="hty-card post-block" itemscope itemtype="https://schema.org/Article" style="--smc-primary:#0078E7;"><link itemprop="mainEntityOfPage" href="http://zephyrheather.github.io/posts/9ce795e5/"><span hidden itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="Zephyr Heather"><meta itemprop="description"></span><span hidden itemprop="publisher" itemscope itemtype="https://schema.org/Organization"><meta itemprop="name" content="Zephyr's Blog"></span><header class="post-header"><h1 class="post-title" itemprop="name headline">Trackpy--Walkthrough</h1><div class="post-meta"><div class="post-time" style="display:block"><span class="post-meta-item-icon"><span class="icon iconify" data-icon="ri:calendar-line"></span></span> <time title="创建时间：2021-11-05 00:07:03" itemprop="dateCreated datePublished" datetime="2021-11-05T00:07:03+08:00">2021-11-05</time></div><span class="post-count"><span class="post-symbolcount"><span class="post-meta-item-icon" title="本文字数"><span class="icon iconify" data-icon="ri:file-word-line"></span></span> <span title="本文字数">3k</span><span class="post-meta-divider">-</span><span class="post-meta-item-icon" title="阅读时长"><span class="icon iconify" data-icon="ri:timer-line"></span></span> <span title="阅读时长">12m</span></span></span><span class="leancloud_visitors" id="/posts/9ce795e5/" data-flag-title="Trackpy--Walkthrough"><span class="post-meta-divider">-</span><span class="post-meta-item-icon" title="阅读次数"><span class="icon iconify" data-icon="ri:eye-line"></span> <span class="leancloud-visitors-count"></span></span></span><span class="post-meta-divider">-</span><a href="#comment"><span class="post-meta-item-icon" title="评论数"><span class="icon iconify" data-icon="ri:chat-3-line"></span> <span class="waline-comment-count" id="/posts/9ce795e5/"></span></span></a><div class="post-classify"><span class="post-category"> <span class="post-meta-item-icon" style="margin-right:3px;"><span class="icon iconify" data-icon="ri:folder-line"></span></span><span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a class="category-item" href="/categories/%E7%A7%91%E5%AD%A6%E8%AE%A1%E7%AE%97/" style="--text-color:var(--hty-text-color)" itemprop="url" rel="index"><span itemprop="text">科学计算</span></a></span></span><span class="post-tag"><span class="post-meta-divider">-</span><a class="tag-item" href="/tags/python/" style="--text-color:var(--hty-text-color)"><span class="post-meta-item-icon"><span class="icon iconify" data-icon="ri:price-tag-3-line"></span></span><span class="tag-name">python</span></a><a class="tag-item" href="/tags/%E5%9B%BE%E5%83%8F%E8%BF%BD%E8%B8%AA/" style="--text-color:var(--hty-text-color)"><span class="post-meta-item-icon"><span class="icon iconify" data-icon="ri:price-tag-3-line"></span></span><span class="tag-name">图像追踪</span></a><a class="tag-item" href="/tags/%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/" style="--text-color:var(--hty-text-color)"><span class="post-meta-item-icon"><span class="icon iconify" data-icon="ri:price-tag-3-line"></span></span><span class="tag-name">数据处理</span></a></span></div></div></header><section class="post-body" itemprop="articleBody"><div class="post-content markdown-body"><blockquote>
+<p>本文翻译自<a target="_blank" rel="noopener" href="https://soft-matter.github.io/trackpy/v0.5.0/tutorial/walkthrough.html">trackpy文档</a>，仅供学习参考</p>
+</blockquote>
+<h1 id="Walkthrough"><a href="#Walkthrough" class="headerlink" title="Walkthrough"></a>Walkthrough</h1><p>分析纳米颗粒在水中的流动，跟踪轨迹并计算水滴粘度。</p>
+<p><em><code>In [1]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> __future__ <span class="token keyword">import</span> division<span class="token punctuation">,</span> unicode_literals<span class="token punctuation">,</span> print_fuction	<span class="token comment"># 为了兼容python2和python3，主要是python提前使用python的函数</span>
+<span class="token keyword">import</span> matplotlib <span class="token keyword">as</span> mpl
+<span class="token keyword">import</span> matplotlib<span class="token punctuation">.</span>pyplot <span class="token keyword">as</span> plt
+
+<span class="token operator">%</span>matplotlib inline	<span class="token comment"># ipython的魔法函数</span>
+
+<span class="token comment"># 可选，调整样式</span>
+mpl<span class="token punctuation">.</span>rc<span class="token punctuation">(</span><span class="token string">'figure'</span><span class="token punctuation">,</span> figsize<span class="token operator">=</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+mpl<span class="token punctuation">.</span>rc<span class="token punctuation">(</span><span class="token string">'image'</span><span class="token punctuation">,</span> cmap<span class="token operator">=</span><span class="token string">'gray'</span><span class="token punctuation">)</span></code></pre>
+
+<p>导入python的科学计算库numpy和数据分析库pandas</p>
+<p>导入trackpy跟踪，pims打开媒体</p>
+<p><em><code>In [2]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> numpy <span class="token keyword">as</span> np
+<span class="token keyword">import</span> pandas <span class="token keyword">as</span> pd
+<span class="token keyword">from</span> pandas <span class="token keyword">import</span> DataFrame<span class="token punctuation">,</span> Series	<span class="token comment"># 为了方便</span>
+
+<span class="token keyword">import</span> pims
+<span class="token keyword">import</span> trackpy <span class="token keyword">as</span> tp</code></pre>
+
+<h2 id="Step-1-Read-the-Data"><a href="#Step-1-Read-the-Data" class="headerlink" title="Step 1: Read the Data"></a>Step 1: Read the Data</h2><p>打开图片或视频</p>
+<p>为了将数据导入Python，我们使用一个trackpy的姐妹项目<a target="_blank" rel="noopener" href="https://github.com/soft-matter/pims">PIMS</a>(Python Image Sequence)(pims的<a target="_blank" rel="noopener" href="https://nbviewer.ipython.org/github/soft-matter/pims/tree/master/">notebook</a>)PIMS使得通过一个一致的接口加载和处理来自多种格式的视频数据变得容易和方便。</p>
+<p>使用 PIMS，trackpy可以读取：</p>
+<ul>
+<li>一系列文件夹或压缩文件中的图片</li>
+<li>多帧TIFF文件</li>
+<li>一段视频(AVI、MOV等)</li>
+<li>用于显微镜和科学视频捕捉的特殊格式：<ul>
+<li><code>Cine</code>, NorPix <code>seq</code></li>
+<li><code>LSM</code></li>
+<li>Files supported by <a target="_blank" rel="noopener" href="https://www.openmicroscopy.org/site/support/bio-formats5.1/supported-formats.html">Bioformats</a>(这个链接似乎失效了)</li>
+<li><code>ND2</code> using <a target="_blank" rel="noopener" href="https://github.com/soft-matter/pims_nd2">PIMS_ND2</a></li>
+</ul>
+</li>
+</ul>
+<p>(有些格式需要一些额外的依赖关系。有关完整列表，请参阅PIMS的README页面或文档中的安装说明。)</p>
+<p>对于许多格式，使用<code>pims.open</code>就行。由于这些图像是彩色的，我们还需要设置一个管道，以便在读取图像时将其转换为灰度。</p>
+<p><em><code>In [3]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token decorator annotation punctuation">@pims<span class="token punctuation">.</span>pipeline</span>
+<span class="token keyword">def</span> <span class="token function">gray</span><span class="token punctuation">(</span>image<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">return</span> image<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span> <span class="token punctuation">:</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">]</span>  <span class="token comment"># Take just the green channel</span>
+
+frames <span class="token operator">=</span> gray<span class="token punctuation">(</span>pims<span class="token punctuation">.</span><span class="token builtin">open</span><span class="token punctuation">(</span><span class="token string">'../sample_data/bulk_water/*.png'</span><span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
+
+<p><em><code>In [4]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">framses</code></pre>
+
+<p><em><code>Out [4]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token punctuation">(</span>ImageSequence<span class="token punctuation">,</span><span class="token punctuation">)</span> processed through proc_func<span class="token punctuation">.</span> Original <span class="token builtin">repr</span><span class="token punctuation">:</span>
+    <span class="token operator">&lt;</span>Frames<span class="token operator">></span>
+    Source<span class="token punctuation">:</span> <span class="token operator">/</span>Users<span class="token operator">/</span>nkeim<span class="token operator">/</span>projects<span class="token operator">/</span>trackpy<span class="token operator">/</span>trackpy<span class="token operator">-</span>examples<span class="token operator">/</span>sample_data<span class="token operator">/</span>bulk_water<span class="token operator">/</span><span class="token operator">*</span><span class="token punctuation">.</span>png
+    Length<span class="token punctuation">:</span> <span class="token number">300</span> frames
+    Frame Shape<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token number">424</span><span class="token punctuation">,</span> <span class="token number">640</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">)</span>
+    Pixel Datatype<span class="token punctuation">:</span> uint8</code></pre>
+
+<p>我们可以通过<code>frames[frame_number]</code>访问任意画面。图像被表示为一个numpy强度数组。如果你使用的是Python的Anaconda版本，这些值应该在[0,255]范围内。如果您有一个更自定义的环境，它们可能在[0,1]的范围内，在这种情况下，您将不得不试验以下最小质量参数。</p>
+<p><em><code>In [5]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">print</span><span class="token punctuation">(</span>frames<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span>  <span class="token comment"># 第一帧</span></code></pre>
+
+<p><em><code>Out [5]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">125</span> <span class="token number">125</span> <span class="token number">125</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token number">120</span> <span class="token number">120</span> <span class="token number">121</span><span class="token punctuation">]</span>
+ <span class="token punctuation">[</span><span class="token number">125</span> <span class="token number">125</span> <span class="token number">125</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token number">120</span> <span class="token number">121</span> <span class="token number">121</span><span class="token punctuation">]</span>
+ <span class="token punctuation">[</span><span class="token number">125</span> <span class="token number">125</span> <span class="token number">124</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token number">121</span> <span class="token number">123</span> <span class="token number">124</span><span class="token punctuation">]</span>
+ <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+ <span class="token punctuation">[</span><span class="token number">125</span> <span class="token number">126</span> <span class="token number">125</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token number">108</span>  <span class="token number">98</span>  <span class="token number">97</span><span class="token punctuation">]</span>
+ <span class="token punctuation">[</span><span class="token number">125</span> <span class="token number">125</span> <span class="token number">125</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token number">116</span> <span class="token number">109</span> <span class="token number">106</span><span class="token punctuation">]</span>
+ <span class="token punctuation">[</span><span class="token number">125</span> <span class="token number">125</span> <span class="token number">125</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token number">124</span> <span class="token number">119</span> <span class="token number">117</span><span class="token punctuation">]</span><span class="token punctuation">]</span></code></pre>
+
+<p>在IPython笔记本中，框架是通过显示图像直接表示的。</p>
+<p><em><code>In [6]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">frames<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span></code></pre>
+
+<p><em><code>Out [6]:</code></em></p>
+<p><img src="https://s1.ax1x.com/2022/06/27/jE6XTI.png" loading="lazy"></p>
+<p>另外，要使用轴和缩放控制来绘制适当的图，可以使用matplotlib的imshow()方法。</p>
+<p><em><code>In [7]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">plt<span class="token punctuation">.</span>imshow<span class="token punctuation">(</span>frames<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+<p><img src="https://s1.ax1x.com/2022/06/27/jE6vkt.png" loading="lazy"></p>
+<p>帧的行为类似于numpy数组，但有一些额外的属性。</p>
+<p><em><code>In [8]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">frames<span class="token punctuation">[</span><span class="token number">123</span><span class="token punctuation">]</span><span class="token punctuation">.</span>frame_no</code></pre>
+
+<p><em><code>Out [8]</code></em></p>
+<pre class="language-pyth" data-language="pyth"><code class="language-pyth">123</code></pre>
+
+<p><em><code>In [9]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">frames<span class="token punctuation">[</span><span class="token number">123</span><span class="token punctuation">]</span><span class="token punctuation">.</span>metadata  <span class="token comment"># 科学格式可以在这里传递实验元数据。</span></code></pre>
+
+<p><em><code>Out [9]</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span></code></pre>
+
+<h2 id="Step-2-Locate-Features"><a href="#Step-2-Locate-Features" class="headerlink" title="Step 2: Locate Features"></a>Step 2: Locate Features</h2><p>从第一帧开始。估计特征的大小(以像素为单位)。大小必须是一个奇数，最好是大一点，我们将在下面看到。我们估计11个像素。</p>
+<p><em><code>In [10]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">f <span class="token operator">=</span> tp<span class="token punctuation">.</span>locate<span class="token punctuation">(</span>frames<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token number">11</span><span class="token punctuation">,</span> invert<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span></code></pre>
+
+<p>算法寻找明亮的特征;由于这组图像的特征是暗的，我们设置invert&#x3D;True。</p>
+<p><code>locate</code>返回一个名为DataFrame的类似电子表格的对象。它列出了:</p>
+<ul>
+<li>每个特征的位置</li>
+<li>它的外观的各种特征，我们将用它来过滤掉虚假的特征</li>
+<li>“信号”强度和不确定度的估计都是由<a target="_blank" rel="noopener" href="https://www.sciencedirect.com/science/article/pii/S0006349505731362?via=ihub">this paper</a>(这是一篇粒子追踪微流变学中的静态和动态误差的文献)推导出来的</li>
+</ul>
+<p>更多关于DataFrames的信息可以在<a target="_blank" rel="noopener" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html">pandas文档</a>中找到。DataFrames可以很容易地导出到格式，如CSV, Excel, SQL, HDF5等。</p>
+<p><em><code>In [11]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">f<span class="token punctuation">.</span>head<span class="token punctuation">(</span><span class="token punctuation">)</span>  <span class="token comment"># 显示前几行数据</span></code></pre>
+
+<p><em><code>Out [11]</code></em></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>y</th>
+<th>x</th>
+<th>mass</th>
+<th>size</th>
+<th>ecc</th>
+<th>signal</th>
+<th>raw_mass</th>
+<th>ep</th>
+<th>frame</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0</td>
+<td>4.750000</td>
+<td>103.668564</td>
+<td>192.862485</td>
+<td>2.106615</td>
+<td>0.066390</td>
+<td>10.808405</td>
+<td>10714.0</td>
+<td>0.073666</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>5.249231</td>
+<td>585.779487</td>
+<td>164.659302</td>
+<td>2.962674</td>
+<td>0.078936</td>
+<td>4.222033</td>
+<td>10702.0</td>
+<td>0.075116</td>
+<td>0</td>
+</tr>
+<tr>
+<td>2</td>
+<td>5.785986</td>
+<td>294.792544</td>
+<td>244.624615</td>
+<td>2.244542</td>
+<td>0.219217</td>
+<td>15.874846</td>
+<td>10686.0</td>
+<td>0.077141</td>
+<td>0</td>
+</tr>
+<tr>
+<td>3</td>
+<td>5.869369</td>
+<td>338.173423</td>
+<td>187.458282</td>
+<td>2.046201</td>
+<td>0.185333</td>
+<td>13.088304</td>
+<td>10554.0</td>
+<td>0.099201</td>
+<td>0</td>
+</tr>
+<tr>
+<td>4</td>
+<td>6.746377</td>
+<td>310.584169</td>
+<td>151.486558</td>
+<td>3.103294</td>
+<td>0.053342</td>
+<td>4.475355</td>
+<td>10403.0</td>
+<td>0.147430</td>
+<td>0</td>
+</tr>
+</tbody></table>
+<p><em><code>In [12]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">tp<span class="token punctuation">.</span>annotate<span class="token punctuation">(</span>f<span class="token punctuation">,</span> frames<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+<p><em><code>Out [12]</code></em></p>
+<p><img src="https://s1.ax1x.com/2022/06/27/jE6zff.png" loading="lazy"></p>
+<h3 id="Refine-parameters-to-elminate-spurious-features"><a href="#Refine-parameters-to-elminate-spurious-features" class="headerlink" title="Refine parameters to elminate spurious features"></a>Refine parameters to elminate spurious features</h3><p>(优化参数以消除虚假特征)</p>
+<p>其中许多圈显然是错误的;它们是转瞬即逝的亮度峰值，实际上并不是粒子。删除它们通常会改善结果并加快功能查找。有很多方法可以区分真粒子和假粒子。最重要的方法是观察总亮度(“mass”)。</p>
+<p><em><code>In [13]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">fig<span class="token punctuation">,</span> ax <span class="token operator">=</span> plt<span class="token punctuation">.</span>subplots<span class="token punctuation">(</span><span class="token punctuation">)</span>
+ax<span class="token punctuation">.</span>hist<span class="token punctuation">(</span>f<span class="token punctuation">[</span><span class="token string">'mass'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> bins<span class="token operator">=</span><span class="token number">20</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Optionally, label the axes.</span>
+ax<span class="token punctuation">.</span><span class="token builtin">set</span><span class="token punctuation">(</span>xlabel<span class="token operator">=</span><span class="token string">'mass'</span><span class="token punctuation">,</span> ylabel<span class="token operator">=</span><span class="token string">'count'</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+<p><em><code>Out [13]</code></em></p>
+<p><img src="https://s1.ax1x.com/2022/06/27/jEc91S.png" loading="lazy"></p>
+<p>然后我们可以指定最小mass参数。</p>
+<p>如果你的图像特别有噪声，你也会发现<code>threshold</code>(阈值)参数很有用。</p>
+<p><em><code>In [14]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">f <span class="token operator">=</span> tp<span class="token punctuation">.</span>locate<span class="token punctuation">(</span>frames<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token number">11</span><span class="token punctuation">,</span> invert<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span> minmass<span class="token operator">=</span><span class="token number">20</span><span class="token punctuation">)</span></code></pre>
+
+<p><em><code>In [15]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">tp<span class="token punctuation">.</span>annotate<span class="token punctuation">(</span>f<span class="token punctuation">,</span> frames<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+<p><em><code>Out [15]</code></em></p>
+<p><img src="https://s1.ax1x.com/2022/06/27/jE6zff.png" loading="lazy"></p>
+<p>有更多的控制和优化功能查找的选项。您可以在<a target="_blank" rel="noopener" href="https://soft-matter.github.io/trackpy/stable/">文档</a>中查看它们，最全面的描述在API参考文档中。或者通过<code>tp.locate?</code>来查阅它们。</p>
+<h3 id="Check-for-subpixel-accuracy"><a href="#Check-for-subpixel-accuracy" class="headerlink" title="Check for subpixel accuracy"></a>Check for subpixel accuracy</h3><p>(检查亚像素精度)</p>
+<p>Eric Weeks在他的相关教程中指出，检查亚像素精度的一个快速方法是检查x和&#x2F;或y位置的小数部分是否均匀分布。</p>
+<p>Trackpy为此提供了一个方便的绘图函数<code>subpx_bias</code>:</p>
+<p><em><code>In [16]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">tp<span class="token punctuation">.</span>subpx_bias<span class="token punctuation">(</span>f<span class="token punctuation">)</span></code></pre>
+
+<p><em><code>Out [16]</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">array<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token operator">&lt;</span>matplotlib<span class="token punctuation">.</span>axes<span class="token punctuation">.</span>_subplots<span class="token punctuation">.</span>AxesSubplot <span class="token builtin">object</span> at <span class="token number">0x1c268a1490</span><span class="token operator">></span><span class="token punctuation">,</span>
+        <span class="token operator">&lt;</span>matplotlib<span class="token punctuation">.</span>axes<span class="token punctuation">.</span>_subplots<span class="token punctuation">.</span>AxesSubplot <span class="token builtin">object</span> at <span class="token number">0x1c269a54d0</span><span class="token operator">></span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+      dtype<span class="token operator">=</span><span class="token builtin">object</span><span class="token punctuation">)</span></code></pre>
+
+<p><img src="https://s1.ax1x.com/2022/06/27/jEcVkq.png" loading="lazy"></p>
+<p>如果我们使用的像素尺寸太小，直方图经常在中间显示一个下降。</p>
+<p><em><code>In [17]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">tp<span class="token punctuation">.</span>subpx_bias<span class="token punctuation">(</span>tp<span class="token punctuation">.</span>locate<span class="token punctuation">(</span>frames<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">,</span> invert<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span> minmass<span class="token operator">=</span><span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+<p><em><code>Out [17]</code></em></p>
+<p><img src="https://s1.ax1x.com/2022/06/27/jEcZt0.png" loading="lazy"></p>
+<h3 id="Locate-features-in-all-frames"><a href="#Locate-features-in-all-frames" class="headerlink" title="Locate features in all frames"></a>Locate features in all frames</h3><p>(定位所有帧的特征)</p>
+<p>或者，开始时，只是探索所有帧的一个子集。</p>
+<table>
+<thead>
+<tr>
+<th>selection</th>
+<th>syntax example</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>all the frames</td>
+<td><code>frames[:]</code> or simply <code>frames</code>.</td>
+</tr>
+<tr>
+<td>the first 10 frames</td>
+<td><code>frames[:10]</code></td>
+</tr>
+<tr>
+<td>the last 10 frames</td>
+<td><code>frames[-10:]</code></td>
+</tr>
+<tr>
+<td>a range of frames</td>
+<td><code>frames[100:200]</code></td>
+</tr>
+<tr>
+<td>every 10th frame</td>
+<td><code>frame[::10]</code></td>
+</tr>
+<tr>
+<td>a list of specific frames</td>
+<td><code>frames[[100, 107, 113]]</code></td>
+</tr>
+</tbody></table>
+<p>我们将在这段视频的前300帧中定位特征。我们使用<code>tp.batch</code>调用<code>tp.locate</code>对每一帧分析并收集结果。</p>
+<p><em><code>In [18]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">f <span class="token operator">=</span> tp<span class="token punctuation">.</span>batch<span class="token punctuation">(</span>frames<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token number">300</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token number">11</span><span class="token punctuation">,</span> minmass<span class="token operator">=</span><span class="token number">20</span><span class="token punctuation">,</span> invert<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+<p><em><code>Out [18]</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">···
+Frame <span class="token number">299</span><span class="token punctuation">:</span> <span class="token number">624</span> features
+···</code></pre>
+
+<p>在分析每一帧时，<code>tp.batch</code>报告帧号和发现了多少特征。如果这个数字意外地低或高，您可能希望中断它并尝试不同的参数。</p>
+<p>如果您的图像很小，您可能会发现打印这个数字实际上大大降低了<code>batch</code>速度!在这种情况下，您可以运行<code>tp.quiet()</code>来关闭它。</p>
+<h2 id="Step-3-Link-features-into-particle-trajectories"><a href="#Step-3-Link-features-into-particle-trajectories" class="headerlink" title="Step 3: Link features into particle trajectories"></a>Step 3: Link features into particle trajectories</h2><p>我们有粒子在每一帧中的位置。接下来，我们将逐帧跟踪粒子，给每个粒子一个编号以进行识别。</p>
+<p>首先，我们必须指定一个最大位移，即质点在两帧间能移动的最远距离。我们应该选择最小的合理值，因为大的值会大大减慢计算时间。在这种情况下，5像素是合理的。</p>
+<p>其次，我们考虑到粒子可能会错过几帧，然后再次看到的可能性。(可能是由于视频中的噪声，它的”mass”低于我们的截止值。)内存会跟踪消失的粒子，并在它们最后一次出现后保留它们的ID。这里我们使用3帧。</p>
+<p><em><code>In [19]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment"># tp.quiet()  # 关闭进度报告以获得最佳性能</span>
+t <span class="token operator">=</span> tp<span class="token punctuation">.</span>link<span class="token punctuation">(</span>f<span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> memory<span class="token operator">=</span><span class="token number">3</span><span class="token punctuation">)</span></code></pre>
+
+<p><em><code>Out [19]</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">Frame <span class="token number">299</span><span class="token punctuation">:</span> <span class="token number">624</span> trajectories present<span class="token punctuation">.</span></code></pre>
+
+<p>结果是特征DataFrame <code>f</code>加上一个额外的列粒子，用标签标识每个特征。我们标识这个新的DataFrame为 <code>t</code>。</p>
+<p><em><code>In [20]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">t<span class="token punctuation">.</span>head<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+
+<p><em><code>Out [20]</code></em></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>y</th>
+<th>x</th>
+<th>mass</th>
+<th>size</th>
+<th>ecc</th>
+<th>signal</th>
+<th>raw_mass</th>
+<th>ep</th>
+<th>frame</th>
+<th>particle</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0</td>
+<td>4.750000</td>
+<td>103.668564</td>
+<td>192.862485</td>
+<td>2.106615</td>
+<td>0.066390</td>
+<td>10.808405</td>
+<td>10714.0</td>
+<td>0.073666</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>365</td>
+<td>284.118980</td>
+<td>25.313881</td>
+<td>149.037779</td>
+<td>2.321961</td>
+<td>0.031799</td>
+<td>7.008575</td>
+<td>10770.0</td>
+<td>0.067577</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>364</td>
+<td>282.753601</td>
+<td>534.788476</td>
+<td>222.754482</td>
+<td>1.908443</td>
+<td>0.103416</td>
+<td>15.874846</td>
+<td>10415.0</td>
+<td>0.141946</td>
+<td>0</td>
+<td>2</td>
+</tr>
+<tr>
+<td>363</td>
+<td>280.010398</td>
+<td>275.185353</td>
+<td>186.782757</td>
+<td>2.508665</td>
+<td>0.183181</td>
+<td>7.261897</td>
+<td>10438.0</td>
+<td>0.132499</td>
+<td>0</td>
+<td>3</td>
+</tr>
+<tr>
+<td>362</td>
+<td>279.134153</td>
+<td>252.780324</td>
+<td>151.064355</td>
+<td>2.938060</td>
+<td>0.253812</td>
+<td>4.306474</td>
+<td>10359.0</td>
+<td>0.171764</td>
+<td>0</td>
+<td>4</td>
+</tr>
+</tbody></table>
+<h3 id="Filter-spurious-trajectories"><a href="#Filter-spurious-trajectories" class="headerlink" title="Filter spurious trajectories"></a>Filter spurious trajectories</h3><p>(过滤虚假轨迹)</p>
+<p>我们还有更多的过滤工作要做。短暂的轨迹——只能看到几帧——通常是虚假的，没有什么用处。方便的函数<code>filter_stub</code>只保留给定帧数的轨迹。</p>
+<p><em><code>In [21]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">t1 <span class="token operator">=</span> tp<span class="token punctuation">.</span>filter_stubs<span class="token punctuation">(</span>t<span class="token punctuation">,</span> <span class="token number">25</span><span class="token punctuation">)</span>
+<span class="token comment"># 比较未过滤和过滤后数据中的粒子数。</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Before:'</span><span class="token punctuation">,</span> t<span class="token punctuation">[</span><span class="token string">'particle'</span><span class="token punctuation">]</span><span class="token punctuation">.</span>nunique<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'After:'</span><span class="token punctuation">,</span> t1<span class="token punctuation">[</span><span class="token string">'particle'</span><span class="token punctuation">]</span><span class="token punctuation">.</span>nunique<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
+
+<p><em><code>Out [21]</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">Before<span class="token punctuation">:</span> <span class="token number">13715</span>
+After<span class="token punctuation">:</span> <span class="token number">1505</span></code></pre>
+
+<p>我们还可以通过粒子的外观来过滤轨迹。在这个阶段，有了轨迹连接，我们就可以通过轨迹来观察一个特征的“平均外观”，从而给出更准确的图像。</p>
+<p><em><code>In [22]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">plt<span class="token punctuation">.</span>figure<span class="token punctuation">(</span><span class="token punctuation">)</span>
+tp<span class="token punctuation">.</span>mass_size<span class="token punctuation">(</span>t1<span class="token punctuation">.</span>groupby<span class="token punctuation">(</span><span class="token string">'particle'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>mean<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment"># convenience function -- just plots size vs. mass</span></code></pre>
+
+<p><img src="https://s1.ax1x.com/2022/06/27/jEcnpT.png" loading="lazy"></p>
+<p>“mass”特别小的粒子，或特别大的或非圆形(偏心)的粒子，可能分别失焦或聚集。最好是通过尝试和错误进行实验，过滤出”mass”大小的空间区域，并使用<code>tp.annotate</code>查看结果。最后，我们需要把好的粒子从虚假的粒子中分离出来，我们如何做到这一点并不重要。</p>
+<p><em><code>In [23]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">t2 <span class="token operator">=</span> t1<span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token punctuation">(</span>t1<span class="token punctuation">[</span><span class="token string">'mass'</span><span class="token punctuation">]</span> <span class="token operator">></span> <span class="token number">50</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span> <span class="token punctuation">(</span>t1<span class="token punctuation">[</span><span class="token string">'size'</span><span class="token punctuation">]</span> <span class="token operator">&lt;</span> <span class="token number">2.6</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span>
+         <span class="token punctuation">(</span>t1<span class="token punctuation">[</span><span class="token string">'ecc'</span><span class="token punctuation">]</span> <span class="token operator">&lt;</span> <span class="token number">0.3</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">]</span></code></pre>
+
+<p><em><code>In [24]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">plt<span class="token punctuation">.</span>figure<span class="token punctuation">(</span><span class="token punctuation">)</span>
+tp<span class="token punctuation">.</span>annotate<span class="token punctuation">(</span>t2<span class="token punctuation">[</span>t2<span class="token punctuation">[</span><span class="token string">'frame'</span><span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> frames<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+<p><em><code>Out [24]</code></em></p>
+<p><img src="https://s1.ax1x.com/2022/06/27/jEcu1U.png" loading="lazy"></p>
+<p>使用<code>plot_traj()</code>跟踪轨迹:</p>
+<p><em><code>In [25]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">plt<span class="token punctuation">.</span>figure<span class="token punctuation">(</span><span class="token punctuation">)</span>
+tp<span class="token punctuation">.</span>plot_traj<span class="token punctuation">(</span>t2<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+<p><em><code>Out [25]</code></em></p>
+<p><img src="https://s1.ax1x.com/2022/06/27/jEc1B9.png" loading="lazy"></p>
+<h3 id="Remove-overall-drift"><a href="#Remove-overall-drift" class="headerlink" title="Remove overall drift"></a>Remove overall drift</h3><p>(删除整体漂移)</p>
+<p>计算整体的漂移运动，我们将其减去，采用粒子的平均位置参考系。</p>
+<p><em><code>In [26]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">d <span class="token operator">=</span> tp<span class="token punctuation">.</span>compute_drift<span class="token punctuation">(</span>t2<span class="token punctuation">)</span></code></pre>
+
+<p><em><code>In [27]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">d<span class="token punctuation">.</span>plot<span class="token punctuation">(</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+
+<p><em><code>Out [27]</code></em></p>
+<p><img src="https://s1.ax1x.com/2022/06/27/jEcJtx.png" loading="lazy"></p>
+<p><em><code>In [28]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">tm <span class="token operator">=</span> tp<span class="token punctuation">.</span>subtract_drift<span class="token punctuation">(</span>t2<span class="token punctuation">.</span>copy<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> d<span class="token punctuation">)</span></code></pre>
+
+<p>将整个漂移运动减去，我们再次绘制轨迹。我们观察到很好的随机游动。</p>
+<p><em><code>In [29]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">ax <span class="token operator">=</span> tp<span class="token punctuation">.</span>plot_traj<span class="token punctuation">(</span>tm<span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+
+<p><img src="https://s1.ax1x.com/2022/06/27/jEcYh6.png" loading="lazy"></p>
+<h2 id="Step-4-Analyze-trajectories"><a href="#Step-4-Analyze-trajectories" class="headerlink" title="Step 4: Analyze trajectories"></a>Step 4: Analyze trajectories</h2><p>Trackpy包括几个函数，以帮助一些常见的分析粒子轨迹。(请参阅API参考的”Static Analysis”(“静态分析”)和”Motion Analysis”(“运动分析”)章节。)</p>
+<p>在这里，我们可以证明这些数据与胶态粒子在水中经历布朗运动是一致的。</p>
+<h3 id="Mean-Squared-Displacement-of-Individal-Probes"><a href="#Mean-Squared-Displacement-of-Individal-Probes" class="headerlink" title="Mean Squared Displacement of Individal Probes"></a>Mean Squared Displacement of Individal Probes</h3><p>(单个探针的均方位移)</p>
+<p>利用<code>imsd</code>函数计算每个粒子的均方位移(MSD)，并绘制MSD与滞后时间的关系图。</p>
+<p><em><code>In [30]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">im <span class="token operator">=</span> tp<span class="token punctuation">.</span>imsd<span class="token punctuation">(</span>tm<span class="token punctuation">,</span> <span class="token number">100</span><span class="token operator">/</span><span class="token number">285.</span><span class="token punctuation">,</span> <span class="token number">24</span><span class="token punctuation">)</span>  <span class="token comment"># microns per pixel = 100/285., frames per second = 24</span></code></pre>
+
+<p><em><code>In [31]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">fig<span class="token punctuation">,</span> ax <span class="token operator">=</span> plt<span class="token punctuation">.</span>subplots<span class="token punctuation">(</span><span class="token punctuation">)</span>
+ax<span class="token punctuation">.</span>plot<span class="token punctuation">(</span>im<span class="token punctuation">.</span>index<span class="token punctuation">,</span> im<span class="token punctuation">,</span> <span class="token string">'k-'</span><span class="token punctuation">,</span> alpha<span class="token operator">=</span><span class="token number">0.1</span><span class="token punctuation">)</span>  <span class="token comment"># black lines, semitransparent</span>
+ax<span class="token punctuation">.</span><span class="token builtin">set</span><span class="token punctuation">(</span>ylabel<span class="token operator">=</span><span class="token string">r'$\langle \Delta r^2 \rangle$ [$\mu$m$^2$]'</span><span class="token punctuation">,</span>
+       xlabel<span class="token operator">=</span><span class="token string">'lag time $t$'</span><span class="token punctuation">)</span>
+ax<span class="token punctuation">.</span>set_xscale<span class="token punctuation">(</span><span class="token string">'log'</span><span class="token punctuation">)</span>
+ax<span class="token punctuation">.</span>set_yscale<span class="token punctuation">(</span><span class="token string">'log'</span><span class="token punctuation">)</span></code></pre>
+
+<p><em><code>Out [31]</code></em></p>
+<p><img src="https://s1.ax1x.com/2022/06/27/jEcN9K.png" loading="lazy"></p>
+<p>因为我们只分析了300帧，所以在大延迟时间下统计数据很差。有更多的帧，我们可以研究更大的滞后时间。</p>
+<h3 id="Ensemble-Mean-Squared-Displacement"><a href="#Ensemble-Mean-Squared-Displacement" class="headerlink" title="Ensemble Mean Squared Displacement"></a>Ensemble Mean Squared Displacement</h3><p>(总体均方位移)</p>
+<p>现在使用函数<code>emsd</code>计算所有粒子的整体均方位移(EMSD):</p>
+<p><em><code>In [32]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">em <span class="token operator">=</span> tp<span class="token punctuation">.</span>emsd<span class="token punctuation">(</span>tm<span class="token punctuation">,</span> <span class="token number">100</span><span class="token operator">/</span><span class="token number">285.</span><span class="token punctuation">,</span> <span class="token number">24</span><span class="token punctuation">)</span> <span class="token comment"># microns per pixel = 100/285., frames per second = 24</span></code></pre>
+
+<p><em><code>In [33]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">fig<span class="token punctuation">,</span> ax <span class="token operator">=</span> plt<span class="token punctuation">.</span>subplots<span class="token punctuation">(</span><span class="token punctuation">)</span>
+ax<span class="token punctuation">.</span>plot<span class="token punctuation">(</span>em<span class="token punctuation">.</span>index<span class="token punctuation">,</span> em<span class="token punctuation">,</span> <span class="token string">'o'</span><span class="token punctuation">)</span>
+ax<span class="token punctuation">.</span>set_xscale<span class="token punctuation">(</span><span class="token string">'log'</span><span class="token punctuation">)</span>
+ax<span class="token punctuation">.</span>set_yscale<span class="token punctuation">(</span><span class="token string">'log'</span><span class="token punctuation">)</span>
+ax<span class="token punctuation">.</span><span class="token builtin">set</span><span class="token punctuation">(</span>ylabel<span class="token operator">=</span><span class="token string">r'$\langle \Delta r^2 \rangle$ [$\mu$m$^2$]'</span><span class="token punctuation">,</span>
+       xlabel<span class="token operator">=</span><span class="token string">'lag time $t$'</span><span class="token punctuation">)</span>
+ax<span class="token punctuation">.</span><span class="token builtin">set</span><span class="token punctuation">(</span>ylim<span class="token operator">=</span><span class="token punctuation">(</span><span class="token number">1e-2</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+<p><em><code>Out [33]</code></em></p>
+<p><img src="https://s1.ax1x.com/2022/06/27/jEc0nH.png" loading="lazy"></p>
+<p>我们可以很容易地将这个集合的均方位移拟合到幂律$At^n$上，使用一个方便的函数<code>fit_powerlaw</code>，它在对数空间中执行线性回归。</p>
+<p><em><code>In [34]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">plt<span class="token punctuation">.</span>figure<span class="token punctuation">(</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>ylabel<span class="token punctuation">(</span><span class="token string">r'$\langle \Delta r^2 \rangle$ [$\mu$m$^2$]'</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>xlabel<span class="token punctuation">(</span><span class="token string">'lag time $t$'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+tp<span class="token punctuation">.</span>utils<span class="token punctuation">.</span>fit_powerlaw<span class="token punctuation">(</span>em<span class="token punctuation">)</span>  <span class="token comment"># 图中在对数空间执行最佳线性拟合</span></code></pre>
+
+<p><em><code>Out [34]</code></em></p>
+<p><img src="https://s1.ax1x.com/2022/06/27/jEcyNt.png" loading="lazy"></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>n</th>
+<th>A</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>msd</td>
+<td>1.0787</td>
+<td>1.595089</td>
+</tr>
+</tbody></table>
+<p>在水中，粘性物质，期望幂律指数$n&#x3D;1$。$A&#x3D;4D$，其中$D$为粒子的扩散系数。$D$通过Stokes-Einstein方程与粘度$\eta$、粒子半径$r$、温度$T$有关:<br>$$<br>D &#x3D; \frac{k_BT}{6\pi\eta r}<br>$$<br>kB是玻尔兹曼常数。对于直径为1 μm的颗粒在室温水中，a≈1.66 μm2&#x2F;s。上面n和A的值离我们不远了。(如果你想了解更多关于这个测量和它的不确定度，<a target="_blank" rel="noopener" href="https://dx.doi.org/10.1119/1.4803529">这篇文章</a>是一个深入的讨论在高等本科水平。)</p>
+</div></section><div id="reward-container"><span class="hty-icon-button button-glow" id="reward-button" title="打赏" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === &quot;none&quot;) ? &quot;block&quot; : &quot;none&quot;;"><span class="icon iconify" data-icon="ri:hand-coin-line"></span></span><div id="reward-comment">I'm so cute. Please give me money.</div><div id="qr" style="display:none;"><div style="display:inline-block"><a href="/alipay.jpg"><img loading="lazy" src="/alipay.jpg" alt="支付宝" title="支付宝"></a><div><span style="color:#00A3EE"><span class="icon iconify" data-icon="ri:alipay-line"></span></span></div></div><div style="display:inline-block"><a href="/wechatpay.jpg"><img loading="lazy" src="/wechatpay.jpg" alt="微信支付" title="微信支付"></a><div><span style="color:#2DC100"><span class="icon iconify" data-icon="ri:wechat-pay-line"></span></span></div></div></div></div><ul class="post-copyright"><li class="post-copyright-author"><strong>本文作者：</strong>Zephyr Heather</li><li class="post-copyright-link"><strong>本文链接：</strong><a href="http://zephyrheather.github.io/posts/9ce795e5/" title="Trackpy--Walkthrough">http://zephyrheather.github.io/posts/9ce795e5/</a></li><li class="post-copyright-license"><strong>版权声明：</strong>本博客所有文章除特别声明外，均默认采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener" title="CC BY-NC-SA 4.0 "><span class="icon iconify" data-icon="ri:creative-commons-line"></span><span class="icon iconify" data-icon="ri:creative-commons-by-line"></span><span class="icon iconify" data-icon="ri:creative-commons-nc-line"></span><span class="icon iconify" data-icon="ri:creative-commons-sa-line"></span></a> 许可协议。</li></ul></article><div class="post-nav"><div class="post-nav-item"><a class="post-nav-prev" href="/posts/e392976/" rel="prev" title="命令行小工具"><span class="icon iconify" data-icon="ri:arrow-left-s-line"></span><span class="post-nav-text">命令行小工具</span></a></div><div class="post-nav-item"><a class="post-nav-next" href="/posts/8d8bd145/" rel="next" title="开学随想"><span class="post-nav-text">开学随想</span><span class="icon iconify" data-icon="ri:arrow-right-s-line"></span></a></div></div></div><div class="hty-card" id="comment"><div id="waline"></div><link rel="stylesheet" href="https://fastly.jsdelivr.net/npm/@waline/client@v2/dist/waline.css"><script>window.CONFIG.waline.config.path = "/posts/9ce795e5/"</script><div class="js-Pjax"><script src="/js/comments/waline.js" type="module" defer></script></div></div></main><footer class="sidebar-translate" id="footer"><div class="copyright"><span>&copy; 2021 – 2022 </span><span class="with-love" id="animate"><span class="icon iconify" data-icon="ri:cloud-line"></span></span><span class="author"> Zephyr Heather</span></div><div class="powered"><span>由 <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> 驱动 v6.2.0</span><span class="footer-separator">|</span><span>主题 - <a rel="noopener" href="https://github.com/YunYouJun/hexo-theme-yun" target="_blank"><span>Yun</span></a> v1.10.4</span></div><div class="live-time"><span>本博客已萌萌哒地运行</span><span id="display_live_time"></span><span class="moe-text">(●'◡'●)</span><script>function blog_live_time() {
+  setTimeout(blog_live_time, 1000);
+  const start = new Date('2021-07-10T16:57:41');
+  const now = new Date();
+  const timeDiff = (now.getTime() - start.getTime());
+  const msPerMinute = 60 * 1000;
+  const msPerHour = 60 * msPerMinute;
+  const msPerDay = 24 * msPerHour;
+  const passDay = Math.floor(timeDiff / msPerDay);
+  const passHour = Math.floor((timeDiff % msPerDay) / 60 / 60 / 1000);
+  const passMinute = Math.floor((timeDiff % msPerHour) / 60 / 1000);
+  const passSecond = Math.floor((timeDiff % msPerMinute) / 1000);
+  display_live_time.innerHTML = ` ${passDay} 天 ${passHour} 小时 ${passMinute} 分 ${passSecond} 秒`;
+}
+blog_live_time();
+</script></div></footer></div><a class="hty-icon-button" id="back-to-top" aria-label="back-to-top" href="#"><span class="icon iconify" data-icon="ri:arrow-up-s-line"></span><svg class="progress-circle-container" viewBox="0 0 100 100"><circle class="progress-circle" id="progressCircle" cx="50" cy="50" r="48" fill="none" stroke="#0078E7" stroke-width="2" stroke-linecap="round"></circle></svg></a><a class="popup-trigger hty-icon-button icon-search" id="search" href="javascript:;" title="搜索"><span class="site-state-item-icon"><span class="icon iconify" data-icon="ri:search-line"></span></span></a><script>window.addEventListener("DOMContentLoaded", () => {
+  // Handle and trigger popup window
+  document.querySelector(".popup-trigger").addEventListener("click", () => {
+    document.querySelector(".popup").classList.add("show");
+    setTimeout(() => {
+      document.querySelector(".search-input").focus();
+    }, 100);
+  });
+
+  // Monitor main search box
+  const onPopupClose = () => {
+    document.querySelector(".popup").classList.remove("show");
+  };
+
+  document.querySelector(".popup-btn-close").addEventListener("click", () => {
+    onPopupClose();
+  });
+
+  window.addEventListener("keyup", event => {
+    if (event.key === "Escape") {
+      onPopupClose();
+    }
+  });
+});
+</script><script src="https://fastly.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js"></script><script src="/js/search/local-search.js" defer type="module"></script><div class="popup search-popup"><div class="search-header"><span class="popup-btn-close close-icon hty-icon-button"><span class="icon iconify" data-icon="ri:close-line"></span></span></div><div class="search-input-container"><input class="search-input" id="local-search-input" type="text" placeholder="搜索..." value=""></div><div class="search-result-container"></div></div><script>function initMourn() {
+  const date = new Date();
+  const today = (date.getMonth() + 1) + "-" + date.getDate()
+  const mourn_days = ["4-4","9-18","8-3"]
+  if (mourn_days.includes(today)) {
+    document.documentElement.style.filter = "grayscale(1)";
+  }
+}
+initMourn();</script><script src="https://fastly.jsdelivr.net/npm/medium-zoom@1.0.6/dist/medium-zoom.min.js"></script><script>const images = [...document.querySelectorAll('.markdown-body img')]
+mediumZoom(images)</script><style>.medium-zoom-image {
+  z-index: 99;
+}</style><!-- hexo injector body_end start --><script src="https://fastly.jsdelivr.net/npm/hexo-tag-common@0.2.0/js/index.js"></script><!-- hexo injector body_end end --></body></html>
