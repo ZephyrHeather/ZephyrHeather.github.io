@@ -1319,6 +1319,1196 @@ GLFW_IM_MODULE <span class="token assign-left variable">DEFAULT</span><span clas
       </tags>
   </entry>
   <entry>
+    <title>Arch Linux的私人配置</title>
+    <url>/posts/170530f2/</url>
+    <content><![CDATA[<p>软件：base linux linux-firmware base-devel vim nano dhcpcd iwd intel-ucode amd-ucode zsh polkit xorg-server xorg-xinit i3-gaps xfce4-termianl fctix5-im fcitx5-chinese-addons fcitx5-pinyin-zhwiki fcitx5-pinyin-moegirl networkmanager network-manager-applet alsa-utils polybar maim ranger ristretto vlc firefox typora pandoc netease-cloud-music bat thunar neofetch ncdu xclip arch-install-scripts tmux archlinuxcn-key dmenu git wget ttf-lxgw-wenkai-mono picom feh ttf-font-awesome yay man-db xorg-xdpyinfo ssfconv sof-firmware bluez bluez-utils blueberry nodejs ddnet xf86-video-intel w3m clash</p>
+<table>
+<thead>
+<tr>
+<th>分类</th>
+<th>软件</th>
+<th>手动配置的</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>系统</td>
+<td>base linux linux-firmware base-devel intel-ucode amd-ucode polkit zsh</td>
+<td>zsh</td>
+</tr>
+<tr>
+<td>网络</td>
+<td>dhcpcd iwd networkmanager network-manager-applet</td>
+<td></td>
+</tr>
+<tr>
+<td>声音</td>
+<td>alsa-utils sof-firmware</td>
+<td>alsa</td>
+</tr>
+<tr>
+<td>字体</td>
+<td>ttf-lxgw-wenkai-mono ttf-font-awesome</td>
+<td></td>
+</tr>
+<tr>
+<td>编辑器</td>
+<td>vim nano typora</td>
+<td>vim</td>
+</tr>
+<tr>
+<td>文件管理</td>
+<td>thunar ranger ncdu</td>
+<td>ranger</td>
+</tr>
+<tr>
+<td>图形界面</td>
+<td>xorg-server xorg-xinit i3-gaps polybar xf86-video-intel picom feh dmenu</td>
+<td>i3-gaps polybar</td>
+</tr>
+<tr>
+<td>输入法</td>
+<td>fctix5-im fcitx5-chinese-addons fcitx5-pinyin-zhwiki fcitx5-pinyin-moegirl ssfconv</td>
+<td>fcitx5-im ssfconv</td>
+</tr>
+<tr>
+<td>浏览器</td>
+<td>firefox w3m</td>
+<td></td>
+</tr>
+<tr>
+<td>蓝牙</td>
+<td>bluez bluez-utils blueberry</td>
+<td></td>
+</tr>
+<tr>
+<td>游戏</td>
+<td>ddnet</td>
+<td></td>
+</tr>
+<tr>
+<td>终端</td>
+<td>xfce4-termianl</td>
+<td>xfce4-terminal</td>
+</tr>
+<tr>
+<td>截屏</td>
+<td>maim</td>
+<td>maim</td>
+</tr>
+<tr>
+<td>图像查看</td>
+<td>ristretto feh</td>
+<td></td>
+</tr>
+<tr>
+<td>多媒体</td>
+<td>vlc</td>
+<td></td>
+</tr>
+<tr>
+<td>文件转换</td>
+<td>pandoc</td>
+<td></td>
+</tr>
+<tr>
+<td>音乐</td>
+<td>netease-cloud-music</td>
+<td></td>
+</tr>
+<tr>
+<td>工具</td>
+<td>bat xclip arch-install-scripts tmux git wget yay man-db xorg-xdpyinfo ssfconv clash</td>
+<td>git</td>
+</tr>
+</tbody></table>
+<hr>
+<div class="info">
+
+<blockquote>
+<p>本文为个人配置，长期更新。</p>
+</blockquote>
+</div>
+
+<h1 id="系统"><a href="#系统" class="headerlink" title="系统"></a>系统</h1><p>这里是涉及系统层面的软件，大多不用配置，只做简单的介绍。</p>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><h3 id="base-amp-base-devel"><a href="#base-amp-base-devel" class="headerlink" title="base &amp; base-devel"></a>base &amp; base-devel</h3><p>base和base-devel都是软件包组，由一系列软件包组成，或称为元软件包(<a href="https://wiki.archlinux.org/title/Meta_package_and_package_group_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">meta package</a>)。</p>
+<p>其中base包含了 Arch Linux 安装时需要的最小软件集，包含：</p>
+<ul>
+<li>基本的 glibc 和 bash</li>
+<li>发行版相关工具如 pacman 和 systemd</li>
+<li>POSIX 工具 core utilities、进程、文件、压缩工具等</li>
+<li>网络工具 iproute2</li>
+</ul>
+<p><span class="heimu">是的，你没看错，<a href="https://wiki.archlinux.org/title/Kernel">kernel</a> 是可选依赖！内核不在最小安装里！</span></p>
+<p>请参考<a href="https://archlinux.org/news/base-group-replaced-by-mandatory-base-package-manual-intervention-required/">发布说明</a> 和 <a href="https://lists.archlinux.org/archives/list/arch-dev-public@lists.archlinux.org/thread/GRX4NIR2AQVBUGYS4K4TKBS3HGSAS456/">为什么 base 是元软件包</a>。</p>
+<h3 id="linux"><a href="#linux" class="headerlink" title="linux"></a>linux</h3><p>linux就是kernel(内核)，无需多说，有其他的内核可选，参见<a href="https://wiki.archlinux.org/title/Kernel_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">kernel</a></p>
+<h3 id="intel-ucode-amp-amd-ucode"><a href="#intel-ucode-amp-amd-ucode" class="headerlink" title="intel-ucode &amp; amd-ucode"></a>intel-ucode &amp; amd-ucode</h3><p>是Intel或者AMD CPU的微码，维持CPU的稳定性和安全性更新，参见<a href="https://wiki.archlinux.org/title/Microcode_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">Microcode</a></p>
+<h3 id="polkit"><a href="#polkit" class="headerlink" title="polkit"></a>polkit</h3><p>polkit在系统层级进行权限控制，对于普通用户调节亮度或者关机之类的操作有用，一般的图形界面有对应的组件，使用<code>i3wm</code>需要自行安装。</p>
+<h3 id="zsh"><a href="#zsh" class="headerlink" title="zsh"></a>zsh</h3><p>一种shell。</p>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><h3 id="zsh-1"><a href="#zsh-1" class="headerlink" title="zsh"></a>zsh</h3><p>安装oh-my-zsh</p>
+<p>官方安装(见<a href="ohmyz.sh">ohmyz.sh</a>):</p>
+<pre class="language-none"><code class="language-none">sh -c &quot;$(curl -fsSL https:&#x2F;&#x2F;raw.github.com&#x2F;ohmyzsh&#x2F;ohmyzsh&#x2F;master&#x2F;tools&#x2F;install.sh)&quot;	# 使用curl
+
+sh -c &quot;$(wget https:&#x2F;&#x2F;raw.github.com&#x2F;ohmyzsh&#x2F;ohmyzsh&#x2F;master&#x2F;tools&#x2F;install.sh -O -)&quot;	# 使用wget</code></pre>
+
+<p>gitee安装：</p>
+<pre class="language-none"><code class="language-none">git clone https:&#x2F;&#x2F;gitee.com&#x2F;mirrors&#x2F;oh-my-zsh.git ~&#x2F;.oh-my-zsh
+cp ~&#x2F;.oh-my-zsh&#x2F;templates&#x2F;zshrc.zsh-template ~&#x2F;.zshrc
+chsh -l			# 查看有哪些shell
+chsh -s &#x2F;bin&#x2F;zsh 	# 切换到zsh
+source ~&#x2F;.zshrc		# 读取zshrc的配置，可能需要重新登录用户才能起效</code></pre>
+
+<p>zsh-autosuggestions命令自动补全插件</p>
+<pre class="language-none"><code class="language-none">git clone https:&#x2F;&#x2F;github.com&#x2F;zsh-users&#x2F;zsh-autosuggestions $&#123;ZSH_CUSTOM:-~&#x2F;.oh-my-zsh&#x2F;custom&#125;&#x2F;plugins&#x2F;zsh-autosuggestions</code></pre>
+
+<p>zsh-syntax-highlighting高亮显示常用命令</p>
+<pre class="language-none"><code class="language-none">git clone https:&#x2F;&#x2F;github.com&#x2F;zsh-users&#x2F;zsh-syntax-highlighting.git $&#123;ZSH_CUSTOM:-~&#x2F;.oh-my-zsh&#x2F;custom&#125;&#x2F;plugins&#x2F;zsh-syntax-highlighting</code></pre>
+
+<p>启用插件和主题</p>
+<center> ~/.zshrc </center>
+
+
+<pre class="language-none"><code class="language-none">ZSH_THEME&#x3D;&quot;3denhw&quot;
+plugins&#x3D;(git sudo zsh-syntax-highlighting zsh-autosuggestions z)</code></pre>
+
+<p><code>3denhw</code>是我用<code>3den</code>改的硬件时钟版本</p>
+<center>~/.oh-my-zsh/themes/3denhw.zsh-theme</center>
+
+
+<pre class="language-none"><code class="language-none">PROMPT&#x3D;$&#39;%&#123;$fg[white]%&#125;$(ruby_prompt_info) %&#123;$fg_bold[cyan]%&#125;%~%&#123;$reset_color%&#125;$(git_prompt_info) %&#123;$fg[cyan]%&#125;[%*]\
+%&#123;$fg_bold[green]%&#125;%n$%&#123;$reset_color%&#125; &#39;
+
+ZSH_THEME_GIT_PROMPT_PREFIX&#x3D;&quot; %&#123;$fg[white]%&#125;(&quot;
+ZSH_THEME_GIT_PROMPT_SUFFIX&#x3D;&quot;)%&#123;$reset_color%&#125;&quot;
+ZSH_THEME_GIT_PROMPT_DIRTY&#x3D;&quot;*&quot;
+ZSH_THEME_GIT_PROMPT_CLEAN&#x3D;&quot;&quot;</code></pre>
+
+<h3 id="sudo权限"><a href="#sudo权限" class="headerlink" title="sudo权限"></a>sudo权限</h3><p>使用<code>EDITOR=vim visudo</code></p>
+<center>/etc/sudoers</center>
+
+
+<pre class="language-none"><code class="language-none">%wheel ALL&#x3D;(ALL:ALL) ALL	# 给wheel组的用户sudo权限</code></pre>
+
+<h3 id="grub"><a href="#grub" class="headerlink" title="grub"></a>grub</h3><details>
+  <summary>/boot/grub/grub.cfg</summary>
+
+<pre class="language-none"><code class="language-none">insmod part_gpt
+insmod part_msdos
+if [ -s $prefix&#x2F;grubenv ]; then
+  load_env
+fi
+if [ &quot;$&#123;next_entry&#125;&quot; ] ; then
+   set default&#x3D;&quot;$&#123;next_entry&#125;&quot;
+   set next_entry&#x3D;
+   save_env next_entry
+   set boot_once&#x3D;true
+else
+   set default&#x3D;&quot;$&#123;saved_entry&#125;&quot;
+fi
+
+if [ x&quot;$&#123;feature_menuentry_id&#125;&quot; &#x3D; xy ]; then
+  menuentry_id_option&#x3D;&quot;--id&quot;
+else
+  menuentry_id_option&#x3D;&quot;&quot;
+fi
+
+export menuentry_id_option
+
+if [ &quot;$&#123;prev_saved_entry&#125;&quot; ]; then
+  set saved_entry&#x3D;&quot;$&#123;prev_saved_entry&#125;&quot;
+  save_env saved_entry
+  set prev_saved_entry&#x3D;
+  save_env prev_saved_entry
+  set boot_once&#x3D;true
+fi
+
+function savedefault &#123;
+  if [ -z &quot;$&#123;boot_once&#125;&quot; ]; then
+    saved_entry&#x3D;&quot;$&#123;chosen&#125;&quot;
+    save_env saved_entry
+  fi
+&#125;
+
+function load_video &#123;
+  if [ x$feature_all_video_module &#x3D; xy ]; then
+    insmod all_video
+  else
+    insmod efi_gop
+    insmod efi_uga
+    insmod ieee1275_fb
+    insmod vbe
+    insmod vga
+    insmod video_bochs
+    insmod video_cirrus
+  fi
+&#125;
+
+set menu_color_normal&#x3D;light-blue&#x2F;black
+set menu_color_highlight&#x3D;light-cyan&#x2F;blue
+
+if [ x$feature_default_font_path &#x3D; xy ] ; then
+   font&#x3D;unicode
+else
+insmod part_gpt
+insmod ext2
+set root&#x3D;&#39;hd0,gpt2&#39;
+if [ x$feature_platform_search_hint &#x3D; xy ]; then
+  search --no-floppy --fs-uuid --set&#x3D;root --hint-bios&#x3D;hd0,gpt2 --hint-efi&#x3D;hd0,gpt2 --hint-baremetal&#x3D;ahci0,gpt2  aaf969e5-f85a-4a06-940a-5afd1ab1c646
+else
+  search --no-floppy --fs-uuid --set&#x3D;root aaf969e5-f85a-4a06-940a-5afd1ab1c646
+fi
+    font&#x3D;&quot;&#x2F;usr&#x2F;share&#x2F;grub&#x2F;unicode.pf2&quot;
+fi
+
+if loadfont $font ; then
+  set gfxmode&#x3D;auto
+  load_video
+  insmod gfxterm
+  set locale_dir&#x3D;$prefix&#x2F;locale
+  set lang&#x3D;en_US
+  insmod gettext
+fi
+terminal_input console
+terminal_output gfxterm
+insmod part_gpt
+insmod ext2
+set root&#x3D;&#39;hd0,gpt2&#39;
+if [ x$feature_platform_search_hint &#x3D; xy ]; then
+  search --no-floppy --fs-uuid --set&#x3D;root --hint-bios&#x3D;hd0,gpt2 --hint-efi&#x3D;hd0,gpt2 --hint-baremetal&#x3D;ahci0,gpt2  aaf969e5-f85a-4a06-940a-5afd1ab1c646
+else
+  search --no-floppy --fs-uuid --set&#x3D;root aaf969e5-f85a-4a06-940a-5afd1ab1c646
+fi
+insmod jpeg
+background_image -m stretch &#x2F;boot&#x2F;grub&#x2F;picture&#x2F;Gnulove.jpg
+if [ x$feature_timeout_style &#x3D; xy ] ; then
+  set timeout_style&#x3D;menu
+  set timeout&#x3D;5
+# Fallback normal timeout code in case the timeout_style feature is
+# unavailable.
+else
+  set timeout&#x3D;5
+fi
+
+menuentry &#39;ArchMage&#39; --class arch --class gnu-linux --class gnu --class os $menuentry_id_option &#39;gnulinux-simple-aaf969e5-f85a-4a06-940a-5afd1ab1c646&#39; &#123;
+	load_video
+	set gfxpayload&#x3D;keep
+	insmod gzio
+	insmod part_gpt
+	insmod ext2
+	set root&#x3D;&#39;hd0,gpt2&#39;
+	if [ x$feature_platform_search_hint &#x3D; xy ]; then
+	  search --no-floppy --fs-uuid --set&#x3D;root --hint-bios&#x3D;hd0,gpt2 --hint-efi&#x3D;hd0,gpt2 --hint-baremetal&#x3D;ahci0,gpt2  aaf969e5-f85a-4a06-940a-5afd1ab1c646
+	else
+	  search --no-floppy --fs-uuid --set&#x3D;root aaf969e5-f85a-4a06-940a-5afd1ab1c646
+	fi
+	echo	&#39;Loading ArchMage ...&#39;
+	linux	&#x2F;boot&#x2F;vmlinuz-linux root&#x3D;UUID&#x3D;aaf969e5-f85a-4a06-940a-5afd1ab1c646 rw  loglevel&#x3D;3
+	echo	&#39;Loading initial ramdisk ...&#39;
+	initrd	&#x2F;boot&#x2F;intel-ucode.img &#x2F;boot&#x2F;amd-ucode.img &#x2F;boot&#x2F;initramfs-linux.img
+&#125;
+
+
+menuentry &quot;ArchMoon&quot; --class arch --class gnu-linux --class gnu --class os $menuentry_id_option &#39;gnulinux-simple-aaf969e5-f85a-4a06-940a-5afd1ab1c646&#39; &#123;
+	load_video
+	set gfxpayload&#x3D;keep
+	insmod gzio
+	insmod part_gpt
+	insmod ext2
+	search --no-floppy --fs-uuid --set&#x3D;root 07275492-5b3c-4ba7-b5e8-a38486bf7cea
+	echo &quot;Loading ArchMoon ...&quot;
+	linux   &#x2F;boot&#x2F;vmlinuz-linux root&#x3D;UUID&#x3D;07275492-5b3c-4ba7-b5e8-a38486bf7cea rw      loglevel&#x3D;3
+	echo    &#39;Loading initial ramdisk ...&#39;
+	initrd  &#x2F;boot&#x2F;intel-ucode.img &#x2F;boot&#x2F;amd-ucode.img &#x2F;boot&#x2F;initramfs-linux.img
+&#125;
+
+submenu &#39;Magic&#39; $menuentry_id_option &#39;gnulinux-advanced-aaf969e5-f85a-4a06-940a-5afd1ab1c646&#39; &#123;
+	menuentry &#39;ArchMage(fallback)&#39; --class arch --class gnu-linux --class gnu --class os $menuentry_id_option &#39;gnulinux-linux-fallback-aaf969e5-f85a-4a06-940a-5afd1ab1c646&#39; &#123;
+		load_video
+		set gfxpayload&#x3D;keep
+		insmod gzio
+		insmod part_gpt
+		insmod ext2
+		set root&#x3D;&#39;hd0,gpt2&#39;
+		if [ x$feature_platform_search_hint &#x3D; xy ]; then
+		  search --no-floppy --fs-uuid --set&#x3D;root --hint-bios&#x3D;hd0,gpt2 --hint-efi&#x3D;hd0,gpt2 --hint-baremetal&#x3D;ahci0,gpt2  aaf969e5-f85a-4a06-940a-5afd1ab1c646
+		else
+		  search --no-floppy --fs-uuid --set&#x3D;root aaf969e5-f85a-4a06-940a-5afd1ab1c646
+		fi
+		echo	&#39;Loading Linux linux ...&#39;
+		linux	&#x2F;boot&#x2F;vmlinuz-linux root&#x3D;UUID&#x3D;aaf969e5-f85a-4a06-940a-5afd1ab1c646 rw  loglevel&#x3D;3
+		echo	&#39;Loading initial ramdisk ...&#39;
+		initrd	&#x2F;boot&#x2F;intel-ucode.img &#x2F;boot&#x2F;amd-ucode.img &#x2F;boot&#x2F;initramfs-linux-fallback.img
+	&#125;
+
+	menuentry &quot;ArchMoon(fallback)&quot; --class arch --class gnu-linux --class gnu --class os $menuentry_id_option &#39;gnulinux-linux-fallback-aaf969e5-f85a-4a06-940a-5afd1ab1c646&#39; &#123;
+		load_video
+		set gfxpayload&#x3D;keep
+		insmod gzio
+		insmod part_gpt
+		insmod ext2
+		search --no-floppy --fs-uuid --set&#x3D;root 07275492-5b3c-4ba7-b5e8-a38486bf7cea
+		echo &quot;Loading ArchMoon ...&quot;
+		linux   &#x2F;boot&#x2F;vmlinuz-linux root&#x3D;UUID&#x3D;07275492-5b3c-4ba7-b5e8-a38486bf7cea rw      loglevel&#x3D;3
+		echo    &#39;Loading initial ramdisk ...&#39;
+		initrd  &#x2F;boot&#x2F;intel-ucode.img &#x2F;boot&#x2F;amd-ucode.img &#x2F;boot&#x2F;initramfs-linux-fallback.img
+	&#125;
+
+	menuentry &quot;Shutdown&quot;&#123;
+		echo &quot;System shutting down ...&quot;
+		halt
+	&#125;
+
+	menuentry &quot;Restart&quot;&#123;
+		echo &quot;System rebooting ...&quot;
+		reboot
+	&#125;
+
+	menuentry &#39;UEFI Firmware Settings&#39; $menuentry_id_option &#39;uefi-firmware&#39; &#123;
+		fwsetup
+	&#125;
+&#125;
+</code></pre>
+
+</details>
+
+<h3 id="pacman"><a href="#pacman" class="headerlink" title="pacman"></a>pacman</h3><center>/etc/pacman.d/mirrlist</center>
+
+
+<pre class="language-none"><code class="language-none">Server &#x3D; https:&#x2F;&#x2F;mirrors.bfsu.edu.cn&#x2F;archlinux&#x2F;$repo&#x2F;os&#x2F;$arch
+Server &#x3D; http:&#x2F;&#x2F;mirrors.bfsu.edu.cn&#x2F;archlinux&#x2F;$repo&#x2F;os&#x2F;$arch</code></pre>
+
+<center>/etc/pacman.conf修改</center>
+
+
+<pre class="language-none"><code class="language-none"># Misc options
+#UseSyslog
+Color
+ILoveCandy
+#NoProgressBar
+CheckSpace
+#VerbosePkgLists
+#ParallelDownloads &#x3D; 5
+
+# 末尾加上archlinuxcn的源
+[archlinuxcn]
+SigLevel &#x3D; Never
+Server &#x3D; https:&#x2F;&#x2F;mirrors.ustc.edu.cn&#x2F;archlinuxcn&#x2F;$arch</code></pre>
+
+<h1 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h1><h2 id="简介-1"><a href="#简介-1" class="headerlink" title="简介"></a>简介</h2><h3 id="dhcpcd"><a href="#dhcpcd" class="headerlink" title="dhcpcd"></a>dhcpcd</h3><p>连接有线网</p>
+<pre class="language-none"><code class="language-none">sudo dhcpcd</code></pre>
+
+<h3 id="iwctl"><a href="#iwctl" class="headerlink" title="iwctl"></a>iwctl</h3><p>连接无线网</p>
+<div class="tag-common tabs" id="iwctl"><ul class="nav-tabs"><li class="tab active"><a data-target="iwctl-1"><span class="iconify icon" data-icon="ri:home-4-line"></span>sheel中执行</a></li><li class="tab"><a data-target="iwctl-2"><span class="iconify icon" data-icon="ri:cloud-line"></span>iwctl交互界面</a></li></ul><div class="tab-content"><div class="tab-pane active" id="iwctl-1"><pre class="language-none"><code class="language-none">sudo systemctl start iwd
+iwctl
+sudo systemctl start dhcpcd@wlan0</code></pre></div><div class="tab-pane" id="iwctl-2"><pre class="language-none"><code class="language-none">station list
+station wlan0 scan
+station wlan0 get-networks
+station wlan connect SSID</code></pre></div></div></div>
+
+<h3 id="networkmanger-amp-network-manager-applet"><a href="#networkmanger-amp-network-manager-applet" class="headerlink" title="networkmanger &amp; network-manager-applet"></a>networkmanger &amp; network-manager-applet</h3><p>用于图形界面的网络连接</p>
+<pre class="language-none"><code class="language-none">systemctl enable NetworkMannger</code></pre>
+
+<h1 id="声音"><a href="#声音" class="headerlink" title="声音"></a>声音</h1><h2 id="简介-2"><a href="#简介-2" class="headerlink" title="简介"></a>简介</h2><h3 id="alsa"><a href="#alsa" class="headerlink" title="alsa"></a>alsa</h3><p>声音系统，较新的笔记本需要安装驱动sof-firmware,参见<a href="https://wiki.archlinux.org/title/Advanced_Linux_Sound_Architecture_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">alsa</a></p>
+<p>对于i3需要手动开启软混</p>
+<center>~/.asoundrc</center>
+
+
+<pre class="language-none"><code class="language-none">pcm.card0&amp;#123;
+    type hw
+    card 0
+&amp;#125;
+
+pcm.!default&amp;#123;
+    type plug
+    slave.pcm &quot;dmix&quot;
+&amp;#125;
+</code></pre>
+
+<h3 id="alsa-utils"><a href="#alsa-utils" class="headerlink" title="alsa-utils"></a>alsa-utils</h3><p>包含了一些工具，使用<code>alsamixer</code>调整各声道</p>
+<h1 id="字体"><a href="#字体" class="headerlink" title="字体"></a>字体</h1><p>中文和英文：ttf-lxgw-wenkai-mono<br>图标：ttf-font-awesome(用于polybar)</p>
+<h1 id="编辑器"><a href="#编辑器" class="headerlink" title="编辑器"></a>编辑器</h1><p>vim配置待完善</p>
+<h1 id="文件管理"><a href="#文件管理" class="headerlink" title="文件管理"></a>文件管理</h1><h2 id="简介-3"><a href="#简介-3" class="headerlink" title="简介"></a>简介</h2><h3 id="thunar"><a href="#thunar" class="headerlink" title="thunar"></a>thunar</h3><p>图形界面的文件管理器，几乎不用</p>
+<h3 id="ncdu"><a href="#ncdu" class="headerlink" title="ncdu"></a>ncdu</h3><p>管理磁盘</p>
+<h3 id="ranger"><a href="#ranger" class="headerlink" title="ranger"></a>ranger</h3><p>终端中的文件管理，有vim风格</p>
+<p>生成配置：<code>ranger --copy-config=all</code></p>
+<center>~/.config/ranger/rc.conf</center>
+
+
+<pre class="language-none"><code class="language-none">set colorscheme solarized
+set prewview_images true
+set prewview_images w3m</code></pre>
+
+<p>并在<code>~/.zshrc</code>添加以下设置</p>
+<pre class="language-none"><code class="language-none">ranger() &#123;
+    if [ -z &quot;$RANGER_LEVEL&quot; ]; then
+        &#x2F;usr&#x2F;bin&#x2F;ranger &quot;$@&quot;
+    else
+        exit
+    fi
+&#125;</code></pre>
+
+<h1 id="图形界面"><a href="#图形界面" class="headerlink" title="图形界面"></a>图形界面</h1><h2 id="xorg"><a href="#xorg" class="headerlink" title="xorg"></a>xorg</h2><p><code>xorg-server</code>是启动X服务的服务，<code>xorg-xinit</code>提供了<code>xinit</code>的启动方式</p>
+<center>~/.xinitrc</center>
+
+
+<pre class="language-none"><code class="language-none">exec i3	# 将末尾改成如此，一定要在最后exec</code></pre>
+
+<p><code>xf86-video-intel</code>提供了intel集显的驱动</p>
+<h2 id="触摸板"><a href="#触摸板" class="headerlink" title="触摸板"></a>触摸板</h2><p>在i3下触摸板使用需要自行配置</p>
+<center>/etc/X11/xorg.conf.d/touchpad.conf</center>
+
+<pre class="language-none"><code class="language-none">Section &quot;InputClass&quot;
+        Identifier &quot;touchpad&quot;
+        MatchIsTouchpad &quot;on&quot;
+        Driver &quot;libinput&quot;
+        Option &quot;Tapping&quot; &quot;on&quot;
+        Option &quot;TappingButtonMap&quot; &quot;lrm&quot;
+        Option &quot;NaturalScrolling&quot; &quot;on&quot;
+        Option &quot;ScrollMethod&quot; &quot;twofinger&quot;
+EndSection</code></pre>
+
+<h2 id="i3"><a href="#i3" class="headerlink" title="i3"></a>i3</h2><p><code>i3-gaps</code>提供了有间隙的i3<del>废话</del></p>
+<details>
+  <summary>~/.config/i3/config</summary>
+
+<pre class="language-none"><code class="language-none">set $mod Mod4
+
+# Start fcitx5
+exec --no-startup-id fcitx5
+
+# Start polybar
+exec_always --no-startup-id $HOME&#x2F;.config&#x2F;polybar&#x2F;launch.sh
+
+# Start picom
+exec --no-startup-id picom -b
+
+# Start feh to use wallpaper
+exec --no-startup-id feh --bg-fill $HOME&#x2F;Picture&#x2F;wallpaper&#x2F;1.jpg
+
+# Start blueberry for bluetooth
+# exec --no-startup-id blueberry
+
+#design windows
+default_border none
+default_floating_border normal
+hide_edge_borders both
+
+gaps inner 9
+gaps outer 3
+
+# start web browers in private mod
+bindsym $mod+Shift+p exec --no-startup-id firefox --private
+
+# use maim to capture screen and save to $HOME&#x2F;Picture&#x2F;screenshot
+# screenshot the curren active window
+bindsym $mod+i exec --no-startup-id maim -i $(xdotool getactivewindow) $HOME&#x2F;Picture&#x2F;screenshot&#x2F;$(date +%s).png
+#screenshot the full screen
+bindsym $mod+Print exec --no-startup-id maim $HOME&#x2F;Picture&#x2F;screenshot&#x2F;$(date +%s).png
+# screenshot a selected aera
+bindsym $mod+Shift+Print exec --no-startup-id maim -s $HOME&#x2F;Picture&#x2F;screenshot&#x2F;$(date +%s).png
+
+# 删除最后的i3stautes</code></pre>
+
+</details>
+
+<h2 id="polybar"><a href="#polybar" class="headerlink" title="polybar"></a>polybar</h2><p>创建配置文件<code>cp /etc/polybar/config.ini ~/.config/polybar/config</code></p>
+<details>
+  <summary>~/.config/polybar/config</summary>
+
+<pre class="language-ini" data-language="ini"><code class="language-ini"><span class="token comment">;==========================================================</span>
+<span class="token comment">;</span>
+<span class="token comment">;</span>
+<span class="token comment">;   ██████╗  ██████╗ ██╗  ██╗   ██╗██████╗  █████╗ ██████╗</span>
+<span class="token comment">;   ██╔══██╗██╔═══██╗██║  ╚██╗ ██╔╝██╔══██╗██╔══██╗██╔══██╗</span>
+<span class="token comment">;   ██████╔╝██║   ██║██║   ╚████╔╝ ██████╔╝███████║██████╔╝</span>
+<span class="token comment">;   ██╔═══╝ ██║   ██║██║    ╚██╔╝  ██╔══██╗██╔══██║██╔══██╗</span>
+<span class="token comment">;   ██║     ╚██████╔╝███████╗██║   ██████╔╝██║  ██║██║  ██║</span>
+<span class="token comment">;   ╚═╝      ╚═════╝ ╚══════╝╚═╝   ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝</span>
+<span class="token comment">;</span>
+<span class="token comment">;</span>
+<span class="token comment">;   To learn more about how to configure Polybar</span>
+<span class="token comment">;   go to https://github.com/polybar/polybar</span>
+<span class="token comment">;</span>
+<span class="token comment">;   The README contains a lot of information</span>
+<span class="token comment">;</span>
+<span class="token comment">;==========================================================</span>
+
+<span class="token section"><span class="token punctuation">[</span><span class="token section-name selector">colors</span><span class="token punctuation">]</span></span>
+<span class="token comment">;background = $&#123;xrdb:color0:#222&#125;</span>
+<span class="token key attr-name">background</span> <span class="token punctuation">=</span> <span class="token value attr-value">#222</span>
+<span class="token key attr-name">background-alt</span> <span class="token punctuation">=</span> <span class="token value attr-value">#444</span>
+<span class="token comment">;foreground = $&#123;xrdb:color7:#222&#125;</span>
+<span class="token key attr-name">foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#dfdfdf</span>
+<span class="token key attr-name">foreground-alt</span> <span class="token punctuation">=</span> <span class="token value attr-value">#555</span>
+<span class="token key attr-name">primary</span> <span class="token punctuation">=</span> <span class="token value attr-value">#ffb52a</span>
+<span class="token key attr-name">secondary</span> <span class="token punctuation">=</span> <span class="token value attr-value">#e60053</span>
+<span class="token key attr-name">alert</span> <span class="token punctuation">=</span> <span class="token value attr-value">#bd2c40</span>
+
+<span class="token section"><span class="token punctuation">[</span><span class="token section-name selector">bar/example</span><span class="token punctuation">]</span></span>
+<span class="token comment">;monitor = $&#123;env:MONITOR:HDMI-1&#125;</span>
+<span class="token key attr-name">width</span> <span class="token punctuation">=</span> <span class="token value attr-value">100%</span>
+<span class="token key attr-name">height</span> <span class="token punctuation">=</span> <span class="token value attr-value">27</span>
+<span class="token key attr-name">offset-x</span> <span class="token punctuation">=</span> <span class="token value attr-value">0</span>
+<span class="token key attr-name">offset-y</span> <span class="token punctuation">=</span> <span class="token value attr-value">0</span>
+<span class="token key attr-name">radius</span> <span class="token punctuation">=</span> <span class="token value attr-value">6.0</span>
+<span class="token key attr-name">fixed-center</span> <span class="token punctuation">=</span> <span class="token value attr-value">true</span>
+
+<span class="token key attr-name">background</span> <span class="token punctuation">=</span> <span class="token value attr-value">$&#123;colors.background&#125;</span>
+<span class="token key attr-name">foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">$&#123;colors.foreground&#125;</span>
+
+<span class="token key attr-name">line-size</span> <span class="token punctuation">=</span> <span class="token value attr-value">3</span>
+<span class="token key attr-name">line-color</span> <span class="token punctuation">=</span> <span class="token value attr-value">#f00</span>
+
+<span class="token key attr-name">border-size</span> <span class="token punctuation">=</span> <span class="token value attr-value">4</span>
+<span class="token key attr-name">border-color</span> <span class="token punctuation">=</span> <span class="token value attr-value">#00000000</span>
+
+<span class="token key attr-name">padding-left</span> <span class="token punctuation">=</span> <span class="token value attr-value">0</span>
+<span class="token key attr-name">padding-right</span> <span class="token punctuation">=</span> <span class="token value attr-value">9</span>
+
+<span class="token key attr-name">module-margin-left</span> <span class="token punctuation">=</span> <span class="token value attr-value">1</span>
+<span class="token key attr-name">module-margin-center</span> <span class="token punctuation">=</span> <span class="token value attr-value">3</span>
+<span class="token key attr-name">module-margin-right</span> <span class="token punctuation">=</span> <span class="token value attr-value">3</span>
+
+<span class="token key attr-name">font-0</span> <span class="token punctuation">=</span> <span class="token value attr-value">fixed:pixelsize=10;1</span>
+<span class="token comment">;font-1 = unifont:fontformat=truetype:size=8:antialias=false;0</span>
+<span class="token comment">;font-2 = siji:pixelsize=10;1</span>
+<span class="token key attr-name">font-1</span> <span class="token punctuation">=</span> <span class="token value attr-value">FontAwesome6FreeSolid:pixelsize=12;1</span>
+<span class="token key attr-name">font-2</span> <span class="token punctuation">=</span> <span class="token value attr-value">FontAwesome6Brands:pixelsize=8;1</span>
+
+<span class="token key attr-name">modules-left</span> <span class="token punctuation">=</span> <span class="token value attr-value">i3</span>
+<span class="token key attr-name">modules-center</span> <span class="token punctuation">=</span> <span class="token value attr-value">alsa date backlight</span>
+<span class="token key attr-name">modules-right</span> <span class="token punctuation">=</span> <span class="token value attr-value">xkeyboard memory cpu  battery</span> 
+<span class="token key attr-name">tray-position</span> <span class="token punctuation">=</span> <span class="token value attr-value">right</span>
+<span class="token key attr-name">tray-padding</span> <span class="token punctuation">=</span> <span class="token value attr-value">3</span>
+<span class="token comment">;tray-background = #0063ff</span>
+
+<span class="token comment">;wm-restack = bspwm</span>
+<span class="token comment">;wm-restack = i3</span>
+
+<span class="token comment">;override-redirect = true</span>
+
+<span class="token comment">;scroll-up = bspwm-desknext</span>
+<span class="token comment">;scroll-down = bspwm-deskprev</span>
+
+<span class="token comment">;scroll-up = i3wm-wsnext</span>
+<span class="token comment">;scroll-down = i3wm-wsprev</span>
+
+<span class="token key attr-name">cursor-click</span> <span class="token punctuation">=</span> <span class="token value attr-value">pointer</span>
+<span class="token key attr-name">cursor-scroll</span> <span class="token punctuation">=</span> <span class="token value attr-value">ns-resize</span>
+
+<span class="token section"><span class="token punctuation">[</span><span class="token section-name selector">module/xwindow</span><span class="token punctuation">]</span></span>
+<span class="token key attr-name">type</span> <span class="token punctuation">=</span> <span class="token value attr-value">internal/xwindow</span>
+<span class="token key attr-name">label</span> <span class="token punctuation">=</span> <span class="token value attr-value">%title:0:30:...%</span>
+
+<span class="token comment">;[module/xkeyboard]</span>
+<span class="token comment">;type = internal/xkeyboard</span>
+<span class="token comment">;blacklist-0 = num lock</span>
+<span class="token comment">;</span>
+<span class="token comment">;format-prefix = " "</span>
+<span class="token comment">;format-prefix-foreground = $&#123;colors.foreground-alt&#125;</span>
+<span class="token comment">;format-prefix-underline = $&#123;colors.secondary&#125;</span>
+<span class="token comment">;</span>
+<span class="token comment">;label-layout = %layout%</span>
+<span class="token comment">;label-layout-underline = $&#123;colors.secondary&#125;</span>
+<span class="token comment">;</span>
+<span class="token comment">;label-indicator-padding = 2</span>
+<span class="token comment">;label-indicator-margin = 1</span>
+<span class="token comment">;label-indicator-background = $&#123;colors.secondary&#125;</span>
+<span class="token comment">;label-indicator-underline = $&#123;colors.secondary&#125;</span>
+
+<span class="token comment">; ===键盘提示===</span>
+<span class="token comment">; https://github.com/polybar/polybar/wiki/Module:-xkeyboard</span>
+<span class="token section"><span class="token punctuation">[</span><span class="token section-name selector">module/xkeyboard</span><span class="token punctuation">]</span></span>
+<span class="token key attr-name">type</span> <span class="token punctuation">=</span> <span class="token value attr-value">internal/xkeyboard</span>
+
+
+<span class="token comment">; 忽略列表</span>
+<span class="token key attr-name">blacklist-0</span> <span class="token punctuation">=</span> <span class="token value attr-value">scroll lock</span>
+
+<span class="token comment">; &lt;label-indicator></span>
+<span class="token key attr-name">format</span> <span class="token punctuation">=</span> <span class="token value attr-value">&lt;label-layout> &lt;label-indicator></span>
+<span class="token key attr-name">format-spacing</span> <span class="token punctuation">=</span> <span class="token value attr-value">1</span>
+
+<span class="token key attr-name">label-layout</span> <span class="token punctuation">=</span> <span class="token value attr-value"></span>
+<span class="token key attr-name">label-layout-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#93b5cf</span>
+<span class="token key attr-name">label-indicator-on-capslock</span> <span class="token punctuation">=</span> <span class="token value attr-value"></span>
+<span class="token key attr-name">label-indicator-off-capslock</span> <span class="token punctuation">=</span>
+<span class="token comment">;label-indicator-on-numlock = 🅽</span>
+<span class="token comment">;label-indicator-off-numlock =</span>
+
+<span class="token key attr-name">label-indicator-on-capslock-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#ff5555</span>
+
+
+
+<span class="token section"><span class="token punctuation">[</span><span class="token section-name selector">module/filesystem</span><span class="token punctuation">]</span></span>
+<span class="token key attr-name">type</span> <span class="token punctuation">=</span> <span class="token value attr-value">internal/fs</span>
+<span class="token key attr-name">interval</span> <span class="token punctuation">=</span> <span class="token value attr-value">25</span>
+
+<span class="token key attr-name">mount-0</span> <span class="token punctuation">=</span> <span class="token value attr-value">/</span>
+
+<span class="token key attr-name">label-mounted</span> <span class="token punctuation">=</span> <span class="token value attr-value">%&#123;F#0a81f5&#125;%mountpoint%%&#123;F-&#125;: %percentage_used%%</span>
+<span class="token key attr-name">label-unmounted</span> <span class="token punctuation">=</span> <span class="token value attr-value">%mountpoint% not mounted</span>
+<span class="token key attr-name">label-unmounted-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">$&#123;colors.foreground-alt&#125;</span>
+
+<span class="token section"><span class="token punctuation">[</span><span class="token section-name selector">module/bspwm</span><span class="token punctuation">]</span></span>
+<span class="token key attr-name">type</span> <span class="token punctuation">=</span> <span class="token value attr-value">internal/bspwm</span>
+
+<span class="token key attr-name">label-focused</span> <span class="token punctuation">=</span> <span class="token value attr-value">%index%</span>
+<span class="token key attr-name">label-focused-background</span> <span class="token punctuation">=</span> <span class="token value attr-value">$&#123;colors.background-alt&#125;</span>
+<span class="token key attr-name">label-focused-underline</span><span class="token punctuation">=</span> <span class="token value attr-value">$&#123;colors.primary&#125;</span>
+<span class="token key attr-name">label-focused-padding</span> <span class="token punctuation">=</span> <span class="token value attr-value">2</span>
+
+<span class="token key attr-name">label-occupied</span> <span class="token punctuation">=</span> <span class="token value attr-value">%index%</span>
+<span class="token key attr-name">label-occupied-padding</span> <span class="token punctuation">=</span> <span class="token value attr-value">2</span>
+
+<span class="token key attr-name">label-urgent</span> <span class="token punctuation">=</span> <span class="token value attr-value">%index%!</span>
+<span class="token key attr-name">label-urgent-background</span> <span class="token punctuation">=</span> <span class="token value attr-value">$&#123;colors.alert&#125;</span>
+<span class="token key attr-name">label-urgent-padding</span> <span class="token punctuation">=</span> <span class="token value attr-value">2</span>
+
+<span class="token key attr-name">label-empty</span> <span class="token punctuation">=</span> <span class="token value attr-value">%index%</span>
+<span class="token key attr-name">label-empty-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">$&#123;colors.foreground-alt&#125;</span>
+<span class="token key attr-name">label-empty-padding</span> <span class="token punctuation">=</span> <span class="token value attr-value">2</span>
+
+<span class="token comment">; Separator in between workspaces</span>
+<span class="token comment">; label-separator = |</span>
+
+<span class="token section"><span class="token punctuation">[</span><span class="token section-name selector">module/i3</span><span class="token punctuation">]</span></span>
+<span class="token key attr-name">type</span> <span class="token punctuation">=</span> <span class="token value attr-value">internal/i3</span>
+<span class="token key attr-name">format</span> <span class="token punctuation">=</span> <span class="token value attr-value">&lt;label-state> &lt;label-mode></span>
+<span class="token key attr-name">index-sort</span> <span class="token punctuation">=</span> <span class="token value attr-value">true</span>
+<span class="token key attr-name">wrapping-scroll</span> <span class="token punctuation">=</span> <span class="token value attr-value">false</span>
+
+<span class="token comment">; Only show workspaces on the same output as the bar</span>
+<span class="token comment">;pin-workspaces = true</span>
+
+<span class="token key attr-name">label-mode-padding</span> <span class="token punctuation">=</span> <span class="token value attr-value">2</span>
+<span class="token key attr-name">label-mode-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#000</span>
+<span class="token key attr-name">label-mode-background</span> <span class="token punctuation">=</span> <span class="token value attr-value">$&#123;colors.primary&#125;</span>
+
+<span class="token comment">; focused = Active workspace on focused monitor</span>
+<span class="token key attr-name">label-focused</span> <span class="token punctuation">=</span> <span class="token value attr-value">%index%</span>
+<span class="token key attr-name">label-focused-background</span> <span class="token punctuation">=</span> <span class="token value attr-value">$&#123;colors.background-alt&#125;</span>
+<span class="token key attr-name">label-focused-underline</span><span class="token punctuation">=</span> <span class="token value attr-value">$&#123;colors.primary&#125;</span>
+<span class="token key attr-name">label-focused-padding</span> <span class="token punctuation">=</span> <span class="token value attr-value">2</span>
+
+<span class="token comment">; unfocused = Inactive workspace on any monitor</span>
+<span class="token key attr-name">label-unfocused</span> <span class="token punctuation">=</span> <span class="token value attr-value">%index%</span>
+<span class="token key attr-name">label-unfocused-padding</span> <span class="token punctuation">=</span> <span class="token value attr-value">2</span>
+
+<span class="token comment">; visible = Active workspace on unfocused monitor</span>
+<span class="token key attr-name">label-visible</span> <span class="token punctuation">=</span> <span class="token value attr-value">%index%</span>
+<span class="token key attr-name">label-visible-background</span> <span class="token punctuation">=</span> <span class="token value attr-value">$&#123;self.label-focused-background&#125;</span>
+<span class="token key attr-name">label-visible-underline</span> <span class="token punctuation">=</span> <span class="token value attr-value">$&#123;self.label-focused-underline&#125;</span>
+<span class="token key attr-name">label-visible-padding</span> <span class="token punctuation">=</span> <span class="token value attr-value">$&#123;self.label-focused-padding&#125;</span>
+
+<span class="token comment">; urgent = Workspace with urgency hint set</span>
+<span class="token key attr-name">label-urgent</span> <span class="token punctuation">=</span> <span class="token value attr-value">%index%</span>
+<span class="token key attr-name">label-urgent-background</span> <span class="token punctuation">=</span> <span class="token value attr-value">$&#123;colors.alert&#125;</span>
+<span class="token key attr-name">label-urgent-padding</span> <span class="token punctuation">=</span> <span class="token value attr-value">2</span>
+
+<span class="token comment">; Separator in between workspaces</span>
+<span class="token comment">; label-separator = |</span>
+
+
+<span class="token section"><span class="token punctuation">[</span><span class="token section-name selector">module/mpd</span><span class="token punctuation">]</span></span>
+<span class="token key attr-name">type</span> <span class="token punctuation">=</span> <span class="token value attr-value">internal/mpd</span>
+<span class="token key attr-name">format-online</span> <span class="token punctuation">=</span> <span class="token value attr-value">&lt;label-song>  &lt;icon-prev> &lt;icon-stop> &lt;toggle> &lt;icon-next></span>
+
+<span class="token key attr-name">icon-prev</span> <span class="token punctuation">=</span> <span class="token value attr-value"></span>
+<span class="token key attr-name">icon-stop</span> <span class="token punctuation">=</span> <span class="token value attr-value"></span>
+<span class="token key attr-name">icon-play</span> <span class="token punctuation">=</span> <span class="token value attr-value"></span>
+<span class="token key attr-name">icon-pause</span> <span class="token punctuation">=</span> <span class="token value attr-value"></span>
+<span class="token key attr-name">icon-next</span> <span class="token punctuation">=</span> <span class="token value attr-value"></span>
+
+<span class="token key attr-name">label-song-maxlen</span> <span class="token punctuation">=</span> <span class="token value attr-value">25</span>
+<span class="token key attr-name">label-song-ellipsis</span> <span class="token punctuation">=</span> <span class="token value attr-value">true</span>
+
+<span class="token section"><span class="token punctuation">[</span><span class="token section-name selector">module/xbacklight</span><span class="token punctuation">]</span></span>
+<span class="token key attr-name">type</span> <span class="token punctuation">=</span> <span class="token value attr-value">internal/xbacklight</span>
+
+<span class="token key attr-name">format</span> <span class="token punctuation">=</span> <span class="token value attr-value">&lt;label> &lt;bar></span>
+<span class="token key attr-name">label</span> <span class="token punctuation">=</span> <span class="token value attr-value">BL</span>
+
+<span class="token key attr-name">bar-width</span> <span class="token punctuation">=</span> <span class="token value attr-value">10</span>
+<span class="token key attr-name">bar-indicator</span> <span class="token punctuation">=</span> <span class="token value attr-value">|</span>
+<span class="token key attr-name">bar-indicator-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#fff</span>
+<span class="token key attr-name">bar-indicator-font</span> <span class="token punctuation">=</span> <span class="token value attr-value">2</span>
+<span class="token key attr-name">bar-fill</span> <span class="token punctuation">=</span> <span class="token value attr-value">─</span>
+<span class="token key attr-name">bar-fill-font</span> <span class="token punctuation">=</span> <span class="token value attr-value">2</span>
+<span class="token key attr-name">bar-fill-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#9f78e1</span>
+<span class="token key attr-name">bar-empty</span> <span class="token punctuation">=</span> <span class="token value attr-value">─</span>
+<span class="token key attr-name">bar-empty-font</span> <span class="token punctuation">=</span> <span class="token value attr-value">2</span>
+<span class="token key attr-name">bar-empty-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">$&#123;colors.foreground-alt&#125;</span>
+
+<span class="token comment">; ===屏幕亮度===</span>
+<span class="token comment">; https://github.com/polybar/polybar/wiki/Module:-xbacklight</span>
+<span class="token section"><span class="token punctuation">[</span><span class="token section-name selector">module/backlight</span><span class="token punctuation">]</span></span>
+<span class="token key attr-name">type</span> <span class="token punctuation">=</span> <span class="token value attr-value">internal/backlight</span>
+
+<span class="token comment">; 使用命令查询到设备文件:</span>
+<span class="token comment">; ls -1 /sys/class/backlight/</span>
+<span class="token key attr-name">card</span> <span class="token punctuation">=</span> <span class="token value attr-value">intel_backlight</span>
+
+<span class="token comment">; 滚轮调节亮度</span>
+<span class="token comment">; see /etc/udev/rules.d/backlight.rules</span>
+<span class="token comment">; Default: false</span>
+<span class="token key attr-name">enable-scroll</span> <span class="token punctuation">=</span> <span class="token value attr-value">true</span>
+
+<span class="token key attr-name">format</span> <span class="token punctuation">=</span> <span class="token value attr-value">&lt;ramp> &lt;label></span>
+
+<span class="token key attr-name">label</span> <span class="token punctuation">=</span> <span class="token value attr-value">%percentage%%</span>
+
+<span class="token comment">; 用于 &lt;ramp></span>
+<span class="token key attr-name">ramp-0</span> <span class="token punctuation">=</span> <span class="token value attr-value"></span> 
+<span class="token key attr-name">ramp-1</span> <span class="token punctuation">=</span> <span class="token value attr-value"></span>
+<span class="token key attr-name">ramp-2</span> <span class="token punctuation">=</span> <span class="token value attr-value"></span> 
+<span class="token key attr-name">ramp-3</span> <span class="token punctuation">=</span> <span class="token value attr-value"></span>
+<span class="token key attr-name">ramp-4</span> <span class="token punctuation">=</span> <span class="token value attr-value"></span>
+
+<span class="token key attr-name">ramp-0-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#3d3b4f</span>
+<span class="token comment">; 用于 &lt;bar></span>
+<span class="token key attr-name">bar-width</span> <span class="token punctuation">=</span> <span class="token value attr-value">10</span>
+<span class="token key attr-name">bar-indicator</span> <span class="token punctuation">=</span> <span class="token value attr-value">|</span>
+<span class="token key attr-name">bar-fill</span> <span class="token punctuation">=</span> <span class="token value attr-value">-</span>
+<span class="token key attr-name">bar-empty</span> <span class="token punctuation">=</span> <span class="token value attr-value">-</span>
+
+<span class="token section"><span class="token punctuation">[</span><span class="token section-name selector">module/backlight-acpi</span><span class="token punctuation">]</span></span>
+<span class="token key attr-name">inherit</span> <span class="token punctuation">=</span> <span class="token value attr-value">module/xbacklight</span>
+<span class="token key attr-name">type</span> <span class="token punctuation">=</span> <span class="token value attr-value">internal/backlight</span>
+<span class="token key attr-name">card</span> <span class="token punctuation">=</span> <span class="token value attr-value">intel_backlight</span>
+
+<span class="token comment">;[module/cpu]</span>
+<span class="token comment">;type = internal/cpu</span>
+<span class="token comment">;interval = 2</span>
+<span class="token comment">;format-prefix = " "</span>
+<span class="token comment">;format-prefix-foreground = $&#123;colors.foreground-alt&#125;</span>
+<span class="token comment">;format-underline = #f90000</span>
+<span class="token comment">;label = %percentage:2%%</span>
+<span class="token comment">;</span>
+<span class="token comment">;[module/memory]</span>
+<span class="token comment">;type = internal/memory</span>
+<span class="token comment">;interval = 2</span>
+<span class="token comment">;format-prefix = " "</span>
+<span class="token comment">;format-prefix-foreground = $&#123;colors.foreground-alt&#125;</span>
+<span class="token comment">;format-underline = #4bffdc</span>
+<span class="token comment">;label = %percentage_used%%</span>
+
+<span class="token comment">; ===CPU===</span>
+<span class="token comment">; https://github.com/polybar/polybar/wiki/Module:-cpu</span>
+<span class="token section"><span class="token punctuation">[</span><span class="token section-name selector">module/cpu</span><span class="token punctuation">]</span></span>
+<span class="token key attr-name">type</span> <span class="token punctuation">=</span> <span class="token value attr-value">internal/cpu</span>
+
+<span class="token comment">; 刷新间隔，默认: 1</span>
+<span class="token key attr-name">interval</span> <span class="token punctuation">=</span> <span class="token value attr-value">0.5</span>
+
+<span class="token comment">;format = &lt;label> &lt;ramp-coreload></span>
+<span class="token key attr-name">format</span> <span class="token punctuation">=</span> <span class="token value attr-value">&lt;label></span>
+
+<span class="token key attr-name">label</span> <span class="token punctuation">=</span> <span class="token value attr-value"> %percentage%%</span>
+<span class="token key attr-name">label-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#2e4e7e</span>
+
+<span class="token comment">; Spacing between individual per-core ramps</span>
+<span class="token key attr-name">ramp-coreload-spacing</span> <span class="token punctuation">=</span> <span class="token value attr-value">1</span>
+<span class="token key attr-name">ramp-coreload-0</span> <span class="token punctuation">=</span> <span class="token value attr-value">▁</span>
+<span class="token key attr-name">ramp-coreload-1</span> <span class="token punctuation">=</span> <span class="token value attr-value">▂</span>
+<span class="token key attr-name">ramp-coreload-2</span> <span class="token punctuation">=</span> <span class="token value attr-value">▃</span>
+<span class="token key attr-name">ramp-coreload-3</span> <span class="token punctuation">=</span> <span class="token value attr-value">▄</span>
+<span class="token key attr-name">ramp-coreload-4</span> <span class="token punctuation">=</span> <span class="token value attr-value">▅</span>
+<span class="token key attr-name">ramp-coreload-5</span> <span class="token punctuation">=</span> <span class="token value attr-value">▆</span>
+<span class="token key attr-name">ramp-coreload-6</span> <span class="token punctuation">=</span> <span class="token value attr-value">▇</span>
+<span class="token key attr-name">ramp-coreload-7</span> <span class="token punctuation">=</span> <span class="token value attr-value">█</span>
+
+<span class="token key attr-name">ramp-coreload-0-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#aaff77</span>
+<span class="token key attr-name">ramp-coreload-1-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#aaff77</span>
+<span class="token key attr-name">ramp-coreload-2-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#aaff77</span>
+<span class="token key attr-name">ramp-coreload-3-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#aaff77</span>
+<span class="token key attr-name">ramp-coreload-4-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#fba922</span>
+<span class="token key attr-name">ramp-coreload-5-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#fba922</span>
+<span class="token key attr-name">ramp-coreload-6-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#ff5555</span>
+<span class="token key attr-name">ramp-coreload-7-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#ff5555</span>
+
+<span class="token comment">; ===内存===</span>
+<span class="token comment">; https://github.com/polybar/polybar/wiki/Module:-memory</span>
+<span class="token section"><span class="token punctuation">[</span><span class="token section-name selector">module/memory</span><span class="token punctuation">]</span></span>
+<span class="token key attr-name">type</span> <span class="token punctuation">=</span> <span class="token value attr-value">internal/memory</span>
+
+<span class="token comment">; 刷新间隔，默认: 1</span>
+<span class="token key attr-name">interval</span> <span class="token punctuation">=</span> <span class="token value attr-value">3</span>
+
+<span class="token comment">;format = &lt;label> &lt;ramp-used> &lt;ramp-free></span>
+<span class="token key attr-name">format</span> <span class="token punctuation">=</span> <span class="token value attr-value">&lt;label></span>
+
+<span class="token key attr-name">label</span> <span class="token punctuation">=</span> <span class="token value attr-value"> %gb_used%/%gb_free%</span>
+<span class="token key attr-name">label-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#065279</span>
+
+<span class="token comment">; 用于 &lt;ramp-used></span>
+<span class="token key attr-name">ramp-used-0</span> <span class="token punctuation">=</span> <span class="token value attr-value">▁</span>
+<span class="token key attr-name">ramp-used-1</span> <span class="token punctuation">=</span> <span class="token value attr-value">▂</span>
+<span class="token key attr-name">ramp-used-2</span> <span class="token punctuation">=</span> <span class="token value attr-value">▃</span>
+<span class="token key attr-name">ramp-used-3</span> <span class="token punctuation">=</span> <span class="token value attr-value">▄</span>
+<span class="token key attr-name">ramp-used-4</span> <span class="token punctuation">=</span> <span class="token value attr-value">▅</span>
+<span class="token key attr-name">ramp-used-5</span> <span class="token punctuation">=</span> <span class="token value attr-value">▆</span>
+<span class="token key attr-name">ramp-used-6</span> <span class="token punctuation">=</span> <span class="token value attr-value">▇</span>
+<span class="token key attr-name">ramp-used-7</span> <span class="token punctuation">=</span> <span class="token value attr-value">█</span>
+
+<span class="token key attr-name">ramp-used-0-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#aaff77</span>
+<span class="token key attr-name">ramp-used-1-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#aaff77</span>
+<span class="token key attr-name">ramp-used-2-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#aaff77</span>
+<span class="token key attr-name">ramp-used-3-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#aaff77</span>
+<span class="token key attr-name">ramp-used-4-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#fba922</span>
+<span class="token key attr-name">ramp-used-5-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#fba922</span>
+<span class="token key attr-name">ramp-used-6-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#ff5555</span>
+<span class="token key attr-name">ramp-used-7-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#ff5555</span>
+
+<span class="token comment">; 用于 &lt;ramp-free></span>
+<span class="token key attr-name">ramp-free-0</span> <span class="token punctuation">=</span> <span class="token value attr-value">▁</span>
+<span class="token key attr-name">ramp-free-1</span> <span class="token punctuation">=</span> <span class="token value attr-value">▂</span>
+<span class="token key attr-name">ramp-free-2</span> <span class="token punctuation">=</span> <span class="token value attr-value">▃</span>
+<span class="token key attr-name">ramp-free-3</span> <span class="token punctuation">=</span> <span class="token value attr-value">▄</span>
+<span class="token key attr-name">ramp-free-4</span> <span class="token punctuation">=</span> <span class="token value attr-value">▅</span>
+<span class="token key attr-name">ramp-free-5</span> <span class="token punctuation">=</span> <span class="token value attr-value">▆</span>
+<span class="token key attr-name">ramp-free-6</span> <span class="token punctuation">=</span> <span class="token value attr-value">▇</span>
+<span class="token key attr-name">ramp-free-7</span> <span class="token punctuation">=</span> <span class="token value attr-value">█</span>
+
+<span class="token key attr-name">ramp-free-0-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#ff5555</span>
+<span class="token key attr-name">ramp-free-1-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#ff5555</span>
+<span class="token key attr-name">ramp-free-2-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#fba922</span>
+<span class="token key attr-name">ramp-free-3-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#fba922</span>
+<span class="token key attr-name">ramp-free-4-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#aaff77</span>
+<span class="token key attr-name">ramp-free-5-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#aaff77</span>
+<span class="token key attr-name">ramp-free-6-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#aaff77</span>
+<span class="token key attr-name">ramp-free-7-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#aaff77</span>
+
+
+<span class="token section"><span class="token punctuation">[</span><span class="token section-name selector">module/wlan</span><span class="token punctuation">]</span></span>
+<span class="token key attr-name">type</span> <span class="token punctuation">=</span> <span class="token value attr-value">internal/network</span>
+<span class="token key attr-name">interface</span> <span class="token punctuation">=</span> <span class="token value attr-value">net1</span>
+<span class="token key attr-name">interval</span> <span class="token punctuation">=</span> <span class="token value attr-value">3.0</span>
+
+<span class="token key attr-name">format-connected</span> <span class="token punctuation">=</span> <span class="token value attr-value">&lt;ramp-signal> &lt;label-connected></span>
+<span class="token key attr-name">format-connected-underline</span> <span class="token punctuation">=</span> <span class="token value attr-value">#9f78e1</span>
+<span class="token key attr-name">label-connected</span> <span class="token punctuation">=</span> <span class="token value attr-value">%essid%</span>
+
+<span class="token key attr-name">format-disconnected</span> <span class="token punctuation">=</span>
+<span class="token comment">;format-disconnected = &lt;label-disconnected></span>
+<span class="token comment">;format-disconnected-underline = $&#123;self.format-connected-underline&#125;</span>
+<span class="token comment">;label-disconnected = %ifname% disconnected</span>
+<span class="token comment">;label-disconnected-foreground = $&#123;colors.foreground-alt&#125;</span>
+
+<span class="token key attr-name">ramp-signal-0</span> <span class="token punctuation">=</span> <span class="token value attr-value"></span>
+<span class="token key attr-name">ramp-signal-1</span> <span class="token punctuation">=</span> <span class="token value attr-value"></span>
+<span class="token key attr-name">ramp-signal-2</span> <span class="token punctuation">=</span> <span class="token value attr-value"></span>
+<span class="token key attr-name">ramp-signal-3</span> <span class="token punctuation">=</span> <span class="token value attr-value"></span>
+<span class="token key attr-name">ramp-signal-4</span> <span class="token punctuation">=</span> <span class="token value attr-value"></span>
+<span class="token key attr-name">ramp-signal-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">$&#123;colors.foreground-alt&#125;</span>
+
+<span class="token section"><span class="token punctuation">[</span><span class="token section-name selector">module/eth</span><span class="token punctuation">]</span></span>
+<span class="token key attr-name">type</span> <span class="token punctuation">=</span> <span class="token value attr-value">internal/network</span>
+<span class="token key attr-name">interface</span> <span class="token punctuation">=</span> <span class="token value attr-value">enp94s0f1</span>
+<span class="token key attr-name">interval</span> <span class="token punctuation">=</span> <span class="token value attr-value">3.0</span>
+
+<span class="token key attr-name">format-connected-underline</span> <span class="token punctuation">=</span> <span class="token value attr-value">#55aa55</span>
+<span class="token key attr-name">format-connected-prefix</span> <span class="token punctuation">=</span> <span class="token value attr-value">"<span class="token inner-value"> </span>"</span>
+<span class="token key attr-name">format-connected-prefix-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">$&#123;colors.foreground-alt&#125;</span>
+<span class="token key attr-name">label-connected</span> <span class="token punctuation">=</span> <span class="token value attr-value">%local_ip%</span>
+
+<span class="token key attr-name">format-disconnected</span> <span class="token punctuation">=</span>
+<span class="token comment">;format-disconnected = &lt;label-disconnected></span>
+<span class="token comment">;format-disconnected-underline = $&#123;self.format-connected-underline&#125;</span>
+<span class="token comment">;label-disconnected = %ifname% disconnected</span>
+<span class="token comment">;label-disconnected-foreground = $&#123;colors.foreground-alt&#125;</span>
+
+<span class="token comment">;[module/date]</span>
+<span class="token comment">;type = internal/date</span>
+<span class="token comment">;interval = 5</span>
+<span class="token comment">;</span>
+<span class="token comment">;date =</span>
+<span class="token comment">;date-alt = " %Y-%m-%d"</span>
+<span class="token comment">;</span>
+<span class="token comment">;time = %H:%M</span>
+<span class="token comment">;time-alt = %H:%M:%S</span>
+<span class="token comment">;</span>
+<span class="token comment">;format-prefix = </span>
+<span class="token comment">;format-prefix-foreground = $&#123;colors.foreground-alt&#125;</span>
+<span class="token comment">;format-underline = #0a6cf5</span>
+<span class="token comment">;</span>
+<span class="token comment">;label = %date% %time%</span>
+
+<span class="token comment">; ===日期时间===</span>
+<span class="token comment">; https://github.com/polybar/polybar/wiki/Module:-date</span>
+<span class="token section"><span class="token punctuation">[</span><span class="token section-name selector">module/date</span><span class="token punctuation">]</span></span>
+<span class="token key attr-name">type</span> <span class="token punctuation">=</span> <span class="token value attr-value">internal/date</span>
+
+<span class="token comment">; 更新间隔, 默认: 1.0</span>
+<span class="token key attr-name">interval</span> <span class="token punctuation">=</span> <span class="token value attr-value">1.0</span>
+<span class="token key attr-name">format</span> <span class="token punctuation">=</span> <span class="token value attr-value">&lt;label></span>
+
+<span class="token key attr-name">date</span> <span class="token punctuation">=</span> <span class="token value attr-value">%Y-%m-%d%</span>
+<span class="token key attr-name">time</span> <span class="token punctuation">=</span> <span class="token value attr-value">%H:%M</span>
+
+<span class="token comment">; 另一种格式</span>
+<span class="token key attr-name">date-alt</span> <span class="token punctuation">=</span> <span class="token value attr-value">%A, %d %B %Y</span>
+<span class="token key attr-name">time-alt</span> <span class="token punctuation">=</span> <span class="token value attr-value">%H:%M:%S</span>
+
+<span class="token key attr-name">label</span> <span class="token punctuation">=</span> <span class="token value attr-value"> %date%  %time%</span>
+<span class="token key attr-name">label-font</span> <span class="token punctuation">=</span> <span class="token value attr-value">1</span>
+<span class="token key attr-name">label-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#eefafafa</span>
+
+
+<span class="token comment">;[module/pulseaudio]</span>
+<span class="token comment">;type = internal/pulseaudio</span>
+<span class="token comment">;</span>
+<span class="token comment">;format-volume = &lt;label-volume> &lt;bar-volume></span>
+<span class="token comment">;label-volume = VOL %percentage%%</span>
+<span class="token comment">;label-volume-foreground = $&#123;root.foreground&#125;</span>
+<span class="token comment">;</span>
+<span class="token comment">;label-muted = </span>
+<span class="token comment">;label-muted-foreground = #666</span>
+<span class="token comment">;</span>
+<span class="token comment">;bar-volume-width = 10</span>
+<span class="token comment">;bar-volume-foreground-0 = #55aa55</span>
+<span class="token comment">;bar-volume-foreground-1 = #55aa55</span>
+<span class="token comment">;bar-volume-foreground-2 = #55aa55</span>
+<span class="token comment">;bar-volume-foreground-3 = #55aa55</span>
+<span class="token comment">;bar-volume-foreground-4 = #55aa55</span>
+<span class="token comment">;bar-volume-foreground-5 = #f5a70a</span>
+<span class="token comment">;bar-volume-foreground-6 = #ff5555</span>
+<span class="token comment">;bar-volume-gradient = false</span>
+<span class="token comment">;bar-volume-indicator = |</span>
+<span class="token comment">;bar-volume-indicator-font = 2</span>
+<span class="token comment">;bar-volume-fill = ─</span>
+<span class="token comment">;bar-volume-fill-font = 2</span>
+<span class="token comment">;bar-volume-empty = ─</span>
+<span class="token comment">;bar-volume-empty-font = 2</span>
+<span class="token comment">;bar-volume-empty-foreground = $&#123;colors.foreground-alt&#125;</span>
+
+<span class="token comment">; ===音量===</span>
+<span class="token comment">; https://github.com/polybar/polybar/wiki/Module:-pulseaudio</span>
+<span class="token section"><span class="token punctuation">[</span><span class="token section-name selector">module/alsa</span><span class="token punctuation">]</span></span>
+<span class="token key attr-name">type</span> <span class="token punctuation">=</span> <span class="token value attr-value">internal/alsa</span>
+<span class="token key attr-name">sink</span> <span class="token punctuation">=</span> <span class="token value attr-value">alsa_output.pci-0000_12_00.3.analog-stereo</span>
+<span class="token key attr-name">use-ui-max</span> <span class="token punctuation">=</span> <span class="token value attr-value">true</span>
+<span class="token key attr-name">interval</span> <span class="token punctuation">=</span> <span class="token value attr-value">5</span>
+
+<span class="token key attr-name">format-volume</span> <span class="token punctuation">=</span> <span class="token value attr-value">&lt;ramp-volume> &lt;label-volume></span>
+
+<span class="token key attr-name">label-muted</span> <span class="token punctuation">=</span> <span class="token value attr-value"></span>
+<span class="token key attr-name">label-muted-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#a1afc9</span>
+
+<span class="token key attr-name">ramp-volume-0</span> <span class="token punctuation">=</span> <span class="token value attr-value"></span>
+<span class="token key attr-name">ramp-volume-1</span> <span class="token punctuation">=</span> <span class="token value attr-value"></span>
+<span class="token key attr-name">ramp-volume-2</span> <span class="token punctuation">=</span> <span class="token value attr-value"></span>
+
+<span class="token comment">; 左右键功能，pavucontrol 用于开关音量</span>
+<span class="token key attr-name">click-left</span> <span class="token punctuation">=</span> <span class="token value attr-value">pavucontrol</span>
+<span class="token comment">; click-middle =</span>
+
+
+<span class="token comment">;[module/alsa]</span>
+<span class="token comment">;type = internal/alsa</span>
+<span class="token comment">;</span>
+<span class="token comment">;format-volume = &lt;label-volume> &lt;bar-volume></span>
+<span class="token comment">;label-volume = VOL</span>
+<span class="token comment">;label-volume-foreground = $&#123;root.foreground&#125;</span>
+<span class="token comment">;</span>
+<span class="token comment">;format-muted-prefix = " "</span>
+<span class="token comment">;format-muted-foreground = $&#123;colors.foreground-alt&#125;</span>
+<span class="token comment">;label-muted = sound muted</span>
+<span class="token comment">;</span>
+<span class="token comment">;bar-volume-width = 10</span>
+<span class="token comment">;bar-volume-foreground-0 = #55aa55</span>
+<span class="token comment">;bar-volume-foreground-1 = #55aa55</span>
+<span class="token comment">;bar-volume-foreground-2 = #55aa55</span>
+<span class="token comment">;bar-volume-foreground-3 = #55aa55</span>
+<span class="token comment">;bar-volume-foreground-4 = #55aa55</span>
+<span class="token comment">;bar-volume-foreground-5 = #f5a70a</span>
+<span class="token comment">;bar-volume-foreground-6 = #ff5555</span>
+<span class="token comment">;bar-volume-gradient = false</span>
+<span class="token comment">;bar-volume-indicator = |</span>
+<span class="token comment">;bar-volume-indicator-font = 2</span>
+<span class="token comment">;bar-volume-fill = ─</span>
+<span class="token comment">;bar-volume-fill-font = 2</span>
+<span class="token comment">;bar-volume-empty = ─</span>
+<span class="token comment">;bar-volume-empty-font = 2</span>
+<span class="token comment">;bar-volume-empty-foreground = $&#123;colors.foreground-alt&#125;</span>
+
+
+<span class="token comment">; ===电源提示===</span>
+<span class="token comment">; https://github.com/polybar/polybar/wiki/Module:-battery</span>
+<span class="token section"><span class="token punctuation">[</span><span class="token section-name selector">module/battery</span><span class="token punctuation">]</span></span>
+<span class="token key attr-name">type</span> <span class="token punctuation">=</span> <span class="token value attr-value">internal/battery</span>
+
+<span class="token comment">; 电量大于 99% 显示充电完成</span>
+<span class="token key attr-name">full-at</span> <span class="token punctuation">=</span> <span class="token value attr-value">99</span>
+
+<span class="token comment">; 使用以下命令列出电池和适配器:</span>
+<span class="token comment">; ls -1 /sys/class/power_supply/</span>
+<span class="token key attr-name">battery</span> <span class="token punctuation">=</span> <span class="token value attr-value">BAT1</span>
+<span class="token key attr-name">adapter</span> <span class="token punctuation">=</span> <span class="token value attr-value">ACAD</span>
+
+<span class="token key attr-name">poll-interval</span> <span class="token punctuation">=</span> <span class="token value attr-value">3</span>
+
+<span class="token comment">; 时间过格式,默认: %H:%M:%S</span>
+<span class="token key attr-name">time-format</span> <span class="token punctuation">=</span> <span class="token value attr-value">%H:%M</span>
+
+<span class="token comment">; 充电</span>
+<span class="token key attr-name">format-charging</span> <span class="token punctuation">=</span> <span class="token value attr-value"> &lt;animation-charging> &lt;label-charging></span>
+
+<span class="token comment">; 放电</span>
+<span class="token key attr-name">format-discharging</span> <span class="token punctuation">=</span> <span class="token value attr-value">&lt;ramp-capacity> &lt;label-discharging></span>
+
+<span class="token comment">; 充电完成</span>
+<span class="token key attr-name">format-full</span> <span class="token punctuation">=</span> <span class="token value attr-value">&lt;label-full></span>
+
+<span class="token comment">; 充电状态</span>
+<span class="token key attr-name">label-charging</span> <span class="token punctuation">=</span>  <span class="token value attr-value">%percentage%(%time%)</span>
+
+
+<span class="token comment">; 放电状态</span>
+<span class="token key attr-name">label-discharging</span> <span class="token punctuation">=</span> <span class="token value attr-value">%percentage%(%time%)</span>
+
+<span class="token comment">;充电完成</span>
+<span class="token key attr-name">label-full</span> <span class="token punctuation">=</span> <span class="token value attr-value"> %percentage%</span>
+<span class="token key attr-name">label-full-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#aaff77</span>
+
+<span class="token key attr-name">ramp-capacity-0</span> <span class="token punctuation">=</span> <span class="token value attr-value"></span>
+<span class="token key attr-name">ramp-capacity-1</span> <span class="token punctuation">=</span> <span class="token value attr-value"></span>
+<span class="token key attr-name">ramp-capacity-2</span> <span class="token punctuation">=</span> <span class="token value attr-value"></span>
+<span class="token key attr-name">ramp-capacity-3</span> <span class="token punctuation">=</span> <span class="token value attr-value"></span>
+<span class="token key attr-name">ramp-capacity-4</span> <span class="token punctuation">=</span> <span class="token value attr-value"></span>
+
+<span class="token key attr-name">ramp-capacity-0-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#ff461f</span> 
+<span class="token key attr-name">ramp-capacity-1-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#eaff56</span> 
+<span class="token key attr-name">ramp-capacity-2-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#bddd22</span>
+<span class="token key attr-name">ramp-capacity-3-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#7bcfa6</span>
+<span class="token key attr-name">ramp-capacity-4-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#3de1ad</span>
+
+<span class="token key attr-name">bar-capacity-width</span> <span class="token punctuation">=</span> <span class="token value attr-value">10</span>
+
+<span class="token key attr-name">animation-charging-0</span> <span class="token punctuation">=</span> <span class="token value attr-value"></span>
+<span class="token key attr-name">animation-charging-1</span> <span class="token punctuation">=</span> <span class="token value attr-value"></span>
+<span class="token key attr-name">animation-charging-2</span> <span class="token punctuation">=</span> <span class="token value attr-value"></span>
+<span class="token key attr-name">animation-charging-3</span> <span class="token punctuation">=</span> <span class="token value attr-value"></span>
+<span class="token key attr-name">animation-charging-4</span> <span class="token punctuation">=</span> <span class="token value attr-value"></span>
+
+<span class="token key attr-name">animation-charging-0-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#ff461f</span> 
+<span class="token key attr-name">animation-charging-1-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#eaff56</span> 
+<span class="token key attr-name">animation-charging-2-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#bddd22</span>
+<span class="token key attr-name">animation-charging-3-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#7bcfa6</span>
+<span class="token key attr-name">animation-charging-4-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">#3de1ad</span>
+<span class="token comment">; 动画帧率(毫秒)</span>
+<span class="token key attr-name">animation-charging-framerate</span> <span class="token punctuation">=</span> <span class="token value attr-value">750</span>
+
+<span class="token comment">;animation-discharging-0 = </span>
+<span class="token comment">;animation-discharging-1 = </span>
+<span class="token comment">;animation-discharging-2 = </span>
+<span class="token comment">;animation-discharging-3 = </span>
+<span class="token comment">;animation-discharging-4 = </span>
+<span class="token comment">; 动画帧率(毫秒)</span>
+<span class="token comment">;animation-discharging-framerate = 500</span>
+
+<span class="token section"><span class="token punctuation">[</span><span class="token section-name selector">module/temperature</span><span class="token punctuation">]</span></span>
+<span class="token key attr-name">type</span> <span class="token punctuation">=</span> <span class="token value attr-value">internal/temperature</span>
+<span class="token key attr-name">thermal-zone</span> <span class="token punctuation">=</span> <span class="token value attr-value">0</span>
+<span class="token key attr-name">warn-temperature</span> <span class="token punctuation">=</span> <span class="token value attr-value">60</span>
+
+<span class="token key attr-name">format</span> <span class="token punctuation">=</span> <span class="token value attr-value">&lt;ramp> &lt;label></span>
+<span class="token key attr-name">format-underline</span> <span class="token punctuation">=</span> <span class="token value attr-value">#f50a4d</span>
+<span class="token key attr-name">format-warn</span> <span class="token punctuation">=</span> <span class="token value attr-value">&lt;ramp> &lt;label-warn></span>
+<span class="token key attr-name">format-warn-underline</span> <span class="token punctuation">=</span> <span class="token value attr-value">$&#123;self.format-underline&#125;</span>
+
+<span class="token key attr-name">label</span> <span class="token punctuation">=</span> <span class="token value attr-value">%temperature-c%</span>
+<span class="token key attr-name">label-warn</span> <span class="token punctuation">=</span> <span class="token value attr-value">%temperature-c%</span>
+<span class="token key attr-name">label-warn-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">$&#123;colors.secondary&#125;</span>
+
+<span class="token key attr-name">ramp-0</span> <span class="token punctuation">=</span> <span class="token value attr-value"></span>
+<span class="token key attr-name">ramp-1</span> <span class="token punctuation">=</span> <span class="token value attr-value"></span>
+<span class="token key attr-name">ramp-2</span> <span class="token punctuation">=</span> <span class="token value attr-value"></span>
+<span class="token key attr-name">ramp-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">$&#123;colors.foreground-alt&#125;</span>
+
+<span class="token section"><span class="token punctuation">[</span><span class="token section-name selector">module/powermenu</span><span class="token punctuation">]</span></span>
+<span class="token key attr-name">type</span> <span class="token punctuation">=</span> <span class="token value attr-value">custom/menu</span>
+
+<span class="token key attr-name">expand-right</span> <span class="token punctuation">=</span> <span class="token value attr-value">true</span>
+
+<span class="token key attr-name">format-spacing</span> <span class="token punctuation">=</span> <span class="token value attr-value">1</span>
+
+<span class="token key attr-name">label-open</span> <span class="token punctuation">=</span> <span class="token value attr-value"></span>
+<span class="token key attr-name">label-open-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">$&#123;colors.secondary&#125;</span>
+<span class="token key attr-name">label-close</span> <span class="token punctuation">=</span> <span class="token value attr-value"> cancel</span>
+<span class="token key attr-name">label-close-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">$&#123;colors.secondary&#125;</span>
+<span class="token key attr-name">label-separator</span> <span class="token punctuation">=</span> <span class="token value attr-value">|</span>
+<span class="token key attr-name">label-separator-foreground</span> <span class="token punctuation">=</span> <span class="token value attr-value">$&#123;colors.foreground-alt&#125;</span>
+
+<span class="token key attr-name">menu-0-0</span> <span class="token punctuation">=</span> <span class="token value attr-value">reboot</span>
+<span class="token key attr-name">menu-0-0-exec</span> <span class="token punctuation">=</span> <span class="token value attr-value">menu-open-1</span>
+<span class="token key attr-name">menu-0-1</span> <span class="token punctuation">=</span> <span class="token value attr-value">power off</span>
+<span class="token key attr-name">menu-0-1-exec</span> <span class="token punctuation">=</span> <span class="token value attr-value">menu-open-2</span>
+
+<span class="token key attr-name">menu-1-0</span> <span class="token punctuation">=</span> <span class="token value attr-value">cancel</span>
+<span class="token key attr-name">menu-1-0-exec</span> <span class="token punctuation">=</span> <span class="token value attr-value">menu-open-0</span>
+<span class="token key attr-name">menu-1-1</span> <span class="token punctuation">=</span> <span class="token value attr-value">reboot</span>
+<span class="token key attr-name">menu-1-1-exec</span> <span class="token punctuation">=</span> <span class="token value attr-value">sudo reboot</span>
+
+<span class="token key attr-name">menu-2-0</span> <span class="token punctuation">=</span> <span class="token value attr-value">power off</span>
+<span class="token key attr-name">menu-2-0-exec</span> <span class="token punctuation">=</span> <span class="token value attr-value">sudo poweroff</span>
+<span class="token key attr-name">menu-2-1</span> <span class="token punctuation">=</span> <span class="token value attr-value">cancel</span>
+<span class="token key attr-name">menu-2-1-exec</span> <span class="token punctuation">=</span> <span class="token value attr-value">menu-open-0</span>
+
+<span class="token section"><span class="token punctuation">[</span><span class="token section-name selector">settings</span><span class="token punctuation">]</span></span>
+<span class="token key attr-name">screenchange-reload</span> <span class="token punctuation">=</span> <span class="token value attr-value">true</span>
+<span class="token comment">;compositing-background = xor</span>
+<span class="token comment">;compositing-background = screen</span>
+<span class="token comment">;compositing-foreground = source</span>
+<span class="token comment">;compositing-border = over</span>
+<span class="token comment">;pseudo-transparency = false</span>
+
+<span class="token section"><span class="token punctuation">[</span><span class="token section-name selector">global/wm</span><span class="token punctuation">]</span></span>
+<span class="token key attr-name">margin-top</span> <span class="token punctuation">=</span> <span class="token value attr-value">5</span>
+<span class="token key attr-name">margin-bottom</span> <span class="token punctuation">=</span> <span class="token value attr-value">5</span>
+
+<span class="token comment">; vim:ft=dosini</span>
+
+</code></pre>
+
+</details>
+
+<h3 id="亮度调节"><a href="#亮度调节" class="headerlink" title="亮度调节"></a>亮度调节</h3><p>为了使<code>polybar</code>中的亮度调节生效，增加以下配置</p>
+<center>/etc/udev/rules.d/backlight.rules</center>
+
+<pre class="language-none"><code class="language-none">RUN+&#x3D;&quot;&#x2F;bin&#x2F;chgrp wheel &#x2F;sys&#x2F;class&#x2F;backlight&#x2F;intel_backlight&#x2F;brightness&quot;
+RUN+&#x3D;&quot;&#x2F;bin&#x2F;chmod g+w &#x2F;sys&#x2F;class&#x2F;backlight&#x2F;intel_backlight&#x2F;brightness&quot;</code></pre>
+
+<h1 id="输入法"><a href="#输入法" class="headerlink" title="输入法"></a>输入法</h1><h2 id="简介-4"><a href="#简介-4" class="headerlink" title="简介"></a>简介</h2><h3 id="fcitx5-im"><a href="#fcitx5-im" class="headerlink" title="fcitx5-im"></a>fcitx5-im</h3><p>包含了fcitx5的基本框架和配置工具</p>
+<h3 id="fcitx5-chinese-addons"><a href="#fcitx5-chinese-addons" class="headerlink" title="fcitx5-chinese-addons"></a>fcitx5-chinese-addons</h3><p>fcitx5的各种中文输入</p>
+<h3 id="ssfconv"><a href="#ssfconv" class="headerlink" title="ssfconv"></a>ssfconv</h3><p>用于将搜狗的输入法皮肤转换为fcitx&#x2F;fcitx5的theme</p>
+<h2 id="配置-1"><a href="#配置-1" class="headerlink" title="配置"></a>配置</h2><p>在双拼设置中：使用小鹤双拼，将快速输入触发键改为&#96;Super+`&#96;，设置模糊音<br>在附加组件中修改主题</p>
+<h1 id="浏览器"><a href="#浏览器" class="headerlink" title="浏览器"></a>浏览器</h1><h2 id="firefox"><a href="#firefox" class="headerlink" title="firefox"></a>firefox</h2><p>在GNU&#x2F;Linux里还想用别的？</p>
+<h2 id="w3m"><a href="#w3m" class="headerlink" title="w3m"></a>w3m</h2><p><del>用来为了ranger服务</del></p>
+<h1 id="蓝牙"><a href="#蓝牙" class="headerlink" title="蓝牙"></a>蓝牙</h1><h2 id="bluez-bluez-utils"><a href="#bluez-bluez-utils" class="headerlink" title="bluez bluez-utils"></a>bluez bluez-utils</h2><p>安装之后启动服务，<code>systemctl enable bluetooth</code></p>
+<h2 id="blueberry"><a href="#blueberry" class="headerlink" title="blueberry"></a>blueberry</h2><p>图形界面的蓝牙，可以不用一直开</p>
+<h1 id="游戏"><a href="#游戏" class="headerlink" title="游戏"></a>游戏</h1><h2 id="ddnet"><a href="#ddnet" class="headerlink" title="ddnet"></a>ddnet</h2><p>teeworlds的衍生版本(虽然不是开源，但是默认支持更多mod)</p>
+<h1 id="终端"><a href="#终端" class="headerlink" title="终端"></a>终端</h1><h2 id="xfce4-termianl"><a href="#xfce4-termianl" class="headerlink" title="xfce4-termianl"></a>xfce4-termianl</h2><p>轻量一点就好，<del>没看出其他终端大在哪里了</del><br>外观设置：</p>
+<ul>
+<li>一般：禁用滚动条</li>
+<li>外观：字体使用<code>FreeMono Regular 15</code>；使用透明背景，透明度0.7；取消菜单栏、工具栏、边框</li>
+</ul>
+<h1 id="截屏"><a href="#截屏" class="headerlink" title="截屏"></a>截屏</h1><h2 id="maim"><a href="#maim" class="headerlink" title="maim"></a>maim</h2><p>见i3中相关的快捷键配置</p>
+<h1 id="图像查看"><a href="#图像查看" class="headerlink" title="图像查看"></a>图像查看</h1><h2 id="ristretto"><a href="#ristretto" class="headerlink" title="ristretto"></a>ristretto</h2><p>用来看图</p>
+<h2 id="feh"><a href="#feh" class="headerlink" title="feh"></a>feh</h2><p>用来设置i3背景，但是也可用于图像查看</p>
+<h1 id="多媒体"><a href="#多媒体" class="headerlink" title="多媒体"></a>多媒体</h1><h2 id="vlc"><a href="#vlc" class="headerlink" title="vlc"></a>vlc</h2><p>视频和音频播放</p>
+<h1 id="文件转换"><a href="#文件转换" class="headerlink" title="文件转换"></a>文件转换</h1><h2 id="pandoc"><a href="#pandoc" class="headerlink" title="pandoc"></a>pandoc</h2><p><span class="heimu">暂时没有介绍</span></p>
+<h1 id="音乐"><a href="#音乐" class="headerlink" title="音乐"></a>音乐</h1><h2 id="netease-cloud-music"><a href="#netease-cloud-music" class="headerlink" title="netease-cloud-music"></a>netease-cloud-music</h2><p><span class="heimu">不得不说网易在Linux上的开发比腾讯好得太多</span></p>
+<h1 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h1><p><del>下回分解</del></p>
+]]></content>
+      <categories>
+        <category>GNU/Linux</category>
+      </categories>
+      <tags>
+        <tag>Arch Linux</tag>
+        <tag>Linux配置</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Linux挂载Windows分区问题</title>
     <url>/posts/6b1091a3/</url>
     <content><![CDATA[<h1 id="Linux挂载Windows分区问题"><a href="#Linux挂载Windows分区问题" class="headerlink" title="Linux挂载Windows分区问题"></a>Linux挂载Windows分区问题</h1><h2 id="分区格式"><a href="#分区格式" class="headerlink" title="分区格式"></a>分区格式</h2><p>首先，Linux和Windows采用的分区格式不同，Linux采用ext4，而Windows采用ntfs。</p>
