@@ -8,6 +8,8 @@
 </blockquote>
 <p>生活好似一只庞然巨兽，人在其腹中被消化升华，等待着下一个未知的管道。</p>
 <p>转眼之间，我已踏入大学，这已然的事实中却蕴藏着无穷的未知。也许就该如此，总有一个存在紧握着我们生命的两端——生与死；而那中间的曲折未知——失落、恐惧、希望、新生，都由我们自己去体会个中滋味。</p>
+<span id="more"></span>
+
 <p>陌生的小道，陌生的声音，陌生的气息，陌生的人群，一切都足以使人惶恐不安。然而未知并不意味着危险，当我小心翼翼地迈出我的脚步，感知到是学长帮忙搬行李的身影，辅导员发来的消息，来自五湖四海的同学的笑容。</p>
 <p>梦可怕吗？它是未知的。当然有噩梦和美梦，但这应该由潜意识把握。现实可怕吗？只不过是比梦更真实的未知。但也一样由我们自己去把握。去适应这片未知的水域，去感知这些未知的生灵。总有一天，自己已浑然不觉在这片水域中畅游。我倒是期待新的变换，总不能一直藏在安全的熟悉的水中慢慢僵化，受制于生活的惯性。只是希望今后的我保有这份生存的勇气，守住对未知的期待，探索这“恐惧”背后的热情。</p>
 <h1 id="迷茫"><a href="#迷茫" class="headerlink" title="迷茫"></a>迷茫</h1><blockquote>
@@ -54,6 +56,8 @@
 <p>本文翻译自<a href="https://soft-matter.github.io/trackpy/v0.5.0/tutorial/walkthrough.html">trackpy文档</a>，仅供学习参考</p>
 </blockquote>
 <h1 id="Walkthrough"><a href="#Walkthrough" class="headerlink" title="Walkthrough"></a>Walkthrough</h1><p>分析纳米颗粒在水中的流动，跟踪轨迹并计算水滴粘度。</p>
+<span id="more"></span>
+
 <p><em><code>In [1]:</code></em></p>
 <pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> __future__ <span class="token keyword">import</span> division<span class="token punctuation">,</span> unicode_literals<span class="token punctuation">,</span> print_fuction	<span class="token comment"># 为了兼容python2和python3，主要是python提前使用python的函数</span>
 <span class="token keyword">import</span> matplotlib <span class="token keyword">as</span> mpl
@@ -558,6 +562,8 @@ tp<span class="token punctuation">.</span>utils<span class="token punctuation">.
 </blockquote>
 <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>我从上个暑假开始接触Linux，当时正值新冠疫情网课，家里的电脑和我同一个辈分，是WinXP的系统，有各种弹窗，运行速度令人担忧,并且WinXP已经停止维护了。于是上网查了一下，发现了这篇文章<a href="https://madmalls.com/blog/post/install-bodhi-linux-distribution-on-old-pc/">安装Bodhi Linux让老旧电脑重新焕发活力</a>,于是开始了Linux的奇妙旅程。后来又了解到Arch Linux，便经过了一番努力，拥有了自己的U盘上的Arch Linux。它的确帮助我解决了不少问题，也让我学会了新的知识。</p>
 <p>现在，有许多同学问我Linux学起来难吗，要花费多少精力，我也清楚没有任何基础接触Linux的尴尬，于是我想写下这篇文章，帮助大家减轻心理负担。</p>
+<span id="more"></span>
+
 <p>下面，请允许我把读者视为只会在Windows上点点鼠标的初学者。我会把基本的概念一一解释，其中也有不少废话，有能力的人请自行跳过。</p>
 <h1 id="安装前的准备"><a href="#安装前的准备" class="headerlink" title="安装前的准备"></a>安装前的准备</h1><h2 id="心理准备-可跳"><a href="#心理准备-可跳" class="headerlink" title="心理准备(可跳)"></a>心理准备(可跳)</h2><p>学习Arch Linux，至少就我而言，是一件趣事。不必太心急，遇到一个困难，解决一个困难，每解决一个困难都会有巨大的成就感。</p>
 <p>遇到困难，要学会自己寻找解决方法，<a href="https://wiki.archlinux.org/">ArchWiki</a>是你第一个应该参考的，如果不行，便要善用其他网络资源。</p>
@@ -1076,6 +1082,8 @@ rtt min/avg/max/mdev <span class="token operator">=</span> <span class="token nu
     <title>Arch Linux USB(配置篇)</title>
     <url>/posts/55b25ac5/</url>
     <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这篇文章看一看作是<a href="https://zephyrheather.github.io/2021/07/16/arch-linux-usb-an-zhuang-pian/">Arch Linux USB(安装篇)</a>的后续，不过archlinux的自由度很高，每一个人都能配置出高度个人定制化的东西，所以这里也只是结合archwiki和我个人的一些配置简单介绍一下。</p>
+<span id="more"></span>
+
 <p>参考：<a href="https://wiki.archlinux.org/title/General_recommendations_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)#%E4%B8%AD%E5%9B%BD%E5%A4%A7%E9%99%86%E7%94%A8%E6%88%B7%E7%9A%84%E6%8E%A8%E8%8D%90%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88">General recommendations (简体中文)</a>(这个页面还特地做了<a href="https://wiki.archlinux.org/title/General_recommendations_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)#%E4%B8%AD%E5%9B%BD%E5%A4%A7%E9%99%86%E7%94%A8%E6%88%B7%E7%9A%84%E6%8E%A8%E8%8D%90%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88">#中国大陆用户的推荐解决方案</a>)</p>
 <p>以下引文不加注释都引自<a href="https://wiki.archlinux.org/title/General_recommendations_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)#%E4%B8%AD%E5%9B%BD%E5%A4%A7%E9%99%86%E7%94%A8%E6%88%B7%E7%9A%84%E6%8E%A8%E8%8D%90%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88">General recommendations (简体中文)</a></p>
 <h2 id="系统和软件包管理"><a href="#系统和软件包管理" class="headerlink" title="系统和软件包管理"></a>系统和软件包管理</h2><h3 id="系统管理"><a href="#系统管理" class="headerlink" title="系统管理"></a>系统管理</h3><blockquote>
@@ -1321,7 +1329,18 @@ GLFW_IM_MODULE <span class="token assign-left variable">DEFAULT</span><span clas
   <entry>
     <title>Arch Linux的私人配置</title>
     <url>/posts/170530f2/</url>
-    <content><![CDATA[<p>软件：base linux linux-firmware base-devel vim nano dhcpcd iwd intel-ucode amd-ucode zsh polkit xorg-server xorg-xinit i3-gaps xfce4-termianl fctix5-im fcitx5-chinese-addons fcitx5-pinyin-zhwiki fcitx5-pinyin-moegirl networkmanager network-manager-applet alsa-utils polybar maim ranger ristretto vlc firefox typora pandoc netease-cloud-music bat thunar neofetch ncdu xclip arch-install-scripts tmux archlinuxcn-key dmenu git wget ttf-lxgw-wenkai-mono picom feh ttf-font-awesome yay man-db xorg-xdpyinfo ssfconv sof-firmware bluez bluez-utils blueberry nodejs ddnet xf86-video-intel w3m clash</p>
+    <content><![CDATA[<pre class="language-none"><code class="language-none">base linux linux-firmware base-devel vim nano dhcpcd iwd intel-ucode amd-ucode zsh polkit xorg-server xorg-xinit i3-gaps xfce4-termianl fctix5-im fcitx5-chinese-addons fcitx5-pinyin-zhwiki fcitx5-pinyin-moegirl networkmanager network-manager-applet alsa-utils polybar maim ranger ristretto vlc firefox typora pandoc netease-cloud-music bat thunar neofetch ncdu xclip arch-install-scripts tmux archlinuxcn-key dmenu git wget ttf-lxgw-wenkai-mono picom feh ttf-font-awesome yay man-db xorg-xdpyinfo ssfconv sof-firmware bluez bluez-utils blueberry nodejs ddnet xf86-video-intel w3m clash</code></pre>
+
+<div class="info">
+
+<blockquote>
+<p>本文为个人配置，长期更新。</p>
+</blockquote>
+</div>
+
+<span id="more"></span>
+
+
 <table>
 <thead>
 <tr>
@@ -1422,13 +1441,6 @@ GLFW_IM_MODULE <span class="token assign-left variable">DEFAULT</span><span clas
 </tr>
 </tbody></table>
 <hr>
-<div class="info">
-
-<blockquote>
-<p>本文为个人配置，长期更新。</p>
-</blockquote>
-</div>
-
 <h1 id="系统"><a href="#系统" class="headerlink" title="系统"></a>系统</h1><p>这里是涉及系统层面的软件，大多不用配置，只做简单的介绍。</p>
 <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><h3 id="base-amp-base-devel"><a href="#base-amp-base-devel" class="headerlink" title="base &amp; base-devel"></a>base &amp; base-devel</h3><p>base和base-devel都是软件包组，由一系列软件包组成，或称为元软件包(<a href="https://wiki.archlinux.org/title/Meta_package_and_package_group_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">meta package</a>)。</p>
 <p>其中base包含了 Arch Linux 安装时需要的最小软件集，包含：</p>
@@ -2511,7 +2523,7 @@ RUN+&#x3D;&quot;&#x2F;bin&#x2F;chmod g+w &#x2F;sys&#x2F;class&#x2F;backlight&#x2
   <entry>
     <title>Linux挂载Windows分区问题</title>
     <url>/posts/6b1091a3/</url>
-    <content><![CDATA[<h1 id="Linux挂载Windows分区问题"><a href="#Linux挂载Windows分区问题" class="headerlink" title="Linux挂载Windows分区问题"></a>Linux挂载Windows分区问题</h1><h2 id="分区格式"><a href="#分区格式" class="headerlink" title="分区格式"></a>分区格式</h2><p>首先，Linux和Windows采用的分区格式不同，Linux采用ext4，而Windows采用ntfs。</p>
+    <content><![CDATA[<h2 id="分区格式"><a href="#分区格式" class="headerlink" title="分区格式"></a>分区格式</h2><p>首先，Linux和Windows采用的分区格式不同，Linux采用ext4，而Windows采用ntfs。</p>
 <p>Windows不支持访问ext4，尽管有些软件可以使用，但是效果不佳，目前可以用WSL挂载ext4格式的分区。Linux也不能直接访问ntfs格式的分区，但是见ArchWiki</p>
 <blockquote>
 <p><a href="https://www.kernel.org/doc/html/latest/filesystems/ntfs3.html">ntfs3</a>驱动自内核版本5,15起提供此文件系统的读写支持</p>
@@ -2560,6 +2572,8 @@ or fast restarting.<span class="token punctuation">)</span></code></pre>
     <url>/posts/14643401/</url>
     <content><![CDATA[<p>这是一次惨痛的经历，我的Arch在更新之后之后出现了无法关机的问题，并且我采用了不正确的方法处理——强制断电。最终的结果就是数据没有写入导致系统文件丢失。</p>
 <p>于是我不得不重装一遍我的Arch，刚刚才写完Arch的配置篇没想到就用上了，但发现其实远远不够，许多配置根本想不起来了，所以谨以此文记录我的Arch重生之路的配置，以免下次又发生这样的惨剧。(系统更新后那一次非正常关机的问题仍无法解决，不过只存在在我的Arch上，大家不用担心)</p>
+<span id="more"></span>
+
 <p>下面描述一下重新配置的经过。(同样，下面引文不加说明均来自<a href="https://wiki.archlinux.org/">ArchWiki</a>)</p>
 <h1 id="系统层面"><a href="#系统层面" class="headerlink" title="系统层面"></a>系统层面</h1><h2 id="The-initial-ramdisk"><a href="#The-initial-ramdisk" class="headerlink" title="The initial ramdisk"></a>The initial ramdisk</h2><blockquote>
 <p>初始内存盘本质上是一个很小的运行环境（早期用户空间），用于加载一些核心模块，并在 init  接管启动过程之前做必要的准备。有了这个环境，才能支持加密根文件系统、RAID上的根文件系统等高级功能。mkinicpio  支持自定义的钩子扩展、运行时自动检测以及其他功能。</p>
@@ -3081,6 +3095,8 @@ arch-install-scripts	<span class="token comment"># 用于安装arch</span></code
     <title>fbterm MIT1</title>
     <url>/posts/72d67d3f/</url>
     <content><![CDATA[<p>这是我的第一个系列文章，打算花一个学期的时间打造一个没有图形界面但是功能齐全的Archlinux。经过讨论，采用<a href="https://g-dab.github.io/">G.dab</a>的提议来命名此系列为Moonlight in Twilight，暮光中的月色，简称MIT。在此感谢G.dab，也希望大家一起进步！</p>
+<span id="more"></span>
+
 <h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><p>参见我的另一篇文章——<a href="https://zephyrheather.github.io/2021/07/16/arch-linux-usb-an-zhuang-pian/">Arch Linux USB（安装篇）</a>，里面详细介绍了整个安装的过程。在这次的MIT系列中，又提供了安装的<a href="https://asciinema.org/a/cYwN6bRh3W2pmB89AIQl8L6hI">视频</a>过程，注意其中在格式化的时候采用的命令&#96;mkfs.ext4 -0 “^has_journal” &#x2F;dev&#x2F;sdXx”是为了增加U盘的读写次数而不创建日志文件，其他的步骤与之前的文章一致。但是要注意，没有日志文件如果在使用过程中出现意外断电或者热拔插，就会损失数据，所以最后我还是选择了使用日志。</p>
 <h1 id="终端"><a href="#终端" class="headerlink" title="终端"></a>终端</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>尽管没有了图形界面，但是linux原生的tty并不能支持256色的输出、中文显示、输入法等功能，所以需要其他的解决方案。在这里，我采用的是framebuffer，也就是帧缓冲，不经由X服务器，直接对帧缓冲设备&#x2F;dev&#x2F;fb0进行操作，实现图像的显示。理论上来说，framebuffer的支持没有上限，可以调控屏幕的每一个像素点，但是直接基于framebuffer的应用很少(毕竟大家都去图形界面了)。这里我们使用fbterm这一基于framebuffer的终端。其实还有yaft也是基于framebuffer的，还有另一种技术KMS可以提供选择，但是fbterm是其中对中文最友好一个，fcitx对其有默认的插件支持。</p>
 <p>主要参考：</p>
@@ -3246,6 +3262,8 @@ input-method<span class="token operator">=</span>fcitx-fbterm
     <title>muscic and ramroot MIT3</title>
     <url>/posts/e49049b6/</url>
     <content><![CDATA[<p>今天是清明节，本来早就准备好文章了，但是不小心删掉了，所以只好重写一篇。既然放假，就来点简单轻松又愉快的。</p>
+<span id="more"></span>
+
 <h1 id="musicbox"><a href="#musicbox" class="headerlink" title="musicbox"></a>musicbox</h1><p>学习怎么能没有音乐呢。muscibox是用python编写的网易云命令行版，使用体验不错。先放github链接:<a href="https://github.com/darknessomi/musicbox">musicbox</a></p>
 <blockquote>
 <p>高品质网易云音乐命令行版本，简洁优雅，丝般顺滑，基于 Python 编写</p>
@@ -3523,6 +3541,8 @@ Received <span class="token function">file</span> written to README.md</code></p
     <title>tmux MIT2</title>
     <url>/posts/987d9346/</url>
     <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>上一次我们解决了tty中的中文显示和输入问题，fbterm的表现良好。可是在实际工作中，我们往往需要分屏同时进行一些操作和查看信息，有时还需要复制粘贴一些信息。</p>
+<span id="more"></span>
+
 <h2 id="不使用tmux的尝试"><a href="#不使用tmux的尝试" class="headerlink" title="不使用tmux的尝试"></a>不使用tmux的尝试</h2><p>vim也可以调用终端实现分屏。在命令行模式执行<code>term</code>，就可以打开一个竖直方向的终端，加上修饰<code>vertical</code>，即<code>vertical term</code>就可以打开一个水平方向的终端。<br>term在vim中仍被视为一个vim的进程，甚至也有不同的模式，可以使用vim的快捷键在不同的窗口跳转。使用<code>Ctrl+D</code>或者<code>exit</code>退出用户时默认退出了term。</p>
 <p>在vim的term中也可以执行一定的复制粘贴操作，需要用快捷键<code>Ctrl+\ Ctrl+N</code>从Insert模式转换到Normal模式。但是只能从term复制内容而不能在term粘贴内容，尝试粘贴的时候会显示<code>E21: Cannot make changes, &#39;modifiable&#39; is off</code>，按下<code>i</code>重新回到term中执行命令。</p>
 <p>其实用vim来实现分屏是个不错的选择，设置一些快捷键之后可以比较方便。但是如果只是想同时运行多个命令就不得不先打开vim，但这实在是有点鸡肋。</p>
@@ -3634,6 +3654,8 @@ Ctrl-b ,  窗口重命名。</code></pre>
     <title>w3m MIT4</title>
     <url>/posts/c6c191e5/</url>
     <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>w3m是一款命令行下的终端浏览器，与之相似的还有历史悠久的lynx。但是w3m对中文的支持更友好，并且可以显示图片，也有类似于vim的键绑定。虽然图形界面的浏览器有丰富的特性，但是终端浏览器也有占用资源少、没有广告等的优势。尽管现在的网页有十分丰富的ccs特性，终端浏览器并不能显示，但服务于基本的搜索需求已经足够了。</p>
+<span id="more"></span>
+
 <p>w3m的官方简介：</p>
 <blockquote>
 <p>w3m is a text-based web browser as well as a pager like <code>more&#39; or </code>less’. With w3m you can browse web pages through a terminal emulator window (xterm, rxvt or something like that). Moreover, w3m can be used as a text formatting tool which typesets HTML into plain text.</p>
@@ -4090,7 +4112,9 @@ Ctrl-b ,  窗口重命名。</code></pre>
   <entry>
     <title>命令行小工具</title>
     <url>/posts/e392976/</url>
-    <content><![CDATA[<h1 id="命令行小工具"><a href="#命令行小工具" class="headerlink" title="命令行小工具"></a>命令行小工具</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>好久没有更新blog了，愈发认清了当年“教授”对我的教导。趁着寒假还没有结束，赶紧水一篇文章。</p>
+    <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>好久没有更新blog了，愈发认清了当年“教授”对我的教导。趁着寒假还没有结束，赶紧水一篇文章。</p>
+<span id="more"></span>
+
 <hr>
 <p>不像在Windows中(上次看到有人Mac竟然不知道Terminal)，在Unix&#x2F;Linux中，命令行就是生产力。之前我自己配置Arch的时候，光顾着图形界面了，现在回过头来，还是命令行快啊。</p>
 <p>举个例子，写程序用什么编辑器，什么C语言用VS(Visual Studio)，python用Pycharm的，还有vscode大法。当然，这些IDE(集成开发环境)好是好，从语法知识到项目管理一应俱全。但是其中大部分功能都用不到，一堆插件自己都不知道什么时候装的。甚至还有同学一个学期C语言课上下来，认为只有VS才能运行C语言，还必须要有一堆.??的文件。但事实上，C语言最省事了，随便来个编辑器加个编译器就行，没必要把一堆东西集成吧。这个学期的C语言作业，我都是在字符界面里用vim写，然后用gcc编译的。简单方便，隔壁同学还在问我创建一个新项目要点哪里的时候，我的代码都写了一半了。</p>
@@ -4196,6 +4220,8 @@ Ctrl-b ,  窗口重命名。</code></pre>
 <p>当然啦，其实一直很想试试Arch的最小化安装，从xfce4到i3折腾。之前其实还拿这个3.7G的U盘装过Arch, 用i3作为桌面，但是还是太大了，以失败告终。</p>
 <p>结果物理实验没有用到U盘，所以正好开启新一轮的尝试，打算打造一个功能齐全的无桌面环境的Arch使用(这是之后我的blog的一个系列，名字暂时还没想好(tty求生?))</p>
 <p>回到正题，还是希望身边放一个启动盘，但是手头只剩下一个32g的平时用来当正常U盘用的U盘了，所以就安在它身上了。其实在Archwiki上有怎么把启动盘安装在一个分区而其他分区正常使用的方法，一方面中文版本的翻译<del>又</del>落后了，另一方面有同学竟然看了那篇文章还不会，那我正好<del>水文</del>分享一下怎么在一个分区上制作Arch启动盘。</p>
+<span id="more"></span>
+
 <h1 id="简单制作一个普通的启动盘"><a href="#简单制作一个普通的启动盘" class="headerlink" title="简单制作一个普通的启动盘"></a>简单制作一个普通的启动盘</h1><p>准备一个U盘，你甚至不需要分区和格式化它，因为<code>dd</code>命令会完全改变这个U盘</p>
 <pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">dd</span> <span class="token assign-left variable">bs</span><span class="token operator">=</span>4M <span class="token assign-left variable">if</span><span class="token operator">=</span> path/to/ archlinux- version -x86_64.iso <span class="token assign-left variable">of</span><span class="token operator">=</span>/dev/ sdx <span class="token assign-left variable">conv</span><span class="token operator">=</span>f​​sync <span class="token assign-left variable">oflag</span><span class="token operator">=</span>direct <span class="token assign-left variable">status</span><span class="token operator">=</span>progress</code></pre>
 
@@ -4269,19 +4295,21 @@ syslinux --directory syslinux --install /dev/sdXn	<span class="token comment"># 
   <entry>
     <title>第一篇文章</title>
     <url>/posts/5c2fafc7/</url>
-    <content><![CDATA[<h3 id="1-前言"><a href="#1-前言" class="headerlink" title="1. 前言"></a>1. 前言</h3><p>2021年7月，我刚刚走出高中的校门，开始人生的下一段旅途。也许当我许久以后再来看这段时间，会觉得和其他的部分一样。但我相信这种一样并不是生命的重复，而是生命的运动；这份一样将是一样的精彩、一样的律动。  </p>
+    <content><![CDATA[<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>2021年7月，我刚刚走出高中的校门，开始人生的下一段旅途。也许当我许久以后再来看这段时间，会觉得和其他的部分一样。但我相信这种一样并不是生命的重复，而是生命的运动；这份一样将是一样的精彩、一样的律动。  </p>
 <p>为此，我开始不断地尝试新的知识、新的思想、新的生命形式，我努力去把每一天活得值得珍重。  </p>
 <p>最近在学习Linux、Python，刷高数、普物，学车，甚至练习双拼。</p>
 <p>感谢每一个自己搭建个人博客分享个人收获的博主，在他们的建站经历下，才有了我的博客，才有了并肩同行的归属感。  </p>
+<span id="more"></span>
+
 <p>这是我参考的文章<a href="https://www.yshawlon.cn/1.html" title="Github + Hexo 搭建个人博客超详细教程">Github + Hexo</a>。照着这个流程走下来完全没问题，希望你也能拥有自己的博客。</p>
-<h3 id="2-内容"><a href="#2-内容" class="headerlink" title="2. 内容"></a>2. 内容</h3><p>个人是物理走向，业余时间学习信科，爱好文学，所以把博客内容分为以下几块：</p>
+<h3 id="内容"><a href="#内容" class="headerlink" title="内容"></a>内容</h3><p>个人是物理走向，业余时间学习信科，爱好文学，所以把博客内容分为以下几块：</p>
 <ul>
 <li>技术</li>
 <li>记录（生活）</li>
 <li>文学</li>
 <li>其他</li>
 </ul>
-<h3 id="3-希望"><a href="#3-希望" class="headerlink" title="3. 希望"></a>3. 希望</h3><p>为什么要搭建自己的博客？刘未鹏的这篇文章<a href="http://mindhacks.cn/2009/02/15/why-you-should-start-blogging-now/">[BetterExplained]为什么你应该（从现在开始就）写博客 </a>写的很多，但我也有自己的想法和希望。</p>
+<h3 id="希望"><a href="#希望" class="headerlink" title="希望"></a>希望</h3><p>为什么要搭建自己的博客？刘未鹏的这篇文章<a href="http://mindhacks.cn/2009/02/15/why-you-should-start-blogging-now/">[BetterExplained]为什么你应该（从现在开始就）写博客 </a>写的很多，但我也有自己的想法和希望。</p>
 <p>个人博客首先是“个人”：</p>
 <ol>
 <li><p>自由。</p>

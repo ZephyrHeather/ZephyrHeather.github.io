@@ -40,6 +40,8 @@ IconifyProviders = {
 <p>当然啦，其实一直很想试试Arch的最小化安装，从xfce4到i3折腾。之前其实还拿这个3.7G的U盘装过Arch, 用i3作为桌面，但是还是太大了，以失败告终。</p>
 <p>结果物理实验没有用到U盘，所以正好开启新一轮的尝试，打算打造一个功能齐全的无桌面环境的Arch使用(这是之后我的blog的一个系列，名字暂时还没想好(tty求生?))</p>
 <p>回到正题，还是希望身边放一个启动盘，但是手头只剩下一个32g的平时用来当正常U盘用的U盘了，所以就安在它身上了。其实在Archwiki上有怎么把启动盘安装在一个分区而其他分区正常使用的方法，一方面中文版本的翻译<del>又</del>落后了，另一方面有同学竟然看了那篇文章还不会，那我正好<del>水文</del>分享一下怎么在一个分区上制作Arch启动盘。</p>
+<span id="more"></span>
+
 <h1 id="简单制作一个普通的启动盘"><a href="#简单制作一个普通的启动盘" class="headerlink" title="简单制作一个普通的启动盘"></a>简单制作一个普通的启动盘</h1><p>准备一个U盘，你甚至不需要分区和格式化它，因为<code>dd</code>命令会完全改变这个U盘</p>
 <pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">dd</span> <span class="token assign-left variable">bs</span><span class="token operator">=</span>4M <span class="token assign-left variable">if</span><span class="token operator">=</span> path/to/ archlinux- version -x86_64.iso <span class="token assign-left variable">of</span><span class="token operator">=</span>/dev/ sdx <span class="token assign-left variable">conv</span><span class="token operator">=</span>f​​sync <span class="token assign-left variable">oflag</span><span class="token operator">=</span>direct <span class="token assign-left variable">status</span><span class="token operator">=</span>progress</code></pre>
 
