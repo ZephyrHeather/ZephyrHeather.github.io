@@ -1,6 +1,511 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Trackpy--Walkthrough</title>
+    <url>/posts/9ce795e5/</url>
+    <content><![CDATA[<blockquote>
+<p>本文翻译自<a href="https://soft-matter.github.io/trackpy/v0.5.0/tutorial/walkthrough.html">trackpy文档</a>，仅供学习参考</p>
+</blockquote>
+<h1 id="Walkthrough"><a href="#Walkthrough" class="headerlink" title="Walkthrough"></a>Walkthrough</h1><p>分析纳米颗粒在水中的流动，跟踪轨迹并计算水滴粘度。</p>
+<span id="more"></span>
+
+<p><em><code>In [1]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> __future__ <span class="token keyword">import</span> division<span class="token punctuation">,</span> unicode_literals<span class="token punctuation">,</span> print_fuction	<span class="token comment"># 为了兼容python2和python3，主要是python提前使用python的函数</span>
+<span class="token keyword">import</span> matplotlib <span class="token keyword">as</span> mpl
+<span class="token keyword">import</span> matplotlib<span class="token punctuation">.</span>pyplot <span class="token keyword">as</span> plt
+
+<span class="token operator">%</span>matplotlib inline	<span class="token comment"># ipython的魔法函数</span>
+
+<span class="token comment"># 可选，调整样式</span>
+mpl<span class="token punctuation">.</span>rc<span class="token punctuation">(</span><span class="token string">'figure'</span><span class="token punctuation">,</span> figsize<span class="token operator">=</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+mpl<span class="token punctuation">.</span>rc<span class="token punctuation">(</span><span class="token string">'image'</span><span class="token punctuation">,</span> cmap<span class="token operator">=</span><span class="token string">'gray'</span><span class="token punctuation">)</span></code></pre>
+
+<p>导入python的科学计算库numpy和数据分析库pandas</p>
+<p>导入trackpy跟踪，pims打开媒体</p>
+<p><em><code>In [2]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> numpy <span class="token keyword">as</span> np
+<span class="token keyword">import</span> pandas <span class="token keyword">as</span> pd
+<span class="token keyword">from</span> pandas <span class="token keyword">import</span> DataFrame<span class="token punctuation">,</span> Series	<span class="token comment"># 为了方便</span>
+
+<span class="token keyword">import</span> pims
+<span class="token keyword">import</span> trackpy <span class="token keyword">as</span> tp</code></pre>
+
+<h2 id="Step-1-Read-the-Data"><a href="#Step-1-Read-the-Data" class="headerlink" title="Step 1: Read the Data"></a>Step 1: Read the Data</h2><p>打开图片或视频</p>
+<p>为了将数据导入Python，我们使用一个trackpy的姐妹项目<a href="https://github.com/soft-matter/pims">PIMS</a>(Python Image Sequence)(pims的<a href="https://nbviewer.ipython.org/github/soft-matter/pims/tree/master/">notebook</a>)PIMS使得通过一个一致的接口加载和处理来自多种格式的视频数据变得容易和方便。</p>
+<p>使用 PIMS，trackpy可以读取：</p>
+<ul>
+<li>一系列文件夹或压缩文件中的图片</li>
+<li>多帧TIFF文件</li>
+<li>一段视频(AVI、MOV等)</li>
+<li>用于显微镜和科学视频捕捉的特殊格式：<ul>
+<li><code>Cine</code>, NorPix <code>seq</code></li>
+<li><code>LSM</code></li>
+<li>Files supported by <a href="https://www.openmicroscopy.org/site/support/bio-formats5.1/supported-formats.html">Bioformats</a>(这个链接似乎失效了)</li>
+<li><code>ND2</code> using <a href="https://github.com/soft-matter/pims_nd2">PIMS_ND2</a></li>
+</ul>
+</li>
+</ul>
+<p>(有些格式需要一些额外的依赖关系。有关完整列表，请参阅PIMS的README页面或文档中的安装说明。)</p>
+<p>对于许多格式，使用<code>pims.open</code>就行。由于这些图像是彩色的，我们还需要设置一个管道，以便在读取图像时将其转换为灰度。</p>
+<p><em><code>In [3]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token decorator annotation punctuation">@pims<span class="token punctuation">.</span>pipeline</span>
+<span class="token keyword">def</span> <span class="token function">gray</span><span class="token punctuation">(</span>image<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">return</span> image<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span> <span class="token punctuation">:</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">]</span>  <span class="token comment"># Take just the green channel</span>
+
+frames <span class="token operator">=</span> gray<span class="token punctuation">(</span>pims<span class="token punctuation">.</span><span class="token builtin">open</span><span class="token punctuation">(</span><span class="token string">'../sample_data/bulk_water/*.png'</span><span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
+
+<p><em><code>In [4]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">framses</code></pre>
+
+<p><em><code>Out [4]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token punctuation">(</span>ImageSequence<span class="token punctuation">,</span><span class="token punctuation">)</span> processed through proc_func<span class="token punctuation">.</span> Original <span class="token builtin">repr</span><span class="token punctuation">:</span>
+    <span class="token operator">&lt;</span>Frames<span class="token operator">></span>
+    Source<span class="token punctuation">:</span> <span class="token operator">/</span>Users<span class="token operator">/</span>nkeim<span class="token operator">/</span>projects<span class="token operator">/</span>trackpy<span class="token operator">/</span>trackpy<span class="token operator">-</span>examples<span class="token operator">/</span>sample_data<span class="token operator">/</span>bulk_water<span class="token operator">/</span><span class="token operator">*</span><span class="token punctuation">.</span>png
+    Length<span class="token punctuation">:</span> <span class="token number">300</span> frames
+    Frame Shape<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token number">424</span><span class="token punctuation">,</span> <span class="token number">640</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">)</span>
+    Pixel Datatype<span class="token punctuation">:</span> uint8</code></pre>
+
+<p>我们可以通过<code>frames[frame_number]</code>访问任意画面。图像被表示为一个numpy强度数组。如果你使用的是Python的Anaconda版本，这些值应该在[0,255]范围内。如果您有一个更自定义的环境，它们可能在[0,1]的范围内，在这种情况下，您将不得不试验以下最小质量参数。</p>
+<p><em><code>In [5]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">print</span><span class="token punctuation">(</span>frames<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span>  <span class="token comment"># 第一帧</span></code></pre>
+
+<p><em><code>Out [5]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">125</span> <span class="token number">125</span> <span class="token number">125</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token number">120</span> <span class="token number">120</span> <span class="token number">121</span><span class="token punctuation">]</span>
+ <span class="token punctuation">[</span><span class="token number">125</span> <span class="token number">125</span> <span class="token number">125</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token number">120</span> <span class="token number">121</span> <span class="token number">121</span><span class="token punctuation">]</span>
+ <span class="token punctuation">[</span><span class="token number">125</span> <span class="token number">125</span> <span class="token number">124</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token number">121</span> <span class="token number">123</span> <span class="token number">124</span><span class="token punctuation">]</span>
+ <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+ <span class="token punctuation">[</span><span class="token number">125</span> <span class="token number">126</span> <span class="token number">125</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token number">108</span>  <span class="token number">98</span>  <span class="token number">97</span><span class="token punctuation">]</span>
+ <span class="token punctuation">[</span><span class="token number">125</span> <span class="token number">125</span> <span class="token number">125</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token number">116</span> <span class="token number">109</span> <span class="token number">106</span><span class="token punctuation">]</span>
+ <span class="token punctuation">[</span><span class="token number">125</span> <span class="token number">125</span> <span class="token number">125</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token number">124</span> <span class="token number">119</span> <span class="token number">117</span><span class="token punctuation">]</span><span class="token punctuation">]</span></code></pre>
+
+<p>在IPython笔记本中，框架是通过显示图像直接表示的。</p>
+<p><em><code>In [6]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">frames<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span></code></pre>
+
+<p><em><code>Out [6]:</code></em></p>
+<p><img src="https://s1.ax1x.com/2022/06/27/jE6XTI.png" loading="lazy"></p>
+<p>另外，要使用轴和缩放控制来绘制适当的图，可以使用matplotlib的imshow()方法。</p>
+<p><em><code>In [7]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">plt<span class="token punctuation">.</span>imshow<span class="token punctuation">(</span>frames<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+<p><img src="https://s1.ax1x.com/2022/06/27/jE6vkt.png" loading="lazy"></p>
+<p>帧的行为类似于numpy数组，但有一些额外的属性。</p>
+<p><em><code>In [8]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">frames<span class="token punctuation">[</span><span class="token number">123</span><span class="token punctuation">]</span><span class="token punctuation">.</span>frame_no</code></pre>
+
+<p><em><code>Out [8]</code></em></p>
+<pre class="language-pyth" data-language="pyth"><code class="language-pyth">123</code></pre>
+
+<p><em><code>In [9]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">frames<span class="token punctuation">[</span><span class="token number">123</span><span class="token punctuation">]</span><span class="token punctuation">.</span>metadata  <span class="token comment"># 科学格式可以在这里传递实验元数据。</span></code></pre>
+
+<p><em><code>Out [9]</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span></code></pre>
+
+<h2 id="Step-2-Locate-Features"><a href="#Step-2-Locate-Features" class="headerlink" title="Step 2: Locate Features"></a>Step 2: Locate Features</h2><p>从第一帧开始。估计特征的大小(以像素为单位)。大小必须是一个奇数，最好是大一点，我们将在下面看到。我们估计11个像素。</p>
+<p><em><code>In [10]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">f <span class="token operator">=</span> tp<span class="token punctuation">.</span>locate<span class="token punctuation">(</span>frames<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token number">11</span><span class="token punctuation">,</span> invert<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span></code></pre>
+
+<p>算法寻找明亮的特征;由于这组图像的特征是暗的，我们设置invert&#x3D;True。</p>
+<p><code>locate</code>返回一个名为DataFrame的类似电子表格的对象。它列出了:</p>
+<ul>
+<li>每个特征的位置</li>
+<li>它的外观的各种特征，我们将用它来过滤掉虚假的特征</li>
+<li>“信号”强度和不确定度的估计都是由<a href="https://www.sciencedirect.com/science/article/pii/S0006349505731362?via=ihub">this paper</a>(这是一篇粒子追踪微流变学中的静态和动态误差的文献)推导出来的</li>
+</ul>
+<p>更多关于DataFrames的信息可以在<a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html">pandas文档</a>中找到。DataFrames可以很容易地导出到格式，如CSV, Excel, SQL, HDF5等。</p>
+<p><em><code>In [11]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">f<span class="token punctuation">.</span>head<span class="token punctuation">(</span><span class="token punctuation">)</span>  <span class="token comment"># 显示前几行数据</span></code></pre>
+
+<p><em><code>Out [11]</code></em></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>y</th>
+<th>x</th>
+<th>mass</th>
+<th>size</th>
+<th>ecc</th>
+<th>signal</th>
+<th>raw_mass</th>
+<th>ep</th>
+<th>frame</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0</td>
+<td>4.750000</td>
+<td>103.668564</td>
+<td>192.862485</td>
+<td>2.106615</td>
+<td>0.066390</td>
+<td>10.808405</td>
+<td>10714.0</td>
+<td>0.073666</td>
+<td>0</td>
+</tr>
+<tr>
+<td>1</td>
+<td>5.249231</td>
+<td>585.779487</td>
+<td>164.659302</td>
+<td>2.962674</td>
+<td>0.078936</td>
+<td>4.222033</td>
+<td>10702.0</td>
+<td>0.075116</td>
+<td>0</td>
+</tr>
+<tr>
+<td>2</td>
+<td>5.785986</td>
+<td>294.792544</td>
+<td>244.624615</td>
+<td>2.244542</td>
+<td>0.219217</td>
+<td>15.874846</td>
+<td>10686.0</td>
+<td>0.077141</td>
+<td>0</td>
+</tr>
+<tr>
+<td>3</td>
+<td>5.869369</td>
+<td>338.173423</td>
+<td>187.458282</td>
+<td>2.046201</td>
+<td>0.185333</td>
+<td>13.088304</td>
+<td>10554.0</td>
+<td>0.099201</td>
+<td>0</td>
+</tr>
+<tr>
+<td>4</td>
+<td>6.746377</td>
+<td>310.584169</td>
+<td>151.486558</td>
+<td>3.103294</td>
+<td>0.053342</td>
+<td>4.475355</td>
+<td>10403.0</td>
+<td>0.147430</td>
+<td>0</td>
+</tr>
+</tbody></table>
+<p><em><code>In [12]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">tp<span class="token punctuation">.</span>annotate<span class="token punctuation">(</span>f<span class="token punctuation">,</span> frames<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+<p><em><code>Out [12]</code></em></p>
+<p><img src="https://s1.ax1x.com/2022/06/27/jE6zff.png" loading="lazy"></p>
+<h3 id="Refine-parameters-to-elminate-spurious-features"><a href="#Refine-parameters-to-elminate-spurious-features" class="headerlink" title="Refine parameters to elminate spurious features"></a>Refine parameters to elminate spurious features</h3><p>(优化参数以消除虚假特征)</p>
+<p>其中许多圈显然是错误的;它们是转瞬即逝的亮度峰值，实际上并不是粒子。删除它们通常会改善结果并加快功能查找。有很多方法可以区分真粒子和假粒子。最重要的方法是观察总亮度(“mass”)。</p>
+<p><em><code>In [13]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">fig<span class="token punctuation">,</span> ax <span class="token operator">=</span> plt<span class="token punctuation">.</span>subplots<span class="token punctuation">(</span><span class="token punctuation">)</span>
+ax<span class="token punctuation">.</span>hist<span class="token punctuation">(</span>f<span class="token punctuation">[</span><span class="token string">'mass'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> bins<span class="token operator">=</span><span class="token number">20</span><span class="token punctuation">)</span>
+
+<span class="token comment"># Optionally, label the axes.</span>
+ax<span class="token punctuation">.</span><span class="token builtin">set</span><span class="token punctuation">(</span>xlabel<span class="token operator">=</span><span class="token string">'mass'</span><span class="token punctuation">,</span> ylabel<span class="token operator">=</span><span class="token string">'count'</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+<p><em><code>Out [13]</code></em></p>
+<p><img src="https://s1.ax1x.com/2022/06/27/jEc91S.png" loading="lazy"></p>
+<p>然后我们可以指定最小mass参数。</p>
+<p>如果你的图像特别有噪声，你也会发现<code>threshold</code>(阈值)参数很有用。</p>
+<p><em><code>In [14]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">f <span class="token operator">=</span> tp<span class="token punctuation">.</span>locate<span class="token punctuation">(</span>frames<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token number">11</span><span class="token punctuation">,</span> invert<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span> minmass<span class="token operator">=</span><span class="token number">20</span><span class="token punctuation">)</span></code></pre>
+
+<p><em><code>In [15]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">tp<span class="token punctuation">.</span>annotate<span class="token punctuation">(</span>f<span class="token punctuation">,</span> frames<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+<p><em><code>Out [15]</code></em></p>
+<p><img src="https://s1.ax1x.com/2022/06/27/jE6zff.png" loading="lazy"></p>
+<p>有更多的控制和优化功能查找的选项。您可以在<a href="https://soft-matter.github.io/trackpy/stable/">文档</a>中查看它们，最全面的描述在API参考文档中。或者通过<code>tp.locate?</code>来查阅它们。</p>
+<h3 id="Check-for-subpixel-accuracy"><a href="#Check-for-subpixel-accuracy" class="headerlink" title="Check for subpixel accuracy"></a>Check for subpixel accuracy</h3><p>(检查亚像素精度)</p>
+<p>Eric Weeks在他的相关教程中指出，检查亚像素精度的一个快速方法是检查x和&#x2F;或y位置的小数部分是否均匀分布。</p>
+<p>Trackpy为此提供了一个方便的绘图函数<code>subpx_bias</code>:</p>
+<p><em><code>In [16]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">tp<span class="token punctuation">.</span>subpx_bias<span class="token punctuation">(</span>f<span class="token punctuation">)</span></code></pre>
+
+<p><em><code>Out [16]</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">array<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token operator">&lt;</span>matplotlib<span class="token punctuation">.</span>axes<span class="token punctuation">.</span>_subplots<span class="token punctuation">.</span>AxesSubplot <span class="token builtin">object</span> at <span class="token number">0x1c268a1490</span><span class="token operator">></span><span class="token punctuation">,</span>
+        <span class="token operator">&lt;</span>matplotlib<span class="token punctuation">.</span>axes<span class="token punctuation">.</span>_subplots<span class="token punctuation">.</span>AxesSubplot <span class="token builtin">object</span> at <span class="token number">0x1c269a54d0</span><span class="token operator">></span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+      dtype<span class="token operator">=</span><span class="token builtin">object</span><span class="token punctuation">)</span></code></pre>
+
+<p><img src="https://s1.ax1x.com/2022/06/27/jEcVkq.png" loading="lazy"></p>
+<p>如果我们使用的像素尺寸太小，直方图经常在中间显示一个下降。</p>
+<p><em><code>In [17]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">tp<span class="token punctuation">.</span>subpx_bias<span class="token punctuation">(</span>tp<span class="token punctuation">.</span>locate<span class="token punctuation">(</span>frames<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">,</span> invert<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span> minmass<span class="token operator">=</span><span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+<p><em><code>Out [17]</code></em></p>
+<p><img src="https://s1.ax1x.com/2022/06/27/jEcZt0.png" loading="lazy"></p>
+<h3 id="Locate-features-in-all-frames"><a href="#Locate-features-in-all-frames" class="headerlink" title="Locate features in all frames"></a>Locate features in all frames</h3><p>(定位所有帧的特征)</p>
+<p>或者，开始时，只是探索所有帧的一个子集。</p>
+<table>
+<thead>
+<tr>
+<th>selection</th>
+<th>syntax example</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>all the frames</td>
+<td><code>frames[:]</code> or simply <code>frames</code>.</td>
+</tr>
+<tr>
+<td>the first 10 frames</td>
+<td><code>frames[:10]</code></td>
+</tr>
+<tr>
+<td>the last 10 frames</td>
+<td><code>frames[-10:]</code></td>
+</tr>
+<tr>
+<td>a range of frames</td>
+<td><code>frames[100:200]</code></td>
+</tr>
+<tr>
+<td>every 10th frame</td>
+<td><code>frame[::10]</code></td>
+</tr>
+<tr>
+<td>a list of specific frames</td>
+<td><code>frames[[100, 107, 113]]</code></td>
+</tr>
+</tbody></table>
+<p>我们将在这段视频的前300帧中定位特征。我们使用<code>tp.batch</code>调用<code>tp.locate</code>对每一帧分析并收集结果。</p>
+<p><em><code>In [18]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">f <span class="token operator">=</span> tp<span class="token punctuation">.</span>batch<span class="token punctuation">(</span>frames<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token number">300</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token number">11</span><span class="token punctuation">,</span> minmass<span class="token operator">=</span><span class="token number">20</span><span class="token punctuation">,</span> invert<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+<p><em><code>Out [18]</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">···
+Frame <span class="token number">299</span><span class="token punctuation">:</span> <span class="token number">624</span> features
+···</code></pre>
+
+<p>在分析每一帧时，<code>tp.batch</code>报告帧号和发现了多少特征。如果这个数字意外地低或高，您可能希望中断它并尝试不同的参数。</p>
+<p>如果您的图像很小，您可能会发现打印这个数字实际上大大降低了<code>batch</code>速度!在这种情况下，您可以运行<code>tp.quiet()</code>来关闭它。</p>
+<h2 id="Step-3-Link-features-into-particle-trajectories"><a href="#Step-3-Link-features-into-particle-trajectories" class="headerlink" title="Step 3: Link features into particle trajectories"></a>Step 3: Link features into particle trajectories</h2><p>我们有粒子在每一帧中的位置。接下来，我们将逐帧跟踪粒子，给每个粒子一个编号以进行识别。</p>
+<p>首先，我们必须指定一个最大位移，即质点在两帧间能移动的最远距离。我们应该选择最小的合理值，因为大的值会大大减慢计算时间。在这种情况下，5像素是合理的。</p>
+<p>其次，我们考虑到粒子可能会错过几帧，然后再次看到的可能性。(可能是由于视频中的噪声，它的”mass”低于我们的截止值。)内存会跟踪消失的粒子，并在它们最后一次出现后保留它们的ID。这里我们使用3帧。</p>
+<p><em><code>In [19]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment"># tp.quiet()  # 关闭进度报告以获得最佳性能</span>
+t <span class="token operator">=</span> tp<span class="token punctuation">.</span>link<span class="token punctuation">(</span>f<span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> memory<span class="token operator">=</span><span class="token number">3</span><span class="token punctuation">)</span></code></pre>
+
+<p><em><code>Out [19]</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">Frame <span class="token number">299</span><span class="token punctuation">:</span> <span class="token number">624</span> trajectories present<span class="token punctuation">.</span></code></pre>
+
+<p>结果是特征DataFrame <code>f</code>加上一个额外的列粒子，用标签标识每个特征。我们标识这个新的DataFrame为 <code>t</code>。</p>
+<p><em><code>In [20]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">t<span class="token punctuation">.</span>head<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+
+<p><em><code>Out [20]</code></em></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>y</th>
+<th>x</th>
+<th>mass</th>
+<th>size</th>
+<th>ecc</th>
+<th>signal</th>
+<th>raw_mass</th>
+<th>ep</th>
+<th>frame</th>
+<th>particle</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0</td>
+<td>4.750000</td>
+<td>103.668564</td>
+<td>192.862485</td>
+<td>2.106615</td>
+<td>0.066390</td>
+<td>10.808405</td>
+<td>10714.0</td>
+<td>0.073666</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>365</td>
+<td>284.118980</td>
+<td>25.313881</td>
+<td>149.037779</td>
+<td>2.321961</td>
+<td>0.031799</td>
+<td>7.008575</td>
+<td>10770.0</td>
+<td>0.067577</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td>364</td>
+<td>282.753601</td>
+<td>534.788476</td>
+<td>222.754482</td>
+<td>1.908443</td>
+<td>0.103416</td>
+<td>15.874846</td>
+<td>10415.0</td>
+<td>0.141946</td>
+<td>0</td>
+<td>2</td>
+</tr>
+<tr>
+<td>363</td>
+<td>280.010398</td>
+<td>275.185353</td>
+<td>186.782757</td>
+<td>2.508665</td>
+<td>0.183181</td>
+<td>7.261897</td>
+<td>10438.0</td>
+<td>0.132499</td>
+<td>0</td>
+<td>3</td>
+</tr>
+<tr>
+<td>362</td>
+<td>279.134153</td>
+<td>252.780324</td>
+<td>151.064355</td>
+<td>2.938060</td>
+<td>0.253812</td>
+<td>4.306474</td>
+<td>10359.0</td>
+<td>0.171764</td>
+<td>0</td>
+<td>4</td>
+</tr>
+</tbody></table>
+<h3 id="Filter-spurious-trajectories"><a href="#Filter-spurious-trajectories" class="headerlink" title="Filter spurious trajectories"></a>Filter spurious trajectories</h3><p>(过滤虚假轨迹)</p>
+<p>我们还有更多的过滤工作要做。短暂的轨迹——只能看到几帧——通常是虚假的，没有什么用处。方便的函数<code>filter_stub</code>只保留给定帧数的轨迹。</p>
+<p><em><code>In [21]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">t1 <span class="token operator">=</span> tp<span class="token punctuation">.</span>filter_stubs<span class="token punctuation">(</span>t<span class="token punctuation">,</span> <span class="token number">25</span><span class="token punctuation">)</span>
+<span class="token comment"># 比较未过滤和过滤后数据中的粒子数。</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Before:'</span><span class="token punctuation">,</span> t<span class="token punctuation">[</span><span class="token string">'particle'</span><span class="token punctuation">]</span><span class="token punctuation">.</span>nunique<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'After:'</span><span class="token punctuation">,</span> t1<span class="token punctuation">[</span><span class="token string">'particle'</span><span class="token punctuation">]</span><span class="token punctuation">.</span>nunique<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
+
+<p><em><code>Out [21]</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">Before<span class="token punctuation">:</span> <span class="token number">13715</span>
+After<span class="token punctuation">:</span> <span class="token number">1505</span></code></pre>
+
+<p>我们还可以通过粒子的外观来过滤轨迹。在这个阶段，有了轨迹连接，我们就可以通过轨迹来观察一个特征的“平均外观”，从而给出更准确的图像。</p>
+<p><em><code>In [22]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">plt<span class="token punctuation">.</span>figure<span class="token punctuation">(</span><span class="token punctuation">)</span>
+tp<span class="token punctuation">.</span>mass_size<span class="token punctuation">(</span>t1<span class="token punctuation">.</span>groupby<span class="token punctuation">(</span><span class="token string">'particle'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>mean<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment"># convenience function -- just plots size vs. mass</span></code></pre>
+
+<p><img src="https://s1.ax1x.com/2022/06/27/jEcnpT.png" loading="lazy"></p>
+<p>“mass”特别小的粒子，或特别大的或非圆形(偏心)的粒子，可能分别失焦或聚集。最好是通过尝试和错误进行实验，过滤出”mass”大小的空间区域，并使用<code>tp.annotate</code>查看结果。最后，我们需要把好的粒子从虚假的粒子中分离出来，我们如何做到这一点并不重要。</p>
+<p><em><code>In [23]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">t2 <span class="token operator">=</span> t1<span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token punctuation">(</span>t1<span class="token punctuation">[</span><span class="token string">'mass'</span><span class="token punctuation">]</span> <span class="token operator">></span> <span class="token number">50</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span> <span class="token punctuation">(</span>t1<span class="token punctuation">[</span><span class="token string">'size'</span><span class="token punctuation">]</span> <span class="token operator">&lt;</span> <span class="token number">2.6</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span>
+         <span class="token punctuation">(</span>t1<span class="token punctuation">[</span><span class="token string">'ecc'</span><span class="token punctuation">]</span> <span class="token operator">&lt;</span> <span class="token number">0.3</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">]</span></code></pre>
+
+<p><em><code>In [24]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">plt<span class="token punctuation">.</span>figure<span class="token punctuation">(</span><span class="token punctuation">)</span>
+tp<span class="token punctuation">.</span>annotate<span class="token punctuation">(</span>t2<span class="token punctuation">[</span>t2<span class="token punctuation">[</span><span class="token string">'frame'</span><span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> frames<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+<p><em><code>Out [24]</code></em></p>
+<p><img src="https://s1.ax1x.com/2022/06/27/jEcu1U.png" loading="lazy"></p>
+<p>使用<code>plot_traj()</code>跟踪轨迹:</p>
+<p><em><code>In [25]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">plt<span class="token punctuation">.</span>figure<span class="token punctuation">(</span><span class="token punctuation">)</span>
+tp<span class="token punctuation">.</span>plot_traj<span class="token punctuation">(</span>t2<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+<p><em><code>Out [25]</code></em></p>
+<p><img src="https://s1.ax1x.com/2022/06/27/jEc1B9.png" loading="lazy"></p>
+<h3 id="Remove-overall-drift"><a href="#Remove-overall-drift" class="headerlink" title="Remove overall drift"></a>Remove overall drift</h3><p>(删除整体漂移)</p>
+<p>计算整体的漂移运动，我们将其减去，采用粒子的平均位置参考系。</p>
+<p><em><code>In [26]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">d <span class="token operator">=</span> tp<span class="token punctuation">.</span>compute_drift<span class="token punctuation">(</span>t2<span class="token punctuation">)</span></code></pre>
+
+<p><em><code>In [27]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">d<span class="token punctuation">.</span>plot<span class="token punctuation">(</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+
+<p><em><code>Out [27]</code></em></p>
+<p><img src="https://s1.ax1x.com/2022/06/27/jEcJtx.png" loading="lazy"></p>
+<p><em><code>In [28]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">tm <span class="token operator">=</span> tp<span class="token punctuation">.</span>subtract_drift<span class="token punctuation">(</span>t2<span class="token punctuation">.</span>copy<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> d<span class="token punctuation">)</span></code></pre>
+
+<p>将整个漂移运动减去，我们再次绘制轨迹。我们观察到很好的随机游动。</p>
+<p><em><code>In [29]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">ax <span class="token operator">=</span> tp<span class="token punctuation">.</span>plot_traj<span class="token punctuation">(</span>tm<span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+
+<p><img src="https://s1.ax1x.com/2022/06/27/jEcYh6.png" loading="lazy"></p>
+<h2 id="Step-4-Analyze-trajectories"><a href="#Step-4-Analyze-trajectories" class="headerlink" title="Step 4: Analyze trajectories"></a>Step 4: Analyze trajectories</h2><p>Trackpy包括几个函数，以帮助一些常见的分析粒子轨迹。(请参阅API参考的”Static Analysis”(“静态分析”)和”Motion Analysis”(“运动分析”)章节。)</p>
+<p>在这里，我们可以证明这些数据与胶态粒子在水中经历布朗运动是一致的。</p>
+<h3 id="Mean-Squared-Displacement-of-Individal-Probes"><a href="#Mean-Squared-Displacement-of-Individal-Probes" class="headerlink" title="Mean Squared Displacement of Individal Probes"></a>Mean Squared Displacement of Individal Probes</h3><p>(单个探针的均方位移)</p>
+<p>利用<code>imsd</code>函数计算每个粒子的均方位移(MSD)，并绘制MSD与滞后时间的关系图。</p>
+<p><em><code>In [30]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">im <span class="token operator">=</span> tp<span class="token punctuation">.</span>imsd<span class="token punctuation">(</span>tm<span class="token punctuation">,</span> <span class="token number">100</span><span class="token operator">/</span><span class="token number">285.</span><span class="token punctuation">,</span> <span class="token number">24</span><span class="token punctuation">)</span>  <span class="token comment"># microns per pixel = 100/285., frames per second = 24</span></code></pre>
+
+<p><em><code>In [31]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">fig<span class="token punctuation">,</span> ax <span class="token operator">=</span> plt<span class="token punctuation">.</span>subplots<span class="token punctuation">(</span><span class="token punctuation">)</span>
+ax<span class="token punctuation">.</span>plot<span class="token punctuation">(</span>im<span class="token punctuation">.</span>index<span class="token punctuation">,</span> im<span class="token punctuation">,</span> <span class="token string">'k-'</span><span class="token punctuation">,</span> alpha<span class="token operator">=</span><span class="token number">0.1</span><span class="token punctuation">)</span>  <span class="token comment"># black lines, semitransparent</span>
+ax<span class="token punctuation">.</span><span class="token builtin">set</span><span class="token punctuation">(</span>ylabel<span class="token operator">=</span><span class="token string">r'$\langle \Delta r^2 \rangle$ [$\mu$m$^2$]'</span><span class="token punctuation">,</span>
+       xlabel<span class="token operator">=</span><span class="token string">'lag time $t$'</span><span class="token punctuation">)</span>
+ax<span class="token punctuation">.</span>set_xscale<span class="token punctuation">(</span><span class="token string">'log'</span><span class="token punctuation">)</span>
+ax<span class="token punctuation">.</span>set_yscale<span class="token punctuation">(</span><span class="token string">'log'</span><span class="token punctuation">)</span></code></pre>
+
+<p><em><code>Out [31]</code></em></p>
+<p><img src="https://s1.ax1x.com/2022/06/27/jEcN9K.png" loading="lazy"></p>
+<p>因为我们只分析了300帧，所以在大延迟时间下统计数据很差。有更多的帧，我们可以研究更大的滞后时间。</p>
+<h3 id="Ensemble-Mean-Squared-Displacement"><a href="#Ensemble-Mean-Squared-Displacement" class="headerlink" title="Ensemble Mean Squared Displacement"></a>Ensemble Mean Squared Displacement</h3><p>(总体均方位移)</p>
+<p>现在使用函数<code>emsd</code>计算所有粒子的整体均方位移(EMSD):</p>
+<p><em><code>In [32]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">em <span class="token operator">=</span> tp<span class="token punctuation">.</span>emsd<span class="token punctuation">(</span>tm<span class="token punctuation">,</span> <span class="token number">100</span><span class="token operator">/</span><span class="token number">285.</span><span class="token punctuation">,</span> <span class="token number">24</span><span class="token punctuation">)</span> <span class="token comment"># microns per pixel = 100/285., frames per second = 24</span></code></pre>
+
+<p><em><code>In [33]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">fig<span class="token punctuation">,</span> ax <span class="token operator">=</span> plt<span class="token punctuation">.</span>subplots<span class="token punctuation">(</span><span class="token punctuation">)</span>
+ax<span class="token punctuation">.</span>plot<span class="token punctuation">(</span>em<span class="token punctuation">.</span>index<span class="token punctuation">,</span> em<span class="token punctuation">,</span> <span class="token string">'o'</span><span class="token punctuation">)</span>
+ax<span class="token punctuation">.</span>set_xscale<span class="token punctuation">(</span><span class="token string">'log'</span><span class="token punctuation">)</span>
+ax<span class="token punctuation">.</span>set_yscale<span class="token punctuation">(</span><span class="token string">'log'</span><span class="token punctuation">)</span>
+ax<span class="token punctuation">.</span><span class="token builtin">set</span><span class="token punctuation">(</span>ylabel<span class="token operator">=</span><span class="token string">r'$\langle \Delta r^2 \rangle$ [$\mu$m$^2$]'</span><span class="token punctuation">,</span>
+       xlabel<span class="token operator">=</span><span class="token string">'lag time $t$'</span><span class="token punctuation">)</span>
+ax<span class="token punctuation">.</span><span class="token builtin">set</span><span class="token punctuation">(</span>ylim<span class="token operator">=</span><span class="token punctuation">(</span><span class="token number">1e-2</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+
+<p><em><code>Out [33]</code></em></p>
+<p><img src="https://s1.ax1x.com/2022/06/27/jEc0nH.png" loading="lazy"></p>
+<p>我们可以很容易地将这个集合的均方位移拟合到幂律$At^n$上，使用一个方便的函数<code>fit_powerlaw</code>，它在对数空间中执行线性回归。</p>
+<p><em><code>In [34]:</code></em></p>
+<pre class="language-python" data-language="python"><code class="language-python">plt<span class="token punctuation">.</span>figure<span class="token punctuation">(</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>ylabel<span class="token punctuation">(</span><span class="token string">r'$\langle \Delta r^2 \rangle$ [$\mu$m$^2$]'</span><span class="token punctuation">)</span>
+plt<span class="token punctuation">.</span>xlabel<span class="token punctuation">(</span><span class="token string">'lag time $t$'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+tp<span class="token punctuation">.</span>utils<span class="token punctuation">.</span>fit_powerlaw<span class="token punctuation">(</span>em<span class="token punctuation">)</span>  <span class="token comment"># 图中在对数空间执行最佳线性拟合</span></code></pre>
+
+<p><em><code>Out [34]</code></em></p>
+<p><img src="https://s1.ax1x.com/2022/06/27/jEcyNt.png" loading="lazy"></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>n</th>
+<th>A</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>msd</td>
+<td>1.0787</td>
+<td>1.595089</td>
+</tr>
+</tbody></table>
+<p>在水中，粘性物质，期望幂律指数$n&#x3D;1$。$A&#x3D;4D$，其中$D$为粒子的扩散系数。$D$通过Stokes-Einstein方程与粘度$\eta$、粒子半径$r$、温度$T$有关:<br>$$<br>D &#x3D; \frac{k_BT}{6\pi\eta r}<br>$$<br>kB是玻尔兹曼常数。对于直径为1 μm的颗粒在室温水中，a≈1.66 μm2&#x2F;s。上面n和A的值离我们不远了。(如果你想了解更多关于这个测量和它的不确定度，<a href="https://dx.doi.org/10.1119/1.4803529">这篇文章</a>是一个深入的讨论在高等本科水平。)</p>
+]]></content>
+      <categories>
+        <category>科学计算</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+        <tag>图像追踪</tag>
+        <tag>数据处理</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>开学随想</title>
     <url>/posts/8d8bd145/</url>
     <content><![CDATA[<h1 id="生存"><a href="#生存" class="headerlink" title="生存"></a>生存</h1><blockquote>
@@ -574,508 +1079,251 @@ rtt min/avg/max/mdev <span class="token operator">=</span> <span class="token nu
       </tags>
   </entry>
   <entry>
-    <title>Trackpy--Walkthrough</title>
-    <url>/posts/9ce795e5/</url>
-    <content><![CDATA[<blockquote>
-<p>本文翻译自<a href="https://soft-matter.github.io/trackpy/v0.5.0/tutorial/walkthrough.html">trackpy文档</a>，仅供学习参考</p>
-</blockquote>
-<h1 id="Walkthrough"><a href="#Walkthrough" class="headerlink" title="Walkthrough"></a>Walkthrough</h1><p>分析纳米颗粒在水中的流动，跟踪轨迹并计算水滴粘度。</p>
+    <title>Arch Linux USB(配置篇)</title>
+    <url>/posts/55b25ac5/</url>
+    <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这篇文章看一看作是<a href="https://zephyrheather.github.io/2021/07/16/arch-linux-usb-an-zhuang-pian/">Arch Linux USB(安装篇)</a>的后续，不过archlinux的自由度很高，每一个人都能配置出高度个人定制化的东西，所以这里也只是结合archwiki和我个人的一些配置简单介绍一下。</p>
 <span id="more"></span>
 
-<p><em><code>In [1]:</code></em></p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> __future__ <span class="token keyword">import</span> division<span class="token punctuation">,</span> unicode_literals<span class="token punctuation">,</span> print_fuction	<span class="token comment"># 为了兼容python2和python3，主要是python提前使用python的函数</span>
-<span class="token keyword">import</span> matplotlib <span class="token keyword">as</span> mpl
-<span class="token keyword">import</span> matplotlib<span class="token punctuation">.</span>pyplot <span class="token keyword">as</span> plt
+<p>参考：<a href="https://wiki.archlinux.org/title/General_recommendations_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)#%E4%B8%AD%E5%9B%BD%E5%A4%A7%E9%99%86%E7%94%A8%E6%88%B7%E7%9A%84%E6%8E%A8%E8%8D%90%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88">General recommendations (简体中文)</a>(这个页面还特地做了<a href="https://wiki.archlinux.org/title/General_recommendations_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)#%E4%B8%AD%E5%9B%BD%E5%A4%A7%E9%99%86%E7%94%A8%E6%88%B7%E7%9A%84%E6%8E%A8%E8%8D%90%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88">#中国大陆用户的推荐解决方案</a>)</p>
+<p>以下引文不加注释都引自<a href="https://wiki.archlinux.org/title/General_recommendations_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)#%E4%B8%AD%E5%9B%BD%E5%A4%A7%E9%99%86%E7%94%A8%E6%88%B7%E7%9A%84%E6%8E%A8%E8%8D%90%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88">General recommendations (简体中文)</a></p>
+<h2 id="系统和软件包管理"><a href="#系统和软件包管理" class="headerlink" title="系统和软件包管理"></a>系统和软件包管理</h2><h3 id="系统管理"><a href="#系统管理" class="headerlink" title="系统管理"></a>系统管理</h3><blockquote>
+<p>新安装的系统只有一个<a href="https://en.wikipedia.org/wiki/Superuser">超级用户</a>，即 root。使用 root 进行日常操作是不安全的。应当<a href="https://wiki.archlinux.org/title/User_Management_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">创建</a>普通用户进行日常操作，仅在管理系统时使用 root。不要在服务器上给 root 开放<a href="https://wiki.archlinux.org/title/SSH">SSH</a>登录权限。普通用户的创建方法请参阅 <a href="https://wiki.archlinux.org/title/Users_and_groups_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">用户和用户组</a>。</p>
+<p><a href="https://wiki.archlinux.org/title/Users_and_groups_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">用户和用户组</a>是GNU&#x2F;Linux 权限控制机制的基础。管理员通过调整用户组的成员、所有者，可以控制用户使用系统资源。</p>
+</blockquote>
+<p>换言之，平常用普通用户，只有涉及系统管理时使用root的权限。可以用<code>sudo</code>命令获取临时的root权限，只要在命令前加上<code>sudo</code>就可以。而<code>su</code>命令则是以指定用户登录一个新的shell，比如<code>su - xxx</code>就是登录用户名为xxx的用户，而默认<code>su -</code>登录的就是root。使用<code>exit</code>退出<code>su</code>命令登录的用户，回到原来的shell。</p>
+<p>服务管理：</p>
+<blockquote>
+<p>Arch Linux 使用 <a href="https://wiki.archlinux.org/title/Systemd_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">systemd (简体中文)</a> 管理系统服务。新用户有必要了解其基本使用方法。通常使用 <code># systemctl</code> 命令进行系统管理，参见<a href="https://wiki.archlinux.org/title/Systemd_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)#systemd_%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7">此文</a>。</p>
+</blockquote>
+<p>注意，新的服务都需要用户重新设置和管理，设置哪些服务开机自启动，哪些服务在用的时候手动启动，可以减少资源浪费。</p>
+<p>系统维护：</p>
+<blockquote>
+<p>Arch 是滚动发行系统，软件包的更新速度很快，用户需要花些时间进行 <a href="https://wiki.archlinux.org/title/System_maintenance">系统维护</a>。 <a href="https://wiki.archlinux.org/title/Security">安全</a>页面也给出了很多加强系统安全性的建议和技巧。</p>
+</blockquote>
+<p>微软总是催着你windows系统更新，但是Arch是自己手动更新的。经常看到有人说Arch这样的滚动发行版不稳定，容易滚挂。我反正从来没遇到过，Arch更新虽然是整个系统重新安装的，但是速度很快，而且也很稳定。</p>
+<p>更新系统的时候使用<code>pacman -Syu</code>(要root权限)，注意不要在一堆服务和进程在运行的时候更新系统，最好在刚开机的时候在字符界面就更新，更新之后<code>reboot</code>重启就行。</p>
+<p>虽然一般建议Arch经常更新，但是我曾经半年没更也没什么。就是有时候<code>pacman -Sy</code>安装软件的时候发现lib库和软件已经对不上了，那就更新系统吧。</p>
+<p>另外，安装在USB或者移动硬盘等可移动介质的同学一定要注意，在使用过程中不要拔插，关机前最后一件事一定是<code>sync</code>确保数据同步写入。</p>
+<h3 id="软件包管理"><a href="#软件包管理" class="headerlink" title="软件包管理"></a>软件包管理</h3><p>具体看archwiki学习</p>
+<p>Arch拥有Linux中最丰富的软件包资源，由官方软件仓库和非官方软件仓库(AUR)组成。</p>
+<p>Pacman 是Arch 的软件包管理器(简称包管理器)<br>下面列一些我常用的命令</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash">pacman -Sy 		<span class="token comment"># 更新软件源并安装</span>
+pacman -Ss		<span class="token comment"># 搜索软件</span>
+pacman -Si 		<span class="token comment"># 查看软件包具体信息</span>
+pacman -Syu		<span class="token comment">#更新系统及所有包</span>
+pacman -Qs		<span class="token comment"># 搜索已安装的包</span>
+pacman -Qi		<span class="token comment"># 查看已安装的包的信息</span>
+pacman -Rs		<span class="token comment"># 删除软件包及其依赖</span></code></pre>
 
-<span class="token operator">%</span>matplotlib inline	<span class="token comment"># ipython的魔法函数</span>
+<p>有关pacman的一些配置在&#x2F;etc&#x2F;pacman.conf，贴一下我的配置</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment">#</span>
+<span class="token comment"># /etc/pacman.conf</span>
+<span class="token comment">#</span>
+<span class="token comment"># See the pacman.conf(5) manpage for option and repository directives</span>
 
-<span class="token comment"># 可选，调整样式</span>
-mpl<span class="token punctuation">.</span>rc<span class="token punctuation">(</span><span class="token string">'figure'</span><span class="token punctuation">,</span> figsize<span class="token operator">=</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-mpl<span class="token punctuation">.</span>rc<span class="token punctuation">(</span><span class="token string">'image'</span><span class="token punctuation">,</span> cmap<span class="token operator">=</span><span class="token string">'gray'</span><span class="token punctuation">)</span></code></pre>
+<span class="token comment">#</span>
+<span class="token comment"># GENERAL OPTIONS</span>
+<span class="token comment">#</span>
+<span class="token punctuation">[</span>options<span class="token punctuation">]</span>
+<span class="token comment"># The following paths are commented out with their default values listed.</span>
+<span class="token comment"># If you wish to use different paths, uncomment and update the paths.</span>
+<span class="token comment">#RootDir     = /</span>
+<span class="token comment">#DBPath      = /var/lib/pacman/</span>
+<span class="token comment">#CacheDir    = /var/cache/pacman/pkg/</span>
+<span class="token comment">#LogFile     = /var/log/pacman.log</span>
+<span class="token comment">#GPGDir      = /etc/pacman.d/gnupg/</span>
+<span class="token comment">#HookDir     = /etc/pacman.d/hooks/</span>
+HoldPkg     <span class="token operator">=</span> pacman glibc
+<span class="token comment">#XferCommand = /usr/bin/curl -L -C - -f -o %o %u</span>
+<span class="token comment">#XferCommand = /usr/bin/wget --passive-ftp -c -O %o %u</span>
+<span class="token comment">#CleanMethod = KeepInstalled</span>
+Architecture <span class="token operator">=</span> auto
 
-<p>导入python的科学计算库numpy和数据分析库pandas</p>
-<p>导入trackpy跟踪，pims打开媒体</p>
-<p><em><code>In [2]:</code></em></p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> numpy <span class="token keyword">as</span> np
-<span class="token keyword">import</span> pandas <span class="token keyword">as</span> pd
-<span class="token keyword">from</span> pandas <span class="token keyword">import</span> DataFrame<span class="token punctuation">,</span> Series	<span class="token comment"># 为了方便</span>
+<span class="token comment"># Pacman won't upgrade packages listed in IgnorePkg and members of IgnoreGroup</span>
+<span class="token comment">#IgnorePkg   =</span>
+<span class="token comment">#IgnoreGroup =</span>
 
-<span class="token keyword">import</span> pims
-<span class="token keyword">import</span> trackpy <span class="token keyword">as</span> tp</code></pre>
+<span class="token comment">#NoUpgrade   =</span>
+<span class="token comment">#NoExtract   =</span>
 
-<h2 id="Step-1-Read-the-Data"><a href="#Step-1-Read-the-Data" class="headerlink" title="Step 1: Read the Data"></a>Step 1: Read the Data</h2><p>打开图片或视频</p>
-<p>为了将数据导入Python，我们使用一个trackpy的姐妹项目<a href="https://github.com/soft-matter/pims">PIMS</a>(Python Image Sequence)(pims的<a href="https://nbviewer.ipython.org/github/soft-matter/pims/tree/master/">notebook</a>)PIMS使得通过一个一致的接口加载和处理来自多种格式的视频数据变得容易和方便。</p>
-<p>使用 PIMS，trackpy可以读取：</p>
-<ul>
-<li>一系列文件夹或压缩文件中的图片</li>
-<li>多帧TIFF文件</li>
-<li>一段视频(AVI、MOV等)</li>
-<li>用于显微镜和科学视频捕捉的特殊格式：<ul>
-<li><code>Cine</code>, NorPix <code>seq</code></li>
-<li><code>LSM</code></li>
-<li>Files supported by <a href="https://www.openmicroscopy.org/site/support/bio-formats5.1/supported-formats.html">Bioformats</a>(这个链接似乎失效了)</li>
-<li><code>ND2</code> using <a href="https://github.com/soft-matter/pims_nd2">PIMS_ND2</a></li>
-</ul>
-</li>
-</ul>
-<p>(有些格式需要一些额外的依赖关系。有关完整列表，请参阅PIMS的README页面或文档中的安装说明。)</p>
-<p>对于许多格式，使用<code>pims.open</code>就行。由于这些图像是彩色的，我们还需要设置一个管道，以便在读取图像时将其转换为灰度。</p>
-<p><em><code>In [3]:</code></em></p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token decorator annotation punctuation">@pims<span class="token punctuation">.</span>pipeline</span>
-<span class="token keyword">def</span> <span class="token function">gray</span><span class="token punctuation">(</span>image<span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">return</span> image<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token punctuation">,</span> <span class="token punctuation">:</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">]</span>  <span class="token comment"># Take just the green channel</span>
+<span class="token comment"># Misc options</span>
+<span class="token comment">#UseSyslog</span>
+Color
+ILoveCandy
+<span class="token comment">#TotalDownload</span>
+CheckSpace
+<span class="token comment">#VerbosePkgLists</span>
 
-frames <span class="token operator">=</span> gray<span class="token punctuation">(</span>pims<span class="token punctuation">.</span><span class="token builtin">open</span><span class="token punctuation">(</span><span class="token string">'../sample_data/bulk_water/*.png'</span><span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
+<span class="token comment"># By default, pacman accepts packages signed by keys that its local keyring</span>
+<span class="token comment"># trusts (see pacman-key and its man page), as well as unsigned packages.</span>
+SigLevel    <span class="token operator">=</span> Required DatabaseOptional
+LocalFileSigLevel <span class="token operator">=</span> Optional
+<span class="token comment">#RemoteFileSigLevel = Required</span>
 
-<p><em><code>In [4]:</code></em></p>
-<pre class="language-python" data-language="python"><code class="language-python">framses</code></pre>
+<span class="token comment"># NOTE: You must run `pacman-key --init` before first using pacman; the local</span>
+<span class="token comment"># keyring can then be populated with the keys of all official Arch Linux</span>
+<span class="token comment"># packagers with `pacman-key --populate archlinux`.</span>
 
-<p><em><code>Out [4]:</code></em></p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token punctuation">(</span>ImageSequence<span class="token punctuation">,</span><span class="token punctuation">)</span> processed through proc_func<span class="token punctuation">.</span> Original <span class="token builtin">repr</span><span class="token punctuation">:</span>
-    <span class="token operator">&lt;</span>Frames<span class="token operator">></span>
-    Source<span class="token punctuation">:</span> <span class="token operator">/</span>Users<span class="token operator">/</span>nkeim<span class="token operator">/</span>projects<span class="token operator">/</span>trackpy<span class="token operator">/</span>trackpy<span class="token operator">-</span>examples<span class="token operator">/</span>sample_data<span class="token operator">/</span>bulk_water<span class="token operator">/</span><span class="token operator">*</span><span class="token punctuation">.</span>png
-    Length<span class="token punctuation">:</span> <span class="token number">300</span> frames
-    Frame Shape<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token number">424</span><span class="token punctuation">,</span> <span class="token number">640</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">)</span>
-    Pixel Datatype<span class="token punctuation">:</span> uint8</code></pre>
+<span class="token comment">#</span>
+<span class="token comment"># REPOSITORIES</span>
+<span class="token comment">#   - can be defined here or included from another file</span>
+<span class="token comment">#   - pacman will search repositories in the order defined here</span>
+<span class="token comment">#   - local/custom mirrors can be added here or in separate files</span>
+<span class="token comment">#   - repositories listed first will take precedence when packages</span>
+<span class="token comment">#     have identical names, regardless of version number</span>
+<span class="token comment">#   - URLs will have $repo replaced by the name of the current repo</span>
+<span class="token comment">#   - URLs will have $arch replaced by the name of the architecture</span>
+<span class="token comment">#</span>
+<span class="token comment"># Repository entries are of the format:</span>
+<span class="token comment">#       [repo-name]</span>
+<span class="token comment">#       Server = ServerName</span>
+<span class="token comment">#       Include = IncludePath</span>
+<span class="token comment">#</span>
+<span class="token comment"># The header [repo-name] is crucial - it must be present and</span>
+<span class="token comment"># uncommented to enable the repo.</span>
+<span class="token comment">#</span>
 
-<p>我们可以通过<code>frames[frame_number]</code>访问任意画面。图像被表示为一个numpy强度数组。如果你使用的是Python的Anaconda版本，这些值应该在[0,255]范围内。如果您有一个更自定义的环境，它们可能在[0,1]的范围内，在这种情况下，您将不得不试验以下最小质量参数。</p>
-<p><em><code>In [5]:</code></em></p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">print</span><span class="token punctuation">(</span>frames<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span>  <span class="token comment"># 第一帧</span></code></pre>
+<span class="token comment"># The testing repositories are disabled by default. To enable, uncomment the</span>
+<span class="token comment"># repo name header and Include lines. You can add preferred servers immediately</span>
+<span class="token comment"># after the header, and they will be used before the default mirrors.</span>
 
-<p><em><code>Out [5]:</code></em></p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">125</span> <span class="token number">125</span> <span class="token number">125</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token number">120</span> <span class="token number">120</span> <span class="token number">121</span><span class="token punctuation">]</span>
- <span class="token punctuation">[</span><span class="token number">125</span> <span class="token number">125</span> <span class="token number">125</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token number">120</span> <span class="token number">121</span> <span class="token number">121</span><span class="token punctuation">]</span>
- <span class="token punctuation">[</span><span class="token number">125</span> <span class="token number">125</span> <span class="token number">124</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token number">121</span> <span class="token number">123</span> <span class="token number">124</span><span class="token punctuation">]</span>
- <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
- <span class="token punctuation">[</span><span class="token number">125</span> <span class="token number">126</span> <span class="token number">125</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token number">108</span>  <span class="token number">98</span>  <span class="token number">97</span><span class="token punctuation">]</span>
- <span class="token punctuation">[</span><span class="token number">125</span> <span class="token number">125</span> <span class="token number">125</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token number">116</span> <span class="token number">109</span> <span class="token number">106</span><span class="token punctuation">]</span>
- <span class="token punctuation">[</span><span class="token number">125</span> <span class="token number">125</span> <span class="token number">125</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token number">124</span> <span class="token number">119</span> <span class="token number">117</span><span class="token punctuation">]</span><span class="token punctuation">]</span></code></pre>
+<span class="token comment">#[testing]</span>
+<span class="token comment">#Include = /etc/pacman.d/mirrorlist</span>
 
-<p>在IPython笔记本中，框架是通过显示图像直接表示的。</p>
-<p><em><code>In [6]:</code></em></p>
-<pre class="language-python" data-language="python"><code class="language-python">frames<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span></code></pre>
+<span class="token punctuation">[</span>core<span class="token punctuation">]</span>
+Include <span class="token operator">=</span> /etc/pacman.d/mirrorlist
 
-<p><em><code>Out [6]:</code></em></p>
-<p><img src="https://s1.ax1x.com/2022/06/27/jE6XTI.png" loading="lazy"></p>
-<p>另外，要使用轴和缩放控制来绘制适当的图，可以使用matplotlib的imshow()方法。</p>
-<p><em><code>In [7]:</code></em></p>
-<pre class="language-python" data-language="python"><code class="language-python">plt<span class="token punctuation">.</span>imshow<span class="token punctuation">(</span>frames<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<span class="token punctuation">[</span>extra<span class="token punctuation">]</span>
+Include <span class="token operator">=</span> /etc/pacman.d/mirrorlist
 
-<p><img src="https://s1.ax1x.com/2022/06/27/jE6vkt.png" loading="lazy"></p>
-<p>帧的行为类似于numpy数组，但有一些额外的属性。</p>
-<p><em><code>In [8]:</code></em></p>
-<pre class="language-python" data-language="python"><code class="language-python">frames<span class="token punctuation">[</span><span class="token number">123</span><span class="token punctuation">]</span><span class="token punctuation">.</span>frame_no</code></pre>
+<span class="token comment">#[community-testing]</span>
+<span class="token comment">#Include = /etc/pacman.d/mirrorlist</span>
 
-<p><em><code>Out [8]</code></em></p>
-<pre class="language-pyth" data-language="pyth"><code class="language-pyth">123</code></pre>
+<span class="token punctuation">[</span>community<span class="token punctuation">]</span>
+Include <span class="token operator">=</span> /etc/pacman.d/mirrorlist
 
-<p><em><code>In [9]:</code></em></p>
-<pre class="language-python" data-language="python"><code class="language-python">frames<span class="token punctuation">[</span><span class="token number">123</span><span class="token punctuation">]</span><span class="token punctuation">.</span>metadata  <span class="token comment"># 科学格式可以在这里传递实验元数据。</span></code></pre>
+<span class="token comment"># If you want to run 32 bit applications on your x86_64 system,</span>
+<span class="token comment"># enable the multilib repositories as required here.</span>
 
-<p><em><code>Out [9]</code></em></p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span></code></pre>
+<span class="token comment">#[multilib-testing]</span>
+<span class="token comment">#Include = /etc/pacman.d/mirrorlist</span>
 
-<h2 id="Step-2-Locate-Features"><a href="#Step-2-Locate-Features" class="headerlink" title="Step 2: Locate Features"></a>Step 2: Locate Features</h2><p>从第一帧开始。估计特征的大小(以像素为单位)。大小必须是一个奇数，最好是大一点，我们将在下面看到。我们估计11个像素。</p>
-<p><em><code>In [10]:</code></em></p>
-<pre class="language-python" data-language="python"><code class="language-python">f <span class="token operator">=</span> tp<span class="token punctuation">.</span>locate<span class="token punctuation">(</span>frames<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token number">11</span><span class="token punctuation">,</span> invert<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span></code></pre>
+<span class="token comment">#[multilib]</span>
+<span class="token comment">#Include = /etc/pacman.d/mirrorlist</span>
 
-<p>算法寻找明亮的特征;由于这组图像的特征是暗的，我们设置invert&#x3D;True。</p>
-<p><code>locate</code>返回一个名为DataFrame的类似电子表格的对象。它列出了:</p>
-<ul>
-<li>每个特征的位置</li>
-<li>它的外观的各种特征，我们将用它来过滤掉虚假的特征</li>
-<li>“信号”强度和不确定度的估计都是由<a href="https://www.sciencedirect.com/science/article/pii/S0006349505731362?via=ihub">this paper</a>(这是一篇粒子追踪微流变学中的静态和动态误差的文献)推导出来的</li>
-</ul>
-<p>更多关于DataFrames的信息可以在<a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html">pandas文档</a>中找到。DataFrames可以很容易地导出到格式，如CSV, Excel, SQL, HDF5等。</p>
-<p><em><code>In [11]:</code></em></p>
-<pre class="language-python" data-language="python"><code class="language-python">f<span class="token punctuation">.</span>head<span class="token punctuation">(</span><span class="token punctuation">)</span>  <span class="token comment"># 显示前几行数据</span></code></pre>
+<span class="token comment"># An example of a custom package repository.  See the pacman manpage for</span>
+<span class="token comment"># tips on creating your own repositories.</span>
+<span class="token comment">#[custom]</span>
+<span class="token comment">#SigLevel = Optional TrustAll</span>
+<span class="token comment">#Server = file:///home/custompkgs</span>
 
-<p><em><code>Out [11]</code></em></p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>y</th>
-<th>x</th>
-<th>mass</th>
-<th>size</th>
-<th>ecc</th>
-<th>signal</th>
-<th>raw_mass</th>
-<th>ep</th>
-<th>frame</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>0</td>
-<td>4.750000</td>
-<td>103.668564</td>
-<td>192.862485</td>
-<td>2.106615</td>
-<td>0.066390</td>
-<td>10.808405</td>
-<td>10714.0</td>
-<td>0.073666</td>
-<td>0</td>
-</tr>
-<tr>
-<td>1</td>
-<td>5.249231</td>
-<td>585.779487</td>
-<td>164.659302</td>
-<td>2.962674</td>
-<td>0.078936</td>
-<td>4.222033</td>
-<td>10702.0</td>
-<td>0.075116</td>
-<td>0</td>
-</tr>
-<tr>
-<td>2</td>
-<td>5.785986</td>
-<td>294.792544</td>
-<td>244.624615</td>
-<td>2.244542</td>
-<td>0.219217</td>
-<td>15.874846</td>
-<td>10686.0</td>
-<td>0.077141</td>
-<td>0</td>
-</tr>
-<tr>
-<td>3</td>
-<td>5.869369</td>
-<td>338.173423</td>
-<td>187.458282</td>
-<td>2.046201</td>
-<td>0.185333</td>
-<td>13.088304</td>
-<td>10554.0</td>
-<td>0.099201</td>
-<td>0</td>
-</tr>
-<tr>
-<td>4</td>
-<td>6.746377</td>
-<td>310.584169</td>
-<td>151.486558</td>
-<td>3.103294</td>
-<td>0.053342</td>
-<td>4.475355</td>
-<td>10403.0</td>
-<td>0.147430</td>
-<td>0</td>
-</tr>
-</tbody></table>
-<p><em><code>In [12]:</code></em></p>
-<pre class="language-python" data-language="python"><code class="language-python">tp<span class="token punctuation">.</span>annotate<span class="token punctuation">(</span>f<span class="token punctuation">,</span> frames<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<span class="token punctuation">[</span>archlinuxcn<span class="token punctuation">]</span>
+SigLevel <span class="token operator">=</span> Never
+Server <span class="token operator">=</span> https://mirrors.ustc.edu.cn/archlinuxcn/<span class="token variable">$arch</span></code></pre>
 
-<p><em><code>Out [12]</code></em></p>
-<p><img src="https://s1.ax1x.com/2022/06/27/jE6zff.png" loading="lazy"></p>
-<h3 id="Refine-parameters-to-elminate-spurious-features"><a href="#Refine-parameters-to-elminate-spurious-features" class="headerlink" title="Refine parameters to elminate spurious features"></a>Refine parameters to elminate spurious features</h3><p>(优化参数以消除虚假特征)</p>
-<p>其中许多圈显然是错误的;它们是转瞬即逝的亮度峰值，实际上并不是粒子。删除它们通常会改善结果并加快功能查找。有很多方法可以区分真粒子和假粒子。最重要的方法是观察总亮度(“mass”)。</p>
-<p><em><code>In [13]:</code></em></p>
-<pre class="language-python" data-language="python"><code class="language-python">fig<span class="token punctuation">,</span> ax <span class="token operator">=</span> plt<span class="token punctuation">.</span>subplots<span class="token punctuation">(</span><span class="token punctuation">)</span>
-ax<span class="token punctuation">.</span>hist<span class="token punctuation">(</span>f<span class="token punctuation">[</span><span class="token string">'mass'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> bins<span class="token operator">=</span><span class="token number">20</span><span class="token punctuation">)</span>
+<p>我的配置主要就是取消了<code>Color</code>前的注释，是Pacman 的输出是彩色的更易识别，然后<code>ILoveCandy</code>是我自己加上的，这是Pacman 的一个彩蛋，因为pacman也是那款叫作吃豆人的著名游戏，加上<code>ILoveCandy</code>后会出现吃豆人。</p>
+<p>最后加上了archlinuxcn的源，因为里面提供了更多为中国用户进行优化的软件包，用的是科大的源，加上之后需要<code>pacman -S archlinuxcn-keyring</code>安装对应的密钥。</p>
+<p>主要的pacman 镜像我用的是北外的镜像，在<code>/etc/pacman.d/mirrorlist</code>中更改，一般里面已经按照速度排序排好了，如果没有，可以参见 <a href="https://wiki.archlinux.org/title/Mirrors_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)#%E9%95%9C%E5%83%8F%E7%8A%B6%E6%80%81">#镜像状态</a> 和 <a href="https://wiki.archlinux.org/title/Mirrors_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)#%E6%8C%89%E9%80%9F%E5%BA%A6%E6%8E%92%E5%BA%8F">#按速度排序</a> 查看帮助选择镜像的工具。</p>
+<p>当然也可以和我一样用北外的镜像(不推荐清华的镜像，至少我自己的使用不佳)</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash">Server <span class="token operator">=</span> https://mirrors.bfsu.edu.cn/archlinux/<span class="token variable">$repo</span>/os/<span class="token variable">$arch</span></code></pre>
 
-<span class="token comment"># Optionally, label the axes.</span>
-ax<span class="token punctuation">.</span><span class="token builtin">set</span><span class="token punctuation">(</span>xlabel<span class="token operator">=</span><span class="token string">'mass'</span><span class="token punctuation">,</span> ylabel<span class="token operator">=</span><span class="token string">'count'</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
+<p>其他镜像</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment">## China</span>
+<span class="token comment">#Server = http://mirrors.163.com/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = http://mirrors.aliyun.com/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = https://mirrors.aliyun.com/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = http://mirrors.bfsu.edu.cn/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = https://mirrors.bfsu.edu.cn/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = http://mirrors.cqu.edu.cn/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = https://mirrors.cqu.edu.cn/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = http://mirrors.dgut.edu.cn/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = https://mirrors.dgut.edu.cn/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = http://mirrors.hit.edu.cn/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = https://mirrors.hit.edu.cn/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = http://mirror.lzu.edu.cn/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = http://mirrors.neusoft.edu.cn/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = https://mirrors.neusoft.edu.cn/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = http://mirrors.nju.edu.cn/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = https://mirrors.nju.edu.cn/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = http://mirror.redrock.team/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = https://mirror.redrock.team/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = https://mirrors.sjtug.sjtu.edu.cn/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = http://mirrors.tuna.tsinghua.edu.cn/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = https://mirrors.tuna.tsinghua.edu.cn/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = http://mirrors.ustc.edu.cn/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = https://mirrors.ustc.edu.cn/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = http://mirrors.wsyu.edu.cn/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = https://mirrors.wsyu.edu.cn/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = https://mirrors.xjtu.edu.cn/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = http://mirrors.zju.edu.cn/archlinux/$repo/os/$arch</span></code></pre>
 
-<p><em><code>Out [13]</code></em></p>
-<p><img src="https://s1.ax1x.com/2022/06/27/jEc91S.png" loading="lazy"></p>
-<p>然后我们可以指定最小mass参数。</p>
-<p>如果你的图像特别有噪声，你也会发现<code>threshold</code>(阈值)参数很有用。</p>
-<p><em><code>In [14]:</code></em></p>
-<pre class="language-python" data-language="python"><code class="language-python">f <span class="token operator">=</span> tp<span class="token punctuation">.</span>locate<span class="token punctuation">(</span>frames<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token number">11</span><span class="token punctuation">,</span> invert<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span> minmass<span class="token operator">=</span><span class="token number">20</span><span class="token punctuation">)</span></code></pre>
+<p>记得<code>pacman -S archlinux-keyring</code></p>
+<hr>
+<p>然后是<a href="https://wiki.archlinux.org/title/Arch_User_Repository_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">AUR</a> 的包。</p>
+<blockquote>
+<p>Arch 编译系统提供了编译官方库软件的脚本，而 <a href="https://wiki.archlinux.org/title/Arch_User_Repository_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">AUR</a> 则提供了用户提交的、非官方的软件包编译脚本。这是一个基于 <a href="https://aur.archlinux.org/index.php">web 界面</a>或通过 <a href="https://wiki.archlinux.org/title/AUR_helper_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">AUR 工具</a>访问的非官方软件仓库。</p>
+</blockquote>
+<p>aur里面有更多的软件包可以选择，当然由于是非官方，也会有无人维护的情况。</p>
+<p>基于web界面是指，aur的包可以到<a href="https://aur.archlinux.org/">https://aur.archlinux.org/</a> 这个网页上去查找相关信息。</p>
+<p>由于aur的包不能由pacman 直接安装，所以需要采取一下方法：</p>
+<ol>
+<li>从 AUR 下载包含 <a href="https://wiki.archlinux.org/title/PKGBUILD_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">PKGBUILD</a> 和其他安装文件（比如 <a href="https://wiki.archlinux.org/title/Systemd">systemd</a> 和补丁，通常不是实际代码）的 tar 包。</li>
+<li>用命令 <code>tar -xvf packagename.tar.gz</code> 解包到一个仅用于编译 AUR 的空闲文件夹。</li>
+<li>验证 <a href="https://wiki.archlinux.org/title/PKGBUILD_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">PKGBUILD</a> 和其它相关文件，确保其中不含有恶意代码。</li>
+<li>在上述文件夹中运行 <code>makepkg -si</code>。命令会自动调用 <a href="https://wiki.archlinux.org/title/Pacman_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">pacman</a> 解决依赖关系，然后下载代码、编译并打包。然后安装软件包。</li>
+</ol>
+<p>我一般跳过了验证那一步，<del>(懒得验证)</del>，对AUR受信用户（简称 TU）展现出充分的信任</p>
+<p>当然，使用<a href="https://wiki.archlinux.org/title/AUR_helper_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">AUR 工具</a> 会简单一些(因为上面那个方法其实也蛮简单了)</p>
+<p>具体查看wiki，我用过yay，因为已经pacman封装了，所以语法和pacman一样。</p>
+<h2 id="图形界面"><a href="#图形界面" class="headerlink" title="图形界面"></a>图形界面</h2><h3 id="从字符到图形"><a href="#从字符到图形" class="headerlink" title="从字符到图形"></a>从字符到图形</h3><p><code>pacman -Sy xorg-server</code>安装X服务器</p>
+<blockquote>
+<p><a href="https://en.wikipedia.org/wiki/X_Window_System">X 窗口管理系统</a>(<strong>X11</strong>或者<strong>X</strong>) 是基于网络的显示协议，提供了窗口功能，包含建立图形用户界面(GUI)的标准工具和协议。<a href="https://wiki.archlinux.org/title/Xorg_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">Xorg</a>是X窗口系统11版本的开源实现，提供图形用户界面, 安装和配置请阅读<a href="https://wiki.archlinux.org/title/Xorg_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">Xorg</a>。</p>
+<p><a href="https://wiki.archlinux.org/title/Wayland_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">Wayland</a> 是新的显示服务协议，Weston 是参考实现。目前还处于开发阶段，支持的程序很少。</p>
+</blockquote>
+<p>只有X能够进入图形界面了，不过只有最基本的框架，需要配合 <a href="https://wiki.archlinux.org/title/%E6%A1%8C%E9%9D%A2%E7%8E%AF%E5%A2%83">桌面环境</a>(DE)才能使用。</p>
+<blockquote>
+<p>桌面环境通常提供图标、小程序（applets）、窗口、工具栏、文件夹、壁纸、应用程序和拖放等功能。使用<a href="https://wiki.archlinux.org/title/GNOME_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">GNOME</a>、<a href="https://wiki.archlinux.org/title/KDE_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">KDE</a>、<a href="https://wiki.archlinux.org/title/LXDE_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">LXDE</a>、<a href="https://wiki.archlinux.org/title/Xfce_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">Xfce</a>这类<a href="https://wiki.archlinux.org/title/%E6%A1%8C%E9%9D%A2%E7%8E%AF%E5%A2%83">桌面环境</a>，是最简单的配置方法. <a href="https://wiki.archlinux.org/title/Category:Desktop_environments">Category:Desktop environments</a> 包含了各种桌面环境。</p>
+</blockquote>
+<p>其中KDE和GNOME是两个功能完全的主流桌面环境，KDE体积更加大一点。由于U盘大小有限，我使用的是轻量化的Xfce。</p>
+<p>对于Xfce，只需要<code>pacman Sy xfce4</code>，我没有使用额外的显示管理器(也就是从图形界面登录用户并自动启动图形界面)，一方面从字符界面启动更加轻量，另一方面并不是每一次都有进入图形界面的需要。Xfce自带从字符界面启动的命令<code>startxfce4</code></p>
+<p>后来我更倾向于使用i3wm作为桌面环境，更加轻量快速， <a href="https://wiki.archlinux.org/title/Start_X_at_Login_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">Start X at Login</a> 提供了直接从终端启动的轻量方法。i3wm的定制化程度更高，也意味着配置需要一定的精力，这里就不展开了。</p>
+<h3 id="浏览器"><a href="#浏览器" class="headerlink" title="浏览器"></a>浏览器</h3><p>毫无疑问<code>pacman -Sy firefox</code></p>
+<p>当你打开浏览器输入诸如<code>www.baidu.com</code>之类的中文网页，你会发现一堆矩形之类的乱码。</p>
+<h3 id="从英文到中文"><a href="#从英文到中文" class="headerlink" title="从英文到中文"></a>从英文到中文</h3><p>因为你还没有安装字体，所以无法正常显示中文。</p>
+<p><code>pacman -Sy wqy-microhei</code>文泉驿的中文字体之一。还有其他字体，可以自己去发现。</p>
+<p>然后就能看到中文了。</p>
+<p>同时在启动桌面环境的命令前加上指定用中文启动，就可以以中文为默认语言使用桌面环境，例：<code>LANG=zh_CN.UTF-8 startxfce4</code></p>
+<h3 id="声音"><a href="#声音" class="headerlink" title="声音"></a>声音</h3><p>如果和我一样使用了轻量化的桌面环境，一般要手动调整声音，<code>pacman -Sy alsa-utils</code>安装声音配置相关的一些工具，其中<code>alsamixer</code>命令可以在终端中用类似图形化的方式调整声音</p>
+<p>有时候没有声音还要设置默认声卡，有时候没有混音还得自己手动开启dmix.这里就不展开了。</p>
+<h3 id="输入法"><a href="#输入法" class="headerlink" title="输入法"></a>输入法</h3><p>参见 <a href="https://wiki.archlinux.org/title/Fcitx_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">Fcitx (简体中文)</a> 、 <a href="https://wiki.archlinux.org/title/Fcitx5_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">Fcitx5 (简体中文)</a> 或 <a href="https://wiki.archlinux.org/title/IBus_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">Ibus</a>。</p>
+<p>我使用的是Fcitx5，是fcitx的最新版本，<code>pacman -Sy fcitx5-im fcitx5-chinese-addons</code>，里面有图形界面的配置工具</p>
+<p>欲在程序中正常启用 Fcitx5, 需设置以下环境变量，并重新登录：</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash">~/.pam_environment
+-------------------------------------------------
+GTK_IM_MODULE <span class="token assign-left variable">DEFAULT</span><span class="token operator">=</span>fcitx
+QT_IM_MODULE  <span class="token assign-left variable">DEFAULT</span><span class="token operator">=</span>fcitx
+<span class="token environment constant">XMODIFIERS</span>    <span class="token assign-left variable">DEFAULT</span><span class="token operator">=</span><span class="token punctuation">\</span>@im<span class="token operator">=</span>fcitx
+INPUT_METHOD  <span class="token assign-left variable">DEFAULT</span><span class="token operator">=</span>fcitx
+SDL_IM_MODULE <span class="token assign-left variable">DEFAULT</span><span class="token operator">=</span>fcitx
+GLFW_IM_MODULE <span class="token assign-left variable">DEFAULT</span><span class="token operator">=</span>ibus</code></pre>
 
-<p><em><code>In [15]:</code></em></p>
-<pre class="language-python" data-language="python"><code class="language-python">tp<span class="token punctuation">.</span>annotate<span class="token punctuation">(</span>f<span class="token punctuation">,</span> frames<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
-
-<p><em><code>Out [15]</code></em></p>
-<p><img src="https://s1.ax1x.com/2022/06/27/jE6zff.png" loading="lazy"></p>
-<p>有更多的控制和优化功能查找的选项。您可以在<a href="https://soft-matter.github.io/trackpy/stable/">文档</a>中查看它们，最全面的描述在API参考文档中。或者通过<code>tp.locate?</code>来查阅它们。</p>
-<h3 id="Check-for-subpixel-accuracy"><a href="#Check-for-subpixel-accuracy" class="headerlink" title="Check for subpixel accuracy"></a>Check for subpixel accuracy</h3><p>(检查亚像素精度)</p>
-<p>Eric Weeks在他的相关教程中指出，检查亚像素精度的一个快速方法是检查x和&#x2F;或y位置的小数部分是否均匀分布。</p>
-<p>Trackpy为此提供了一个方便的绘图函数<code>subpx_bias</code>:</p>
-<p><em><code>In [16]:</code></em></p>
-<pre class="language-python" data-language="python"><code class="language-python">tp<span class="token punctuation">.</span>subpx_bias<span class="token punctuation">(</span>f<span class="token punctuation">)</span></code></pre>
-
-<p><em><code>Out [16]</code></em></p>
-<pre class="language-python" data-language="python"><code class="language-python">array<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token operator">&lt;</span>matplotlib<span class="token punctuation">.</span>axes<span class="token punctuation">.</span>_subplots<span class="token punctuation">.</span>AxesSubplot <span class="token builtin">object</span> at <span class="token number">0x1c268a1490</span><span class="token operator">></span><span class="token punctuation">,</span>
-        <span class="token operator">&lt;</span>matplotlib<span class="token punctuation">.</span>axes<span class="token punctuation">.</span>_subplots<span class="token punctuation">.</span>AxesSubplot <span class="token builtin">object</span> at <span class="token number">0x1c269a54d0</span><span class="token operator">></span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-      dtype<span class="token operator">=</span><span class="token builtin">object</span><span class="token punctuation">)</span></code></pre>
-
-<p><img src="https://s1.ax1x.com/2022/06/27/jEcVkq.png" loading="lazy"></p>
-<p>如果我们使用的像素尺寸太小，直方图经常在中间显示一个下降。</p>
-<p><em><code>In [17]:</code></em></p>
-<pre class="language-python" data-language="python"><code class="language-python">tp<span class="token punctuation">.</span>subpx_bias<span class="token punctuation">(</span>tp<span class="token punctuation">.</span>locate<span class="token punctuation">(</span>frames<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">,</span> invert<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">,</span> minmass<span class="token operator">=</span><span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
-
-<p><em><code>Out [17]</code></em></p>
-<p><img src="https://s1.ax1x.com/2022/06/27/jEcZt0.png" loading="lazy"></p>
-<h3 id="Locate-features-in-all-frames"><a href="#Locate-features-in-all-frames" class="headerlink" title="Locate features in all frames"></a>Locate features in all frames</h3><p>(定位所有帧的特征)</p>
-<p>或者，开始时，只是探索所有帧的一个子集。</p>
-<table>
-<thead>
-<tr>
-<th>selection</th>
-<th>syntax example</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>all the frames</td>
-<td><code>frames[:]</code> or simply <code>frames</code>.</td>
-</tr>
-<tr>
-<td>the first 10 frames</td>
-<td><code>frames[:10]</code></td>
-</tr>
-<tr>
-<td>the last 10 frames</td>
-<td><code>frames[-10:]</code></td>
-</tr>
-<tr>
-<td>a range of frames</td>
-<td><code>frames[100:200]</code></td>
-</tr>
-<tr>
-<td>every 10th frame</td>
-<td><code>frame[::10]</code></td>
-</tr>
-<tr>
-<td>a list of specific frames</td>
-<td><code>frames[[100, 107, 113]]</code></td>
-</tr>
-</tbody></table>
-<p>我们将在这段视频的前300帧中定位特征。我们使用<code>tp.batch</code>调用<code>tp.locate</code>对每一帧分析并收集结果。</p>
-<p><em><code>In [18]:</code></em></p>
-<pre class="language-python" data-language="python"><code class="language-python">f <span class="token operator">=</span> tp<span class="token punctuation">.</span>batch<span class="token punctuation">(</span>frames<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token number">300</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token number">11</span><span class="token punctuation">,</span> minmass<span class="token operator">=</span><span class="token number">20</span><span class="token punctuation">,</span> invert<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
-
-<p><em><code>Out [18]</code></em></p>
-<pre class="language-python" data-language="python"><code class="language-python">···
-Frame <span class="token number">299</span><span class="token punctuation">:</span> <span class="token number">624</span> features
-···</code></pre>
-
-<p>在分析每一帧时，<code>tp.batch</code>报告帧号和发现了多少特征。如果这个数字意外地低或高，您可能希望中断它并尝试不同的参数。</p>
-<p>如果您的图像很小，您可能会发现打印这个数字实际上大大降低了<code>batch</code>速度!在这种情况下，您可以运行<code>tp.quiet()</code>来关闭它。</p>
-<h2 id="Step-3-Link-features-into-particle-trajectories"><a href="#Step-3-Link-features-into-particle-trajectories" class="headerlink" title="Step 3: Link features into particle trajectories"></a>Step 3: Link features into particle trajectories</h2><p>我们有粒子在每一帧中的位置。接下来，我们将逐帧跟踪粒子，给每个粒子一个编号以进行识别。</p>
-<p>首先，我们必须指定一个最大位移，即质点在两帧间能移动的最远距离。我们应该选择最小的合理值，因为大的值会大大减慢计算时间。在这种情况下，5像素是合理的。</p>
-<p>其次，我们考虑到粒子可能会错过几帧，然后再次看到的可能性。(可能是由于视频中的噪声，它的”mass”低于我们的截止值。)内存会跟踪消失的粒子，并在它们最后一次出现后保留它们的ID。这里我们使用3帧。</p>
-<p><em><code>In [19]:</code></em></p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment"># tp.quiet()  # 关闭进度报告以获得最佳性能</span>
-t <span class="token operator">=</span> tp<span class="token punctuation">.</span>link<span class="token punctuation">(</span>f<span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> memory<span class="token operator">=</span><span class="token number">3</span><span class="token punctuation">)</span></code></pre>
-
-<p><em><code>Out [19]</code></em></p>
-<pre class="language-python" data-language="python"><code class="language-python">Frame <span class="token number">299</span><span class="token punctuation">:</span> <span class="token number">624</span> trajectories present<span class="token punctuation">.</span></code></pre>
-
-<p>结果是特征DataFrame <code>f</code>加上一个额外的列粒子，用标签标识每个特征。我们标识这个新的DataFrame为 <code>t</code>。</p>
-<p><em><code>In [20]:</code></em></p>
-<pre class="language-python" data-language="python"><code class="language-python">t<span class="token punctuation">.</span>head<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
-
-<p><em><code>Out [20]</code></em></p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>y</th>
-<th>x</th>
-<th>mass</th>
-<th>size</th>
-<th>ecc</th>
-<th>signal</th>
-<th>raw_mass</th>
-<th>ep</th>
-<th>frame</th>
-<th>particle</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>0</td>
-<td>4.750000</td>
-<td>103.668564</td>
-<td>192.862485</td>
-<td>2.106615</td>
-<td>0.066390</td>
-<td>10.808405</td>
-<td>10714.0</td>
-<td>0.073666</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<td>365</td>
-<td>284.118980</td>
-<td>25.313881</td>
-<td>149.037779</td>
-<td>2.321961</td>
-<td>0.031799</td>
-<td>7.008575</td>
-<td>10770.0</td>
-<td>0.067577</td>
-<td>0</td>
-<td>1</td>
-</tr>
-<tr>
-<td>364</td>
-<td>282.753601</td>
-<td>534.788476</td>
-<td>222.754482</td>
-<td>1.908443</td>
-<td>0.103416</td>
-<td>15.874846</td>
-<td>10415.0</td>
-<td>0.141946</td>
-<td>0</td>
-<td>2</td>
-</tr>
-<tr>
-<td>363</td>
-<td>280.010398</td>
-<td>275.185353</td>
-<td>186.782757</td>
-<td>2.508665</td>
-<td>0.183181</td>
-<td>7.261897</td>
-<td>10438.0</td>
-<td>0.132499</td>
-<td>0</td>
-<td>3</td>
-</tr>
-<tr>
-<td>362</td>
-<td>279.134153</td>
-<td>252.780324</td>
-<td>151.064355</td>
-<td>2.938060</td>
-<td>0.253812</td>
-<td>4.306474</td>
-<td>10359.0</td>
-<td>0.171764</td>
-<td>0</td>
-<td>4</td>
-</tr>
-</tbody></table>
-<h3 id="Filter-spurious-trajectories"><a href="#Filter-spurious-trajectories" class="headerlink" title="Filter spurious trajectories"></a>Filter spurious trajectories</h3><p>(过滤虚假轨迹)</p>
-<p>我们还有更多的过滤工作要做。短暂的轨迹——只能看到几帧——通常是虚假的，没有什么用处。方便的函数<code>filter_stub</code>只保留给定帧数的轨迹。</p>
-<p><em><code>In [21]:</code></em></p>
-<pre class="language-python" data-language="python"><code class="language-python">t1 <span class="token operator">=</span> tp<span class="token punctuation">.</span>filter_stubs<span class="token punctuation">(</span>t<span class="token punctuation">,</span> <span class="token number">25</span><span class="token punctuation">)</span>
-<span class="token comment"># 比较未过滤和过滤后数据中的粒子数。</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'Before:'</span><span class="token punctuation">,</span> t<span class="token punctuation">[</span><span class="token string">'particle'</span><span class="token punctuation">]</span><span class="token punctuation">.</span>nunique<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">'After:'</span><span class="token punctuation">,</span> t1<span class="token punctuation">[</span><span class="token string">'particle'</span><span class="token punctuation">]</span><span class="token punctuation">.</span>nunique<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
-
-<p><em><code>Out [21]</code></em></p>
-<pre class="language-python" data-language="python"><code class="language-python">Before<span class="token punctuation">:</span> <span class="token number">13715</span>
-After<span class="token punctuation">:</span> <span class="token number">1505</span></code></pre>
-
-<p>我们还可以通过粒子的外观来过滤轨迹。在这个阶段，有了轨迹连接，我们就可以通过轨迹来观察一个特征的“平均外观”，从而给出更准确的图像。</p>
-<p><em><code>In [22]:</code></em></p>
-<pre class="language-python" data-language="python"><code class="language-python">plt<span class="token punctuation">.</span>figure<span class="token punctuation">(</span><span class="token punctuation">)</span>
-tp<span class="token punctuation">.</span>mass_size<span class="token punctuation">(</span>t1<span class="token punctuation">.</span>groupby<span class="token punctuation">(</span><span class="token string">'particle'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>mean<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment"># convenience function -- just plots size vs. mass</span></code></pre>
-
-<p><img src="https://s1.ax1x.com/2022/06/27/jEcnpT.png" loading="lazy"></p>
-<p>“mass”特别小的粒子，或特别大的或非圆形(偏心)的粒子，可能分别失焦或聚集。最好是通过尝试和错误进行实验，过滤出”mass”大小的空间区域，并使用<code>tp.annotate</code>查看结果。最后，我们需要把好的粒子从虚假的粒子中分离出来，我们如何做到这一点并不重要。</p>
-<p><em><code>In [23]:</code></em></p>
-<pre class="language-python" data-language="python"><code class="language-python">t2 <span class="token operator">=</span> t1<span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token punctuation">(</span>t1<span class="token punctuation">[</span><span class="token string">'mass'</span><span class="token punctuation">]</span> <span class="token operator">></span> <span class="token number">50</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span> <span class="token punctuation">(</span>t1<span class="token punctuation">[</span><span class="token string">'size'</span><span class="token punctuation">]</span> <span class="token operator">&lt;</span> <span class="token number">2.6</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span>
-         <span class="token punctuation">(</span>t1<span class="token punctuation">[</span><span class="token string">'ecc'</span><span class="token punctuation">]</span> <span class="token operator">&lt;</span> <span class="token number">0.3</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">]</span></code></pre>
-
-<p><em><code>In [24]:</code></em></p>
-<pre class="language-python" data-language="python"><code class="language-python">plt<span class="token punctuation">.</span>figure<span class="token punctuation">(</span><span class="token punctuation">)</span>
-tp<span class="token punctuation">.</span>annotate<span class="token punctuation">(</span>t2<span class="token punctuation">[</span>t2<span class="token punctuation">[</span><span class="token string">'frame'</span><span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> frames<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
-
-<p><em><code>Out [24]</code></em></p>
-<p><img src="https://s1.ax1x.com/2022/06/27/jEcu1U.png" loading="lazy"></p>
-<p>使用<code>plot_traj()</code>跟踪轨迹:</p>
-<p><em><code>In [25]:</code></em></p>
-<pre class="language-python" data-language="python"><code class="language-python">plt<span class="token punctuation">.</span>figure<span class="token punctuation">(</span><span class="token punctuation">)</span>
-tp<span class="token punctuation">.</span>plot_traj<span class="token punctuation">(</span>t2<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
-
-<p><em><code>Out [25]</code></em></p>
-<p><img src="https://s1.ax1x.com/2022/06/27/jEc1B9.png" loading="lazy"></p>
-<h3 id="Remove-overall-drift"><a href="#Remove-overall-drift" class="headerlink" title="Remove overall drift"></a>Remove overall drift</h3><p>(删除整体漂移)</p>
-<p>计算整体的漂移运动，我们将其减去，采用粒子的平均位置参考系。</p>
-<p><em><code>In [26]:</code></em></p>
-<pre class="language-python" data-language="python"><code class="language-python">d <span class="token operator">=</span> tp<span class="token punctuation">.</span>compute_drift<span class="token punctuation">(</span>t2<span class="token punctuation">)</span></code></pre>
-
-<p><em><code>In [27]:</code></em></p>
-<pre class="language-python" data-language="python"><code class="language-python">d<span class="token punctuation">.</span>plot<span class="token punctuation">(</span><span class="token punctuation">)</span>
-plt<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
-
-<p><em><code>Out [27]</code></em></p>
-<p><img src="https://s1.ax1x.com/2022/06/27/jEcJtx.png" loading="lazy"></p>
-<p><em><code>In [28]:</code></em></p>
-<pre class="language-python" data-language="python"><code class="language-python">tm <span class="token operator">=</span> tp<span class="token punctuation">.</span>subtract_drift<span class="token punctuation">(</span>t2<span class="token punctuation">.</span>copy<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> d<span class="token punctuation">)</span></code></pre>
-
-<p>将整个漂移运动减去，我们再次绘制轨迹。我们观察到很好的随机游动。</p>
-<p><em><code>In [29]:</code></em></p>
-<pre class="language-python" data-language="python"><code class="language-python">ax <span class="token operator">=</span> tp<span class="token punctuation">.</span>plot_traj<span class="token punctuation">(</span>tm<span class="token punctuation">)</span>
-plt<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
-
-<p><img src="https://s1.ax1x.com/2022/06/27/jEcYh6.png" loading="lazy"></p>
-<h2 id="Step-4-Analyze-trajectories"><a href="#Step-4-Analyze-trajectories" class="headerlink" title="Step 4: Analyze trajectories"></a>Step 4: Analyze trajectories</h2><p>Trackpy包括几个函数，以帮助一些常见的分析粒子轨迹。(请参阅API参考的”Static Analysis”(“静态分析”)和”Motion Analysis”(“运动分析”)章节。)</p>
-<p>在这里，我们可以证明这些数据与胶态粒子在水中经历布朗运动是一致的。</p>
-<h3 id="Mean-Squared-Displacement-of-Individal-Probes"><a href="#Mean-Squared-Displacement-of-Individal-Probes" class="headerlink" title="Mean Squared Displacement of Individal Probes"></a>Mean Squared Displacement of Individal Probes</h3><p>(单个探针的均方位移)</p>
-<p>利用<code>imsd</code>函数计算每个粒子的均方位移(MSD)，并绘制MSD与滞后时间的关系图。</p>
-<p><em><code>In [30]:</code></em></p>
-<pre class="language-python" data-language="python"><code class="language-python">im <span class="token operator">=</span> tp<span class="token punctuation">.</span>imsd<span class="token punctuation">(</span>tm<span class="token punctuation">,</span> <span class="token number">100</span><span class="token operator">/</span><span class="token number">285.</span><span class="token punctuation">,</span> <span class="token number">24</span><span class="token punctuation">)</span>  <span class="token comment"># microns per pixel = 100/285., frames per second = 24</span></code></pre>
-
-<p><em><code>In [31]:</code></em></p>
-<pre class="language-python" data-language="python"><code class="language-python">fig<span class="token punctuation">,</span> ax <span class="token operator">=</span> plt<span class="token punctuation">.</span>subplots<span class="token punctuation">(</span><span class="token punctuation">)</span>
-ax<span class="token punctuation">.</span>plot<span class="token punctuation">(</span>im<span class="token punctuation">.</span>index<span class="token punctuation">,</span> im<span class="token punctuation">,</span> <span class="token string">'k-'</span><span class="token punctuation">,</span> alpha<span class="token operator">=</span><span class="token number">0.1</span><span class="token punctuation">)</span>  <span class="token comment"># black lines, semitransparent</span>
-ax<span class="token punctuation">.</span><span class="token builtin">set</span><span class="token punctuation">(</span>ylabel<span class="token operator">=</span><span class="token string">r'$\langle \Delta r^2 \rangle$ [$\mu$m$^2$]'</span><span class="token punctuation">,</span>
-       xlabel<span class="token operator">=</span><span class="token string">'lag time $t$'</span><span class="token punctuation">)</span>
-ax<span class="token punctuation">.</span>set_xscale<span class="token punctuation">(</span><span class="token string">'log'</span><span class="token punctuation">)</span>
-ax<span class="token punctuation">.</span>set_yscale<span class="token punctuation">(</span><span class="token string">'log'</span><span class="token punctuation">)</span></code></pre>
-
-<p><em><code>Out [31]</code></em></p>
-<p><img src="https://s1.ax1x.com/2022/06/27/jEcN9K.png" loading="lazy"></p>
-<p>因为我们只分析了300帧，所以在大延迟时间下统计数据很差。有更多的帧，我们可以研究更大的滞后时间。</p>
-<h3 id="Ensemble-Mean-Squared-Displacement"><a href="#Ensemble-Mean-Squared-Displacement" class="headerlink" title="Ensemble Mean Squared Displacement"></a>Ensemble Mean Squared Displacement</h3><p>(总体均方位移)</p>
-<p>现在使用函数<code>emsd</code>计算所有粒子的整体均方位移(EMSD):</p>
-<p><em><code>In [32]:</code></em></p>
-<pre class="language-python" data-language="python"><code class="language-python">em <span class="token operator">=</span> tp<span class="token punctuation">.</span>emsd<span class="token punctuation">(</span>tm<span class="token punctuation">,</span> <span class="token number">100</span><span class="token operator">/</span><span class="token number">285.</span><span class="token punctuation">,</span> <span class="token number">24</span><span class="token punctuation">)</span> <span class="token comment"># microns per pixel = 100/285., frames per second = 24</span></code></pre>
-
-<p><em><code>In [33]:</code></em></p>
-<pre class="language-python" data-language="python"><code class="language-python">fig<span class="token punctuation">,</span> ax <span class="token operator">=</span> plt<span class="token punctuation">.</span>subplots<span class="token punctuation">(</span><span class="token punctuation">)</span>
-ax<span class="token punctuation">.</span>plot<span class="token punctuation">(</span>em<span class="token punctuation">.</span>index<span class="token punctuation">,</span> em<span class="token punctuation">,</span> <span class="token string">'o'</span><span class="token punctuation">)</span>
-ax<span class="token punctuation">.</span>set_xscale<span class="token punctuation">(</span><span class="token string">'log'</span><span class="token punctuation">)</span>
-ax<span class="token punctuation">.</span>set_yscale<span class="token punctuation">(</span><span class="token string">'log'</span><span class="token punctuation">)</span>
-ax<span class="token punctuation">.</span><span class="token builtin">set</span><span class="token punctuation">(</span>ylabel<span class="token operator">=</span><span class="token string">r'$\langle \Delta r^2 \rangle$ [$\mu$m$^2$]'</span><span class="token punctuation">,</span>
-       xlabel<span class="token operator">=</span><span class="token string">'lag time $t$'</span><span class="token punctuation">)</span>
-ax<span class="token punctuation">.</span><span class="token builtin">set</span><span class="token punctuation">(</span>ylim<span class="token operator">=</span><span class="token punctuation">(</span><span class="token number">1e-2</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
-
-<p><em><code>Out [33]</code></em></p>
-<p><img src="https://s1.ax1x.com/2022/06/27/jEc0nH.png" loading="lazy"></p>
-<p>我们可以很容易地将这个集合的均方位移拟合到幂律$At^n$上，使用一个方便的函数<code>fit_powerlaw</code>，它在对数空间中执行线性回归。</p>
-<p><em><code>In [34]:</code></em></p>
-<pre class="language-python" data-language="python"><code class="language-python">plt<span class="token punctuation">.</span>figure<span class="token punctuation">(</span><span class="token punctuation">)</span>
-plt<span class="token punctuation">.</span>ylabel<span class="token punctuation">(</span><span class="token string">r'$\langle \Delta r^2 \rangle$ [$\mu$m$^2$]'</span><span class="token punctuation">)</span>
-plt<span class="token punctuation">.</span>xlabel<span class="token punctuation">(</span><span class="token string">'lag time $t$'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-tp<span class="token punctuation">.</span>utils<span class="token punctuation">.</span>fit_powerlaw<span class="token punctuation">(</span>em<span class="token punctuation">)</span>  <span class="token comment"># 图中在对数空间执行最佳线性拟合</span></code></pre>
-
-<p><em><code>Out [34]</code></em></p>
-<p><img src="https://s1.ax1x.com/2022/06/27/jEcyNt.png" loading="lazy"></p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>n</th>
-<th>A</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>msd</td>
-<td>1.0787</td>
-<td>1.595089</td>
-</tr>
-</tbody></table>
-<p>在水中，粘性物质，期望幂律指数$n&#x3D;1$。$A&#x3D;4D$，其中$D$为粒子的扩散系数。$D$通过Stokes-Einstein方程与粘度$\eta$、粒子半径$r$、温度$T$有关:<br>$$<br>D &#x3D; \frac{k_BT}{6\pi\eta r}<br>$$<br>kB是玻尔兹曼常数。对于直径为1 μm的颗粒在室温水中，a≈1.66 μm2&#x2F;s。上面n和A的值离我们不远了。(如果你想了解更多关于这个测量和它的不确定度，<a href="https://dx.doi.org/10.1119/1.4803529">这篇文章</a>是一个深入的讨论在高等本科水平。)</p>
+<p>还有一个小工具在fcitx5上可以使用搜狗输入法的皮肤，大家自己查吧</p>
+<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><p>类似于记事本的工具：leafpad或者mousepad</p>
+<p>音乐：netease-cloud-music, yesplaymusic, iease-music(后两个都是网易云的第三方客户端，非常漂亮)</p>
+<p>ofiice: <a href="https://wiki.archlinux.org/title/WPS_Office_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">WPS Office (简体中文)</a>或者<a href="https://wiki.archlinux.org/title/LibreOffice_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">LibreOffice (简体中文)</a></p>
+<p>视频音频的播放： <a href="https://wiki.archlinux.org/title/VLC_media_player">VLC</a></p>
+<p>邮件客户端：Mailspring (也是颜值很高，而且有一些实用的功能)</p>
+<p>终端模拟器：**<a href="https://wiki.archlinux.org/title/Tilda">Tilda</a>** — 可配置的下拉终端模拟器(很方便，可以随时唤出)</p>
+<p>其他的大家看<a href="https://wiki.archlinux.org/title/List_of_applications_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">List of applications</a>各取所需吧。</p>
+<hr>
+<p>希望看到大家自己的Arch！</p>
 ]]></content>
       <categories>
-        <category>科学计算</category>
+        <category>GNU/Linux</category>
       </categories>
       <tags>
-        <tag>python</tag>
-        <tag>图像追踪</tag>
-        <tag>数据处理</tag>
+        <tag>Arch Linux</tag>
+        <tag>Linux配置</tag>
       </tags>
   </entry>
   <entry>
@@ -2273,254 +2521,6 @@ RUN+&#x3D;&quot;&#x2F;bin&#x2F;chmod g+w &#x2F;sys&#x2F;class&#x2F;backlight&#x2
       </tags>
   </entry>
   <entry>
-    <title>Arch Linux USB(配置篇)</title>
-    <url>/posts/55b25ac5/</url>
-    <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这篇文章看一看作是<a href="https://zephyrheather.github.io/2021/07/16/arch-linux-usb-an-zhuang-pian/">Arch Linux USB(安装篇)</a>的后续，不过archlinux的自由度很高，每一个人都能配置出高度个人定制化的东西，所以这里也只是结合archwiki和我个人的一些配置简单介绍一下。</p>
-<span id="more"></span>
-
-<p>参考：<a href="https://wiki.archlinux.org/title/General_recommendations_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)#%E4%B8%AD%E5%9B%BD%E5%A4%A7%E9%99%86%E7%94%A8%E6%88%B7%E7%9A%84%E6%8E%A8%E8%8D%90%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88">General recommendations (简体中文)</a>(这个页面还特地做了<a href="https://wiki.archlinux.org/title/General_recommendations_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)#%E4%B8%AD%E5%9B%BD%E5%A4%A7%E9%99%86%E7%94%A8%E6%88%B7%E7%9A%84%E6%8E%A8%E8%8D%90%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88">#中国大陆用户的推荐解决方案</a>)</p>
-<p>以下引文不加注释都引自<a href="https://wiki.archlinux.org/title/General_recommendations_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)#%E4%B8%AD%E5%9B%BD%E5%A4%A7%E9%99%86%E7%94%A8%E6%88%B7%E7%9A%84%E6%8E%A8%E8%8D%90%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88">General recommendations (简体中文)</a></p>
-<h2 id="系统和软件包管理"><a href="#系统和软件包管理" class="headerlink" title="系统和软件包管理"></a>系统和软件包管理</h2><h3 id="系统管理"><a href="#系统管理" class="headerlink" title="系统管理"></a>系统管理</h3><blockquote>
-<p>新安装的系统只有一个<a href="https://en.wikipedia.org/wiki/Superuser">超级用户</a>，即 root。使用 root 进行日常操作是不安全的。应当<a href="https://wiki.archlinux.org/title/User_Management_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">创建</a>普通用户进行日常操作，仅在管理系统时使用 root。不要在服务器上给 root 开放<a href="https://wiki.archlinux.org/title/SSH">SSH</a>登录权限。普通用户的创建方法请参阅 <a href="https://wiki.archlinux.org/title/Users_and_groups_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">用户和用户组</a>。</p>
-<p><a href="https://wiki.archlinux.org/title/Users_and_groups_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">用户和用户组</a>是GNU&#x2F;Linux 权限控制机制的基础。管理员通过调整用户组的成员、所有者，可以控制用户使用系统资源。</p>
-</blockquote>
-<p>换言之，平常用普通用户，只有涉及系统管理时使用root的权限。可以用<code>sudo</code>命令获取临时的root权限，只要在命令前加上<code>sudo</code>就可以。而<code>su</code>命令则是以指定用户登录一个新的shell，比如<code>su - xxx</code>就是登录用户名为xxx的用户，而默认<code>su -</code>登录的就是root。使用<code>exit</code>退出<code>su</code>命令登录的用户，回到原来的shell。</p>
-<p>服务管理：</p>
-<blockquote>
-<p>Arch Linux 使用 <a href="https://wiki.archlinux.org/title/Systemd_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">systemd (简体中文)</a> 管理系统服务。新用户有必要了解其基本使用方法。通常使用 <code># systemctl</code> 命令进行系统管理，参见<a href="https://wiki.archlinux.org/title/Systemd_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)#systemd_%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7">此文</a>。</p>
-</blockquote>
-<p>注意，新的服务都需要用户重新设置和管理，设置哪些服务开机自启动，哪些服务在用的时候手动启动，可以减少资源浪费。</p>
-<p>系统维护：</p>
-<blockquote>
-<p>Arch 是滚动发行系统，软件包的更新速度很快，用户需要花些时间进行 <a href="https://wiki.archlinux.org/title/System_maintenance">系统维护</a>。 <a href="https://wiki.archlinux.org/title/Security">安全</a>页面也给出了很多加强系统安全性的建议和技巧。</p>
-</blockquote>
-<p>微软总是催着你windows系统更新，但是Arch是自己手动更新的。经常看到有人说Arch这样的滚动发行版不稳定，容易滚挂。我反正从来没遇到过，Arch更新虽然是整个系统重新安装的，但是速度很快，而且也很稳定。</p>
-<p>更新系统的时候使用<code>pacman -Syu</code>(要root权限)，注意不要在一堆服务和进程在运行的时候更新系统，最好在刚开机的时候在字符界面就更新，更新之后<code>reboot</code>重启就行。</p>
-<p>虽然一般建议Arch经常更新，但是我曾经半年没更也没什么。就是有时候<code>pacman -Sy</code>安装软件的时候发现lib库和软件已经对不上了，那就更新系统吧。</p>
-<p>另外，安装在USB或者移动硬盘等可移动介质的同学一定要注意，在使用过程中不要拔插，关机前最后一件事一定是<code>sync</code>确保数据同步写入。</p>
-<h3 id="软件包管理"><a href="#软件包管理" class="headerlink" title="软件包管理"></a>软件包管理</h3><p>具体看archwiki学习</p>
-<p>Arch拥有Linux中最丰富的软件包资源，由官方软件仓库和非官方软件仓库(AUR)组成。</p>
-<p>Pacman 是Arch 的软件包管理器(简称包管理器)<br>下面列一些我常用的命令</p>
-<pre class="language-bash" data-language="bash"><code class="language-bash">pacman -Sy 		<span class="token comment"># 更新软件源并安装</span>
-pacman -Ss		<span class="token comment"># 搜索软件</span>
-pacman -Si 		<span class="token comment"># 查看软件包具体信息</span>
-pacman -Syu		<span class="token comment">#更新系统及所有包</span>
-pacman -Qs		<span class="token comment"># 搜索已安装的包</span>
-pacman -Qi		<span class="token comment"># 查看已安装的包的信息</span>
-pacman -Rs		<span class="token comment"># 删除软件包及其依赖</span></code></pre>
-
-<p>有关pacman的一些配置在&#x2F;etc&#x2F;pacman.conf，贴一下我的配置</p>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment">#</span>
-<span class="token comment"># /etc/pacman.conf</span>
-<span class="token comment">#</span>
-<span class="token comment"># See the pacman.conf(5) manpage for option and repository directives</span>
-
-<span class="token comment">#</span>
-<span class="token comment"># GENERAL OPTIONS</span>
-<span class="token comment">#</span>
-<span class="token punctuation">[</span>options<span class="token punctuation">]</span>
-<span class="token comment"># The following paths are commented out with their default values listed.</span>
-<span class="token comment"># If you wish to use different paths, uncomment and update the paths.</span>
-<span class="token comment">#RootDir     = /</span>
-<span class="token comment">#DBPath      = /var/lib/pacman/</span>
-<span class="token comment">#CacheDir    = /var/cache/pacman/pkg/</span>
-<span class="token comment">#LogFile     = /var/log/pacman.log</span>
-<span class="token comment">#GPGDir      = /etc/pacman.d/gnupg/</span>
-<span class="token comment">#HookDir     = /etc/pacman.d/hooks/</span>
-HoldPkg     <span class="token operator">=</span> pacman glibc
-<span class="token comment">#XferCommand = /usr/bin/curl -L -C - -f -o %o %u</span>
-<span class="token comment">#XferCommand = /usr/bin/wget --passive-ftp -c -O %o %u</span>
-<span class="token comment">#CleanMethod = KeepInstalled</span>
-Architecture <span class="token operator">=</span> auto
-
-<span class="token comment"># Pacman won't upgrade packages listed in IgnorePkg and members of IgnoreGroup</span>
-<span class="token comment">#IgnorePkg   =</span>
-<span class="token comment">#IgnoreGroup =</span>
-
-<span class="token comment">#NoUpgrade   =</span>
-<span class="token comment">#NoExtract   =</span>
-
-<span class="token comment"># Misc options</span>
-<span class="token comment">#UseSyslog</span>
-Color
-ILoveCandy
-<span class="token comment">#TotalDownload</span>
-CheckSpace
-<span class="token comment">#VerbosePkgLists</span>
-
-<span class="token comment"># By default, pacman accepts packages signed by keys that its local keyring</span>
-<span class="token comment"># trusts (see pacman-key and its man page), as well as unsigned packages.</span>
-SigLevel    <span class="token operator">=</span> Required DatabaseOptional
-LocalFileSigLevel <span class="token operator">=</span> Optional
-<span class="token comment">#RemoteFileSigLevel = Required</span>
-
-<span class="token comment"># NOTE: You must run `pacman-key --init` before first using pacman; the local</span>
-<span class="token comment"># keyring can then be populated with the keys of all official Arch Linux</span>
-<span class="token comment"># packagers with `pacman-key --populate archlinux`.</span>
-
-<span class="token comment">#</span>
-<span class="token comment"># REPOSITORIES</span>
-<span class="token comment">#   - can be defined here or included from another file</span>
-<span class="token comment">#   - pacman will search repositories in the order defined here</span>
-<span class="token comment">#   - local/custom mirrors can be added here or in separate files</span>
-<span class="token comment">#   - repositories listed first will take precedence when packages</span>
-<span class="token comment">#     have identical names, regardless of version number</span>
-<span class="token comment">#   - URLs will have $repo replaced by the name of the current repo</span>
-<span class="token comment">#   - URLs will have $arch replaced by the name of the architecture</span>
-<span class="token comment">#</span>
-<span class="token comment"># Repository entries are of the format:</span>
-<span class="token comment">#       [repo-name]</span>
-<span class="token comment">#       Server = ServerName</span>
-<span class="token comment">#       Include = IncludePath</span>
-<span class="token comment">#</span>
-<span class="token comment"># The header [repo-name] is crucial - it must be present and</span>
-<span class="token comment"># uncommented to enable the repo.</span>
-<span class="token comment">#</span>
-
-<span class="token comment"># The testing repositories are disabled by default. To enable, uncomment the</span>
-<span class="token comment"># repo name header and Include lines. You can add preferred servers immediately</span>
-<span class="token comment"># after the header, and they will be used before the default mirrors.</span>
-
-<span class="token comment">#[testing]</span>
-<span class="token comment">#Include = /etc/pacman.d/mirrorlist</span>
-
-<span class="token punctuation">[</span>core<span class="token punctuation">]</span>
-Include <span class="token operator">=</span> /etc/pacman.d/mirrorlist
-
-<span class="token punctuation">[</span>extra<span class="token punctuation">]</span>
-Include <span class="token operator">=</span> /etc/pacman.d/mirrorlist
-
-<span class="token comment">#[community-testing]</span>
-<span class="token comment">#Include = /etc/pacman.d/mirrorlist</span>
-
-<span class="token punctuation">[</span>community<span class="token punctuation">]</span>
-Include <span class="token operator">=</span> /etc/pacman.d/mirrorlist
-
-<span class="token comment"># If you want to run 32 bit applications on your x86_64 system,</span>
-<span class="token comment"># enable the multilib repositories as required here.</span>
-
-<span class="token comment">#[multilib-testing]</span>
-<span class="token comment">#Include = /etc/pacman.d/mirrorlist</span>
-
-<span class="token comment">#[multilib]</span>
-<span class="token comment">#Include = /etc/pacman.d/mirrorlist</span>
-
-<span class="token comment"># An example of a custom package repository.  See the pacman manpage for</span>
-<span class="token comment"># tips on creating your own repositories.</span>
-<span class="token comment">#[custom]</span>
-<span class="token comment">#SigLevel = Optional TrustAll</span>
-<span class="token comment">#Server = file:///home/custompkgs</span>
-
-<span class="token punctuation">[</span>archlinuxcn<span class="token punctuation">]</span>
-SigLevel <span class="token operator">=</span> Never
-Server <span class="token operator">=</span> https://mirrors.ustc.edu.cn/archlinuxcn/<span class="token variable">$arch</span></code></pre>
-
-<p>我的配置主要就是取消了<code>Color</code>前的注释，是Pacman 的输出是彩色的更易识别，然后<code>ILoveCandy</code>是我自己加上的，这是Pacman 的一个彩蛋，因为pacman也是那款叫作吃豆人的著名游戏，加上<code>ILoveCandy</code>后会出现吃豆人。</p>
-<p>最后加上了archlinuxcn的源，因为里面提供了更多为中国用户进行优化的软件包，用的是科大的源，加上之后需要<code>pacman -S archlinuxcn-keyring</code>安装对应的密钥。</p>
-<p>主要的pacman 镜像我用的是北外的镜像，在<code>/etc/pacman.d/mirrorlist</code>中更改，一般里面已经按照速度排序排好了，如果没有，可以参见 <a href="https://wiki.archlinux.org/title/Mirrors_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)#%E9%95%9C%E5%83%8F%E7%8A%B6%E6%80%81">#镜像状态</a> 和 <a href="https://wiki.archlinux.org/title/Mirrors_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)#%E6%8C%89%E9%80%9F%E5%BA%A6%E6%8E%92%E5%BA%8F">#按速度排序</a> 查看帮助选择镜像的工具。</p>
-<p>当然也可以和我一样用北外的镜像(不推荐清华的镜像，至少我自己的使用不佳)</p>
-<pre class="language-bash" data-language="bash"><code class="language-bash">Server <span class="token operator">=</span> https://mirrors.bfsu.edu.cn/archlinux/<span class="token variable">$repo</span>/os/<span class="token variable">$arch</span></code></pre>
-
-<p>其他镜像</p>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment">## China</span>
-<span class="token comment">#Server = http://mirrors.163.com/archlinux/$repo/os/$arch</span>
-<span class="token comment">#Server = http://mirrors.aliyun.com/archlinux/$repo/os/$arch</span>
-<span class="token comment">#Server = https://mirrors.aliyun.com/archlinux/$repo/os/$arch</span>
-<span class="token comment">#Server = http://mirrors.bfsu.edu.cn/archlinux/$repo/os/$arch</span>
-<span class="token comment">#Server = https://mirrors.bfsu.edu.cn/archlinux/$repo/os/$arch</span>
-<span class="token comment">#Server = http://mirrors.cqu.edu.cn/archlinux/$repo/os/$arch</span>
-<span class="token comment">#Server = https://mirrors.cqu.edu.cn/archlinux/$repo/os/$arch</span>
-<span class="token comment">#Server = http://mirrors.dgut.edu.cn/archlinux/$repo/os/$arch</span>
-<span class="token comment">#Server = https://mirrors.dgut.edu.cn/archlinux/$repo/os/$arch</span>
-<span class="token comment">#Server = http://mirrors.hit.edu.cn/archlinux/$repo/os/$arch</span>
-<span class="token comment">#Server = https://mirrors.hit.edu.cn/archlinux/$repo/os/$arch</span>
-<span class="token comment">#Server = http://mirror.lzu.edu.cn/archlinux/$repo/os/$arch</span>
-<span class="token comment">#Server = http://mirrors.neusoft.edu.cn/archlinux/$repo/os/$arch</span>
-<span class="token comment">#Server = https://mirrors.neusoft.edu.cn/archlinux/$repo/os/$arch</span>
-<span class="token comment">#Server = http://mirrors.nju.edu.cn/archlinux/$repo/os/$arch</span>
-<span class="token comment">#Server = https://mirrors.nju.edu.cn/archlinux/$repo/os/$arch</span>
-<span class="token comment">#Server = http://mirror.redrock.team/archlinux/$repo/os/$arch</span>
-<span class="token comment">#Server = https://mirror.redrock.team/archlinux/$repo/os/$arch</span>
-<span class="token comment">#Server = https://mirrors.sjtug.sjtu.edu.cn/archlinux/$repo/os/$arch</span>
-<span class="token comment">#Server = http://mirrors.tuna.tsinghua.edu.cn/archlinux/$repo/os/$arch</span>
-<span class="token comment">#Server = https://mirrors.tuna.tsinghua.edu.cn/archlinux/$repo/os/$arch</span>
-<span class="token comment">#Server = http://mirrors.ustc.edu.cn/archlinux/$repo/os/$arch</span>
-<span class="token comment">#Server = https://mirrors.ustc.edu.cn/archlinux/$repo/os/$arch</span>
-<span class="token comment">#Server = http://mirrors.wsyu.edu.cn/archlinux/$repo/os/$arch</span>
-<span class="token comment">#Server = https://mirrors.wsyu.edu.cn/archlinux/$repo/os/$arch</span>
-<span class="token comment">#Server = https://mirrors.xjtu.edu.cn/archlinux/$repo/os/$arch</span>
-<span class="token comment">#Server = http://mirrors.zju.edu.cn/archlinux/$repo/os/$arch</span></code></pre>
-
-<p>记得<code>pacman -S archlinux-keyring</code></p>
-<hr>
-<p>然后是<a href="https://wiki.archlinux.org/title/Arch_User_Repository_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">AUR</a> 的包。</p>
-<blockquote>
-<p>Arch 编译系统提供了编译官方库软件的脚本，而 <a href="https://wiki.archlinux.org/title/Arch_User_Repository_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">AUR</a> 则提供了用户提交的、非官方的软件包编译脚本。这是一个基于 <a href="https://aur.archlinux.org/index.php">web 界面</a>或通过 <a href="https://wiki.archlinux.org/title/AUR_helper_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">AUR 工具</a>访问的非官方软件仓库。</p>
-</blockquote>
-<p>aur里面有更多的软件包可以选择，当然由于是非官方，也会有无人维护的情况。</p>
-<p>基于web界面是指，aur的包可以到<a href="https://aur.archlinux.org/">https://aur.archlinux.org/</a> 这个网页上去查找相关信息。</p>
-<p>由于aur的包不能由pacman 直接安装，所以需要采取一下方法：</p>
-<ol>
-<li>从 AUR 下载包含 <a href="https://wiki.archlinux.org/title/PKGBUILD_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">PKGBUILD</a> 和其他安装文件（比如 <a href="https://wiki.archlinux.org/title/Systemd">systemd</a> 和补丁，通常不是实际代码）的 tar 包。</li>
-<li>用命令 <code>tar -xvf packagename.tar.gz</code> 解包到一个仅用于编译 AUR 的空闲文件夹。</li>
-<li>验证 <a href="https://wiki.archlinux.org/title/PKGBUILD_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">PKGBUILD</a> 和其它相关文件，确保其中不含有恶意代码。</li>
-<li>在上述文件夹中运行 <code>makepkg -si</code>。命令会自动调用 <a href="https://wiki.archlinux.org/title/Pacman_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">pacman</a> 解决依赖关系，然后下载代码、编译并打包。然后安装软件包。</li>
-</ol>
-<p>我一般跳过了验证那一步，<del>(懒得验证)</del>，对AUR受信用户（简称 TU）展现出充分的信任</p>
-<p>当然，使用<a href="https://wiki.archlinux.org/title/AUR_helper_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">AUR 工具</a> 会简单一些(因为上面那个方法其实也蛮简单了)</p>
-<p>具体查看wiki，我用过yay，因为已经pacman封装了，所以语法和pacman一样。</p>
-<h2 id="图形界面"><a href="#图形界面" class="headerlink" title="图形界面"></a>图形界面</h2><h3 id="从字符到图形"><a href="#从字符到图形" class="headerlink" title="从字符到图形"></a>从字符到图形</h3><p><code>pacman -Sy xorg-server</code>安装X服务器</p>
-<blockquote>
-<p><a href="https://en.wikipedia.org/wiki/X_Window_System">X 窗口管理系统</a>(<strong>X11</strong>或者<strong>X</strong>) 是基于网络的显示协议，提供了窗口功能，包含建立图形用户界面(GUI)的标准工具和协议。<a href="https://wiki.archlinux.org/title/Xorg_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">Xorg</a>是X窗口系统11版本的开源实现，提供图形用户界面, 安装和配置请阅读<a href="https://wiki.archlinux.org/title/Xorg_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">Xorg</a>。</p>
-<p><a href="https://wiki.archlinux.org/title/Wayland_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">Wayland</a> 是新的显示服务协议，Weston 是参考实现。目前还处于开发阶段，支持的程序很少。</p>
-</blockquote>
-<p>只有X能够进入图形界面了，不过只有最基本的框架，需要配合 <a href="https://wiki.archlinux.org/title/%E6%A1%8C%E9%9D%A2%E7%8E%AF%E5%A2%83">桌面环境</a>(DE)才能使用。</p>
-<blockquote>
-<p>桌面环境通常提供图标、小程序（applets）、窗口、工具栏、文件夹、壁纸、应用程序和拖放等功能。使用<a href="https://wiki.archlinux.org/title/GNOME_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">GNOME</a>、<a href="https://wiki.archlinux.org/title/KDE_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">KDE</a>、<a href="https://wiki.archlinux.org/title/LXDE_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">LXDE</a>、<a href="https://wiki.archlinux.org/title/Xfce_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">Xfce</a>这类<a href="https://wiki.archlinux.org/title/%E6%A1%8C%E9%9D%A2%E7%8E%AF%E5%A2%83">桌面环境</a>，是最简单的配置方法. <a href="https://wiki.archlinux.org/title/Category:Desktop_environments">Category:Desktop environments</a> 包含了各种桌面环境。</p>
-</blockquote>
-<p>其中KDE和GNOME是两个功能完全的主流桌面环境，KDE体积更加大一点。由于U盘大小有限，我使用的是轻量化的Xfce。</p>
-<p>对于Xfce，只需要<code>pacman Sy xfce4</code>，我没有使用额外的显示管理器(也就是从图形界面登录用户并自动启动图形界面)，一方面从字符界面启动更加轻量，另一方面并不是每一次都有进入图形界面的需要。Xfce自带从字符界面启动的命令<code>startxfce4</code></p>
-<p>后来我更倾向于使用i3wm作为桌面环境，更加轻量快速， <a href="https://wiki.archlinux.org/title/Start_X_at_Login_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">Start X at Login</a> 提供了直接从终端启动的轻量方法。i3wm的定制化程度更高，也意味着配置需要一定的精力，这里就不展开了。</p>
-<h3 id="浏览器"><a href="#浏览器" class="headerlink" title="浏览器"></a>浏览器</h3><p>毫无疑问<code>pacman -Sy firefox</code></p>
-<p>当你打开浏览器输入诸如<code>www.baidu.com</code>之类的中文网页，你会发现一堆矩形之类的乱码。</p>
-<h3 id="从英文到中文"><a href="#从英文到中文" class="headerlink" title="从英文到中文"></a>从英文到中文</h3><p>因为你还没有安装字体，所以无法正常显示中文。</p>
-<p><code>pacman -Sy wqy-microhei</code>文泉驿的中文字体之一。还有其他字体，可以自己去发现。</p>
-<p>然后就能看到中文了。</p>
-<p>同时在启动桌面环境的命令前加上指定用中文启动，就可以以中文为默认语言使用桌面环境，例：<code>LANG=zh_CN.UTF-8 startxfce4</code></p>
-<h3 id="声音"><a href="#声音" class="headerlink" title="声音"></a>声音</h3><p>如果和我一样使用了轻量化的桌面环境，一般要手动调整声音，<code>pacman -Sy alsa-utils</code>安装声音配置相关的一些工具，其中<code>alsamixer</code>命令可以在终端中用类似图形化的方式调整声音</p>
-<p>有时候没有声音还要设置默认声卡，有时候没有混音还得自己手动开启dmix.这里就不展开了。</p>
-<h3 id="输入法"><a href="#输入法" class="headerlink" title="输入法"></a>输入法</h3><p>参见 <a href="https://wiki.archlinux.org/title/Fcitx_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">Fcitx (简体中文)</a> 、 <a href="https://wiki.archlinux.org/title/Fcitx5_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">Fcitx5 (简体中文)</a> 或 <a href="https://wiki.archlinux.org/title/IBus_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">Ibus</a>。</p>
-<p>我使用的是Fcitx5，是fcitx的最新版本，<code>pacman -Sy fcitx5-im fcitx5-chinese-addons</code>，里面有图形界面的配置工具</p>
-<p>欲在程序中正常启用 Fcitx5, 需设置以下环境变量，并重新登录：</p>
-<pre class="language-bash" data-language="bash"><code class="language-bash">~/.pam_environment
--------------------------------------------------
-GTK_IM_MODULE <span class="token assign-left variable">DEFAULT</span><span class="token operator">=</span>fcitx
-QT_IM_MODULE  <span class="token assign-left variable">DEFAULT</span><span class="token operator">=</span>fcitx
-<span class="token environment constant">XMODIFIERS</span>    <span class="token assign-left variable">DEFAULT</span><span class="token operator">=</span><span class="token punctuation">\</span>@im<span class="token operator">=</span>fcitx
-INPUT_METHOD  <span class="token assign-left variable">DEFAULT</span><span class="token operator">=</span>fcitx
-SDL_IM_MODULE <span class="token assign-left variable">DEFAULT</span><span class="token operator">=</span>fcitx
-GLFW_IM_MODULE <span class="token assign-left variable">DEFAULT</span><span class="token operator">=</span>ibus</code></pre>
-
-<p>还有一个小工具在fcitx5上可以使用搜狗输入法的皮肤，大家自己查吧</p>
-<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><p>类似于记事本的工具：leafpad或者mousepad</p>
-<p>音乐：netease-cloud-music, yesplaymusic, iease-music(后两个都是网易云的第三方客户端，非常漂亮)</p>
-<p>ofiice: <a href="https://wiki.archlinux.org/title/WPS_Office_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">WPS Office (简体中文)</a>或者<a href="https://wiki.archlinux.org/title/LibreOffice_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">LibreOffice (简体中文)</a></p>
-<p>视频音频的播放： <a href="https://wiki.archlinux.org/title/VLC_media_player">VLC</a></p>
-<p>邮件客户端：Mailspring (也是颜值很高，而且有一些实用的功能)</p>
-<p>终端模拟器：**<a href="https://wiki.archlinux.org/title/Tilda">Tilda</a>** — 可配置的下拉终端模拟器(很方便，可以随时唤出)</p>
-<p>其他的大家看<a href="https://wiki.archlinux.org/title/List_of_applications_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">List of applications</a>各取所需吧。</p>
-<hr>
-<p>希望看到大家自己的Arch！</p>
-]]></content>
-      <categories>
-        <category>GNU/Linux</category>
-      </categories>
-      <tags>
-        <tag>Arch Linux</tag>
-        <tag>Linux配置</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Linux挂载Windows分区问题</title>
     <url>/posts/6b1091a3/</url>
     <content><![CDATA[<h2 id="分区格式"><a href="#分区格式" class="headerlink" title="分区格式"></a>分区格式</h2><p>首先，Linux和Windows采用的分区格式不同，Linux采用ext4，而Windows采用ntfs。</p>
@@ -3089,6 +3089,173 @@ arch-install-scripts	<span class="token comment"># 用于安装arch</span></code
       <tags>
         <tag>Arch Linux</tag>
         <tag>Linux配置</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>VirtualBox</title>
+    <url>/posts/10fa96af/</url>
+    <content><![CDATA[<p>最近在Arch下使用VirtualBox,遇到一点小问题，在此记录分享一下。</p>
+<span id="more"></span>
+
+<h1 id="VitrualBox简介"><a href="#VitrualBox简介" class="headerlink" title="VitrualBox简介"></a>VitrualBox简介</h1><p>VirtualBox是一款开源的虚拟机软件，由德国的Innotek公司开发，但似乎已经被Oracle收购了。所谓虚拟机，就是相较于“真机”而言，并不直接安装在真实的物理媒介上接触真实的接口，而是在抽象层上重新模拟出虚拟的真实环境，就像沙盒一样。使用虚拟机的好处就是可以多个系统同时使用，并且互不干扰；缺点就是相对于真机而言受到更大的资源限制，比如调用网络、I&#x2F;O之类的速度受限等等，但是随着虚拟机技术的成熟，已经越来越接近真机的体验了。</p>
+<h1 id="VirtualBox安装"><a href="#VirtualBox安装" class="headerlink" title="VirtualBox安装"></a>VirtualBox安装</h1><p>在Arch上安装VirtualBox分两种情况：</p>
+<ol>
+<li>使用默认的linux内核<pre class="language-none"><code class="language-none">pacman -S virtualbox virtualbox-host-modules-arch linux-headers</code></pre></li>
+<li>使用其他内核，以<code>linux-lts</code>为例<pre class="language-none"><code class="language-none">pacman -S virtualbox virtualbox-host-dkms linux-lts-headers</code></pre></li>
+</ol>
+<p><code>virtualbox</code>就是主要的程序，<code>virtualbox-host-modules-arch linux-headers</code>等是为了VirtualBox和linux内核自动编译模块。</p>
+<p>自行编译的内核请参考<a href="https://wiki.archlinux.org/title/VirtualBox">Archwiki:VirtualBox</a></p>
+<h1 id="VirtualBox配置"><a href="#VirtualBox配置" class="headerlink" title="VirtualBox配置"></a>VirtualBox配置</h1><p>VirtualBox在启动前要先加载对应的linux内核模块，可以在安装后手动加载模块，但是重启之后系统会自动加载对应模块，所以不如重启来的方便。<br>启动前请先将用户加入<code>vboxusers</code>用户组</p>
+<pre class="language-none"><code class="language-none">sudo usermod -a -G vboxusers username</code></pre>
+
+<p>VirtualBox提供了多种启动方式：</p>
+<ol>
+<li>如果你想通过常规 GUI 使用 VirtualBox，使用 VirtualBox 命令来启动 VirtualBox。</li>
+<li>如果你想在命令行下启动与管理 VirtualBox，可以使用 VBoxSDL 命令。从 VBoxSDL 启动的虚拟机，其窗口仅包含虚拟机的画面，没有菜单或是其他控制项。</li>
+<li>如果你想使用不想由任何 GUI（例如在服务器上）来使用 VirtualBox，使用 VBoxHeadless 命令。如果还想登录到这种虚拟机的图形界面，就需要安装 VRDP 扩展。</li>
+</ol>
+<p>正常情况下使用<code>VirtualBox</code>即可。</p>
+<h2 id="虚拟机创建"><a href="#虚拟机创建" class="headerlink" title="虚拟机创建"></a>虚拟机创建</h2><ol>
+<li>打开<code>VirtualBox</code>，选择新建</li>
+<li>输入名称，名称将用于不同虚拟机的标识</li>
+<li>选择文件夹，VirtualBox将在该文件夹下面新建一个名为’vbox’的文件夹，并将虚拟机建立在里面</li>
+</ol>
+<p><img src="https://s1.ax1x.com/2022/07/08/jDEBOf.png" alt="jDEBOf.png" loading="lazy"><em>虚拟机信息</em></p>
+<ol start="4">
+<li>类型和版本根据自己将要安装的系统选择</li>
+<li>分配内存大小，建议不要超过真实内存的一半，当然也得达到虚拟机系统内存的要求。</li>
+</ol>
+<p><img src="https://s1.ax1x.com/2022/07/08/jDVKAg.png" alt="jDVKAg.png" loading="lazy"><em>内存设置</em></p>
+<ol start="6">
+<li>创建虚拟硬盘，之前选文件夹的时候确保所在硬盘有足够的空间大小，选择创建虚拟硬盘</li>
+</ol>
+<p><img src="https://s1.ax1x.com/2022/07/08/jDVIgI.png" alt="jDVIgI.png" loading="lazy"><em>创建虚拟硬盘</em></p>
+<ol start="7">
+<li>选择虚拟硬盘类型，其中VDI是VirtualBox的虚拟硬盘类型，而VHD和VMDK分别是微软和VMware的虚拟硬盘格式，VirtualBox可以将各种虚拟硬盘格式进行转换。正常使用选择默认即可，其他请参见<a href="https://wiki.archlinux.org/title/VirtualBox">Archwiki:VirtualBox</a></li>
+</ol>
+<p><img src="https://s1.ax1x.com/2022/07/08/jDV7KP.png" alt="jDV7KP.png" loading="lazy"><em>虚拟硬盘类型</em></p>
+<ol start="8">
+<li>选择虚拟硬盘是动态分配还是固定大小，随个人喜好吧，我选择的动态分配感觉不出来速度上有什么问题。</li>
+</ol>
+<p><img src="https://imgtu.com/i/jDZZG9" alt="jDZZG9.png" loading="lazy"></p>
+<ol start="9">
+<li>创建虚拟硬盘的大小，根据自己的需求，选择动态分配的话，这里的大小只是上限而非实际占用，文件位置默认即可。</li>
+</ol>
+<p><img src="https://s1.ax1x.com/2022/07/08/jDe9Wd.png" alt="jDe9Wd.png" loading="lazy"><em>虚拟硬盘大小</em></p>
+<ol start="10">
+<li>(可选)Oracle Extension Pack 为虚拟机提供了额外功能。但它并不是以自由软件协议发布的，仅供个人使用。尽管<code>aur</code>上有打包好的，但是手动下载也比较方便。在<a href="https://www.virtualbox.org/wiki/Downloads">Download</a>页面选择 All supported platforms下载。然后在VirtualBox的开始界面的最顶端中选择管理-全局设定-扩展，加入下载的扩展文件</li>
+</ol>
+<h2 id="客体机配置"><a href="#客体机配置" class="headerlink" title="客体机配置"></a>客体机配置</h2><p>客体机只需要正常安装即可，但是客体机的扩展提供了很好的体验，解决了许多问题，前往<a href="https://download.virtualbox.org/virtualbox/">Downloads</a>找到最新的版本(或者对应的版本)，下载 VBoxGuestAdditions.iso</p>
+<ol>
+<li>启动，第一次启动的时候需要选择启动镜像，就是要安装的那个系统的iso镜像，选择注册打开镜像</li>
+<li>正常安装</li>
+<li>挂载客体机扩展的镜像，在VirtualBox的开始界面中选中虚拟机，选择设置-存储，在第二个设备的地方选择镜像</li>
+</ol>
+<p><img src="https://s1.ax1x.com/2022/07/08/jDKcDI.png" alt="jDKcDI.png" loading="lazy"><em>客体机扩展挂载</em></p>
+<ol start="4">
+<li>在虚拟机中，找到挂载的镜像，安装之。</li>
+</ol>
+<p>然后，你会发现分辨率有所提高，还支持文件双向拖放，还有无缝模式等等。</p>
+<h1 id="Tips-and-tricks"><a href="#Tips-and-tricks" class="headerlink" title="Tips and tricks"></a>Tips and tricks</h1><p>在启动虚拟机的时候卡在了20%的进度条没有反应(据”教授”说Windows下VirtualBox最近也这样？)<br>解决方案：参考</p>
+<ol>
+<li><a href="https://bbs.archlinux.org/viewtopic.php?id=277409">Virtualbox hangs on Starting virtual machine window</a></li>
+<li><a href="https://bbs.archlinux.org/viewtopic.php?id=276699">KVM busted in linux 5.18 due to Intel CET</a></li>
+<li><a href="https://bbs.archlinux.org/viewtopic.php?id=277611">Virtualbox hangs on booting VM</a></li>
+</ol>
+<p>简单来说，就是较新的内核(arch-5.18)之后，linux的内核为了提升intel上的表现引入了<code>ibt</code>的功能，但是似乎与VirtualBox的虚拟化产生了一定的冲突。因此在启动linux内核的时候需要把<code>ibt</code>关掉。</p>
+<p>具体做法：在grub界面按<code>e</code>进入配置，找到<code>linux /boot/vmlinuz-linux ···</code>这一行，在末尾加上<code>ibt=off</code>，用空格隔开。由于我自己写的grub.cfg,所以我直接改grub.cfg了，这样也行。</p>
+<p>这里不得不称赞archlinux的社区，Linux那边刚刚更新的内核，大家一下就解决了问题，甚至把Linux的源码给翻了出来。(至于windows那边卡住，只能坐等VirtualBox更新了)</p>
+]]></content>
+      <categories>
+        <category>GNU/Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>VirtualBOx</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Windows安装与激活</title>
+    <url>/posts/af4d8cb5/</url>
+    <content><![CDATA[<p>最近决定将ArchLinux作为主力了，但是无奈微软和腾讯这样几乎垄断的存在会影响日常的使用，只好装个Win的虚拟机应付一下。所以先记录一下Windows方面的安装和激。</p>
+<span id="more"></span>
+
+<h1 id="Windows-ltsc"><a href="#Windows-ltsc" class="headerlink" title="Windows ltsc"></a>Windows ltsc</h1><p>自从升级到了win11之后(<del>可恶，竟然用WSL和Win无缝连接作为诱饵，结果呢？连个文件资源管理器都卡半天，别说对LInux子系统的支持了</del>)，使用Windows的欲望就下降了，所以还是不用win11了。</p>
+<p>Win10其实已经比较吃内存了，至少就我自己的Windows而言，开机就吃了将近4g内存了。但是，实在是受不了winxp和win7的时代了。于是发现了还有windos ltsc.</p>
+<p>Windows ltsc是Windows企业版的长期支持版本，例如win10 ltsc 2019是十年，而win10 ltsc 2021是5年，在生命周期内微软保证了系统的稳定性，且不进行版本更新。事实上，就连功能性的更新也很少，微软的原话是：</p>
+<div class="success">
+
+<blockquote>
+<p>功能更新每 2-3 年（而不是每 6 个月）在新的 LTSC 版本中提供，组织可以选择将其安装为就地升级，甚至跳过版本。</p>
+</blockquote>
+</div>
+
+<p><del>想起了之前win11每个礼拜都有更新并关机的选项的日子。</del></p>
+<p>除此之外，更重要的是，为了系统的稳定性和长期支持，微软自己把ltsc版本里面诸如<strong>edge</strong>、微软小娜、应用商店，甚至许多系统的后台服务都去掉了。(看来微软是知道这些东西没什么必要的)所以，相对应的，所需的内存也会减小，我的虚拟机(64位的)现在开机占2g内存，分配了4g内存，使用流畅。</p>
+<p>微软官方没有提供ltsc版本的镜像，官方的回答是到MSDN上下载。(有需要也可找我要镜像)</p>
+<h1 id="关于Office"><a href="#关于Office" class="headerlink" title="关于Office"></a>关于Office</h1><p>装好Windows之后还要解决Office的问题，Office的镜像在MSDN上也有，但是没有Office2019或者2021的Vol版本。而如果要使用本文后面的方式激活Office的话，是需要Vol版本的。可惜我对于其他地方的镜像并不放心(<del>不是懒得找</del>)，发现微软也提供了Office安装的其他方式——<a href="https://docs.microsoft.com/en-us/deployoffice/office-deployment-tool-configuration-options">Office Deployment Tool</a>，简称ODT。</p>
+<p>ODT是Office的部署工具，可以自定义部署Office。(不吐槽了，从来没有告诉过我，原来可以不要诸如team之类的东西)</p>
+<h2 id="下载ODT"><a href="#下载ODT" class="headerlink" title="下载ODT"></a>下载ODT</h2><p>去<a href="https://www.microsoft.com/en-us/download/details.aspx?id=49117">下载ODT</a>界面下载即可</p>
+<p>下载完成后运行ODT,按照提示将文件提取到每个位置，自己建一个文件夹就行。里面会提取出<code>setup.exe</code>的主程序和几个<code>xml</code>配置文件。</p>
+<h2 id="定制Office"><a href="#定制Office" class="headerlink" title="定制Office"></a>定制Office</h2><p>定制Office就是自己写一个<code>xml</code>配置文件，可以参照<a href="https://docs.microsoft.com/en-us/deployoffice/office-deployment-tool-configuration-options">Office Deployment Tool</a>进行编写或者改一改提取出来的<code>xml</code>的范例就行，当然更简单的方式是用<a href="https://config.office.com/">图形化的配置(请点击这里)</a>。</p>
+<p>使用图形化的配置过程，只要选择创建新的配置，然后按照自己的需求配置，最后导出即可。</p>
+<h2 id="安装Office"><a href="#安装Office" class="headerlink" title="安装Office"></a>安装Office</h2><p>在ODT的目录里打开命令行，记得把之前的配置文件也放到这个目录里。然后运行<code>.\setup.exe /download .\Configuration.xml</code>下载Office,等待几分钟后，目录下会出现名为Office的文件夹，接着运行<code>.\setup.exe /configure .\Configuration.xml</code>即可安装。实际上，直接运行第二条命令也是可以的，只是把下载和安装在一起了，且安装之后没有下载的文件罢了。</p>
+<h1 id="Windows-激活"><a href="#Windows-激活" class="headerlink" title="Windows 激活"></a>Windows 激活</h1><p>参见微软官方页面<a href="https://docs.microsoft.com/zh-cn/windows-server/get-started/kms-client-activation-keys">密钥管理服务 (KMS) 客户端激活和产品密钥</a>，这可是正经的激活，只是接下来我们用开源的软件搭建里一个KMS服务器罢了。</p>
+<h2 id="服务器端"><a href="#服务器端" class="headerlink" title="服务器端"></a>服务器端</h2><p>项目地址：<a href="https://github.com/Wind4/vlmcsd">Wind4&#x2F;vlmcsd</a></p>
+<p>直接用docker比较方便：</p>
+<pre class="language-none"><code class="language-none">docker pull mikolatero&#x2F;vlmcsd
+docker run -d -p 1688:1688 --restart&#x3D;always --name&#x3D;&quot;vlmcsd&quot; mikolatero&#x2F;vlmcsd</code></pre>
+
+<p>需要打开1688端口以供vlmsd使用</p>
+<h2 id="客户端"><a href="#客户端" class="headerlink" title="客户端"></a>客户端</h2><p>打开命令行，开始激活。</p>
+<h3 id="配置GVLK"><a href="#配置GVLK" class="headerlink" title="配置GVLK"></a>配置GVLK</h3><p>一般情况下，key是自带的，不需要安装，除非之前手动配置过其他密钥。</p>
+<p>如果需要配置GVLK,输入以下命令，将<code>Key</code>替换为对应系统版本的<code>Key</code>:</p>
+<pre class="language-none"><code class="language-none">#slmgr &#x2F;pik GVLK
+#Example(Windows 10 LTSC 2019):
+slmgr &#x2F;pik M7XTQ-FN8P6-TTKYV-9D4CC-J462D</code></pre>
+
+<p>需要其他版本的GVLK请到<a href="https://docs.microsoft.com/zh-cn/windows-server/get-started/kms-client-activation-keys">这里</a>查看。</p>
+<h3 id="配置使用KMS服务"><a href="#配置使用KMS服务" class="headerlink" title="配置使用KMS服务"></a>配置使用KMS服务</h3><pre class="language-none"><code class="language-none"># slmgr &#x2F;skms kms-server[:tcp-port]
+# Example:
+slmgr &#x2F;skms kms.xxx.xxx:1688</code></pre>
+
+<p>将<code>kmx.xxx.xxx</code>换成你的<code>vlmscd</code>服务器即可，1688是默认端口可以省略。</p>
+<h3 id="激活"><a href="#激活" class="headerlink" title="激活"></a>激活</h3><pre class="language-none"><code class="language-none">slmgr &#x2F;ato</code></pre>
+
+<p>等待一会儿会看到激活成功的提示。</p>
+<p>可以输入以下命令查看激活状态，一般显示批量激活将于 xxxx&#x2F;x&#x2F;x xx:xx:xx 过期，一般是 180 天或 45 天的有效期。过期后，如果 KMS 服务器还在，会自动续期的。</p>
+<pre class="language-none"><code class="language-none">slmgr &#x2F;xpr</code></pre>
+
+<h3 id="激活Office"><a href="#激活Office" class="headerlink" title="激活Office"></a>激活Office</h3><p>首先切换到Office的文件夹：</p>
+<pre class="language-none"><code class="language-none">if exist &quot;C:\Program Files (x86)\Microsoft Office\Office14\ospp.vbs&quot; (cd &quot;C:\Program Files (x86)\Microsoft Office\Office14&quot;) else (cd &quot;c:\Program Files\Microsoft Office\Office14&quot;)
+if exist &quot;C:\Program Files (x86)\Microsoft Office\Office15\ospp.vbs&quot; (cd &quot;C:\Program Files (x86)\Microsoft Office\Office15&quot;) else (cd &quot;c:\Program Files\Microsoft Office\Office15&quot;)
+if exist &quot;C:\Program Files (x86)\Microsoft Office\Office16\ospp.vbs&quot; (cd &quot;C:\Program Files (x86)\Microsoft Office\Office16&quot;) else (cd &quot;c:\Program Files\Microsoft Office\Office16&quot;)</code></pre>
+
+<p>上面命令嫌麻烦也可以手动打开文件夹，注意文件夹里面一定有一个<code>ospp.vbs</code>。</p>
+<h4 id="配置GVLK-1"><a href="#配置GVLK-1" class="headerlink" title="配置GVLK"></a>配置GVLK</h4><p>同样，没有装过密钥的可以忽略这一步。</p>
+<pre class="language-none"><code class="language-none"># Example(Office LTSC Professional Plus 2021):
+cscript ospp.vbs &#x2F;inpkey:FXYTK-NJJ8C-GB6DW-3DYQT-6F7TH</code></pre>
+
+<h4 id="配置使用KMS服务-1"><a href="#配置使用KMS服务-1" class="headerlink" title="配置使用KMS服务"></a>配置使用KMS服务</h4><pre class="language-none"><code class="language-none"># cscript ospp.vbs &#x2F;sethst:kms-server
+# Example:
+cscript ospp.vbs &#x2F;sethst:kms.xxx.xxx
+# cscript ospp.vbs &#x2F;setprt:tcp-port
+# Example:
+cscript ospp.vbs &#x2F;setprt:1688</code></pre>
+
+<p>将<code>kms.xxx.xxx</code>换成你的服务器，<code>1688</code>为默认端口可以不设置。</p>
+<h4 id="激活-1"><a href="#激活-1" class="headerlink" title="激活"></a>激活</h4><pre class="language-none"><code class="language-none">cscript ospp.vbs &#x2F;act</code></pre>
+
+<p>等一会儿就能看到成功的信息，可以输入以下命令查看激活状态，一般是 180 天或 45 天的有效期。过期后，如果 KMS 服务器还在，会自动续期的。</p>
+<pre class="language-none"><code class="language-none">cscript ospp.vbs &#x2F;dstatus</code></pre>
+
+<h1 id="After-Words"><a href="#After-Words" class="headerlink" title="After Words"></a>After Words</h1><p>上面的kms服务器可以搭建在windows本地，如果不方便可以用我的kms服务:kms.zephyr.monster,就不要用网上奇怪的工具激活了。祝大家<del>早日摆脱</del>好好享受Windows.</p>
+]]></content>
+      <categories>
+        <category>Windows</category>
+      </categories>
+      <tags>
+        <tag>Winodws</tag>
       </tags>
   </entry>
   <entry>
