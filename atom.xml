@@ -6,7 +6,7 @@
   <link href="http://zephyrheather.github.io/atom.xml" rel="self"/>
   
   <link href="http://zephyrheather.github.io/"/>
-  <updated>2022-08-09T02:15:02.414Z</updated>
+  <updated>2022-10-05T14:11:27.571Z</updated>
   <id>http://zephyrheather.github.io/</id>
   
   <author>
@@ -17,10 +17,36 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Group Theory for Physicists in a Nutshell</title>
+    <link href="http://zephyrheather.github.io/posts/b3761c65/"/>
+    <id>http://zephyrheather.github.io/posts/b3761c65/</id>
+    <published>2022-10-05T13:29:56.000Z</published>
+    <updated>2022-10-05T14:11:27.571Z</updated>
+    
+    <content type="html"><![CDATA[<p>In this semester, I join a seminar about group theory. And we will be based on the book <em>Group Theory in a Nutshell for Physicists</em> by A. Zee.</p><p>So I shall keep some notes, and then why not share it? </p><p>The notes will also concern the <a href="https://www.math.clemson.edu/~macaule/classes/m19_math4120/">course</a> which illustrate group theory in a vivid way.</p><p>Note that my notes are mostly based on the book and class (which means that maybe I just copy from the book).But mainly, let’s see what we could expect from the seminar.</p><p>Just as what A. Zee said in his book, which I highly approve with, group theory is close to pure poetry.</p><p>So let’s honor our inheritance —- elegant mathematics and profound physics.</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;In this semester, I join a seminar about group theory. And we will be based on the book &lt;em&gt;Group Theory in a Nutshell for Physicists&lt;/em</summary>
+      
+    
+    
+    
+    <category term="Physics" scheme="http://zephyrheather.github.io/categories/Physics/"/>
+    
+    
+    <category term="group theory" scheme="http://zephyrheather.github.io/tags/group-theory/"/>
+    
+    <category term="note" scheme="http://zephyrheather.github.io/tags/note/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Hello World</title>
     <link href="http://zephyrheather.github.io/posts/4a17b156/"/>
     <id>http://zephyrheather.github.io/posts/4a17b156/</id>
-    <published>2022-08-09T02:15:02.414Z</published>
+    <published>2022-09-24T11:07:55.357Z</published>
     <updated>2022-08-09T02:15:02.414Z</updated>
     
     <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><pre class="language-bash" data-language="bash"><code class="language-bash">$ hexo new <span class="token string">"My New Post"</span></code></pre><p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><pre class="language-bash" data-language="bash"><code class="language-bash">$ hexo server</code></pre><p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><pre class="language-bash" data-language="bash"><code class="language-bash">$ hexo generate</code></pre><p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><pre class="language-bash" data-language="bash"><code class="language-bash">$ hexo deploy</code></pre><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>]]></content>
