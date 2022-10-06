@@ -68,6 +68,634 @@
       </tags>
   </entry>
   <entry>
+    <title>Group Notes 1</title>
+    <url>/posts/a2b343bf/</url>
+    <content><![CDATA[<p>The notion of a group is defined and the illustrated with many example.</p>
+<h2 id="Symmetry-and-Groups"><a href="#Symmetry-and-Groups" class="headerlink" title="Symmetry and Groups"></a>Symmetry and Groups</h2><h3 id="Symmetry-and-Transformation"><a href="#Symmetry-and-Transformation" class="headerlink" title="Symmetry and Transformation"></a>Symmetry and Transformation</h3><p>The n-sided regular polygon: why we feel that the hexagon is more symmetrical than a pentagon, cause 6 &gt; 5, QED.</p>
+<p>To quantify the symmetrical feeling, look at the set of transformations of invariant.</p>
+<p>For instance, the set of transformation that leave the isosceles triangle invariant is ${I, r}$<br>where $I$ denotes the identity transformation, and $r$ is the reflection.<br>Thus, $r \cdot r &#x3D; I$</p>
+<p>In contrast, the equilateral triangle is left invariant by reflection across any of its three medians, and also by rotation $R$.<br>The set of transformations is ${I, r_1, r_2, r_3, R_1, R_2, R_3}$<br><strong>Note that $R1 \cdot R_1 &#x3D; R_2$ and that $R_1 \cdot R_2 &#x3D;I$</strong></p>
+<h3 id="Symmetry-in-physics"><a href="#Symmetry-in-physics" class="headerlink" title="Symmetry in physics"></a>Symmetry in physics</h3><p>Consider a set of transformations $T_1, T_2, \cdots$ that leave the laws of physics invariant. The “product” $T_i \cdot T_j$ denotes sequence of two transformations $T_i$ an $T_j$.</p>
+<p>Note that the index $i$ we use here could be continous like $R(\theta, \varphi, \zeta)$.</p>
+<h3 id="Groups"><a href="#Groups" class="headerlink" title="Groups"></a>Groups</h3><p>A group $G$ consists of a set of entitie ${g_\alpha}$ called group elements, which we could compose(multiply) together.</p>
+<p>If $g_\alpha, g_\beta, g_\gamma$ in $G$ have relations: $g_\alpha \cdot g_\beta &#x3D; g_\gamma$, the set of all relations of such form is called the multiplication table of the group.</p>
+<p><strong>Composition or multiplication satisfies the following axioms:</strong></p>
+<font color=Red>
+
+<ol>
+<li><p>Associativity: Composition is associative: $(g_\alpha \cdot g_\beta) \cdot g_\gamma &#x3D; g_\alpha \cdot (g_\beta \cdot g_\gamma)$</p>
+</li>
+<li><p>Existence of the identity: There exists a group element, known as the identity and denoted by $I$, such as $I \cdot g_\alpha &#x3D; g_\alpha$ and $g_\alpha \cdot I &#x3D; g_\alpha$.</p>
+</li>
+<li><p>Existence of the inverse: For every group element $g\alpha$, there exists a unique group element, known as the inverse of $g_\alpha$ and denoted by $g_\alpha^{-1}$, such that $g_\alpha^{-1} \cdot g_\alpha &#x3D; I$ and $g_\alpha \cdot g_\alpha^{-1} &#x3D; I$.</p>
+</li>
+</ol>
+</font>
+
+<p>Sereral comments follow</p>
+<ol>
+<li><p>Composition is not required to commute. In general, $g_\alpha \cdot g_\beta \neq g_\beta \cdot g_\alpha$.<br>  A group for which the composition rule is commutative is said to be abelian, and a group for which this is not true is said to be nonaabelian.</p>
+</li>
+<li><p>The right inverse and the left inverse are by definition the same.</p>
+</li>
+<li><p>It is often convenient to denote $I$ by $g_0$</p>
+</li>
+<li><p>The label $\alpha$ that distinguishes the group element $g_\alpha$ may be discrete or continuous.</p>
+</li>
+<li><p>The set of elements may be finite (that is, ${g_0, g_1, g_2, \cdots, g_{n-1}}$), in which case $G$ is known as a finite group with $n$ elements.(Our friend the gargon guy informs us that $n$ is known as the order of the group, also denoted by $|G|$)</p>
+</li>
+</ol>
+<p>$gI &#x3D; Ig &#x3D; g$ says that the net effect of first doing nothing and then doing something is the same as first doing something and then doing nothing, and the same as doing something.</p>
+<p><em>Existence of the inverse says that the transformations of interest to physics can always be undone.</em></p>
+<font  color=DeepSkyBlue>
+
+<ol start="6">
+<li>The Associativity could be explained that you see the elements of a group as actually actions or transformations in sequence.</li>
+</ol>
+</font>
+
+
+<details>
+  <summary>Weakening the axioms</summary>
+
+<p>  Two of the three axioms that define a group can in fact be weakened to the following:<br>  2’. Existence of the left identity $I$ exists, such that for any element $g$, $Ig &#x3D; g$.<br>  3’. Existence of a left inverse: For any element $g$, there exists an element $f$, such that $fg &#x3D; I$.  </p>
+<p>  We now show that these imply axioms 2 and 3 given before. In other words, given the left identity and the left inverse, we are guaranteed that the right identity and the right inverse also exist.</p>
+<p>  Take the left inverse $f$ of $g$. By 3’, there exists an element $k$, such that $kf &#x3D; I$. Multiplying this by $g$ from the right, we obtain $(kf)g &#x3D; Ig &#x3D; g &#x3D; k(fg) &#x3D; kI$, where the second equality is due to 2’, the third equality to associativity, and the fourth equality to 3’. Therefore $g &#x3D; kI$,. We want to show that $k &#x3D; g$.</p>
+<p>  To show this, let us multiply $g &#x3D; kI$ by $I$ from the right. We obtain $gI&#x3D;(kI)I&#x3D;k(II)&#x3D;kI&#x3D;g$, where the second equality is due to associativity, and the third equality to 2’, since $I$ also qualifies as “any element”. Thus, $gI &#x3D; g$, so that $I$ is also the right identity. But if $I$ is also the right identity, then the result $g &#x3D; kI$ becomes $g &#x3D; k$. Multiplying by $f$ from the right, we obtain $gf &#x3D; kf &#x3D; I$. Therefore, the left inverse of $g$, namely $f$, is also the right inverse of $g$.</p>
+</details>
+
+<h3 id="Examples-of-groups"><a href="#Examples-of-groups" class="headerlink" title="Examples of groups"></a>Examples of groups</h3><p>For each of folloeing examples, you should verify that the group axioms are satisfied.</p>
+<ol>
+<li><p>Rotations in 3-dimensional Euclidean space, form the poster child of group theroy and are almost indispensable in pgysics. Think of rotating a rigid object, such as a bust of Newton. After two rotations in succseeion, the bust , being rigid, has not been deformed in any way: it merely has a different orientation,. Thus, the composition of two rotations is another rotation.</p>
+<ul>
+<li>Rotations famously do not commute.(What about 2-dimensional space?)</li>
+<li>Descartes taught us that 3-dimensional Euclidean space could be thought of as a linear vector space, coordinatized with the help of three unit basis vectors  <span>
+ $
+ \vec e_x = 
+ \tiny{
+ \begin{pmatrix}
+ 1\\
+ 0\\
+ 0\\
+ \end{pmatrix}
+ },
+ \normalsize
+ \vec e_y = 
+ {\tiny
+ \begin{pmatrix}
+ 0\\
+ 1\\
+ 0\\
+ \end{pmatrix}
+ },
+ \normalsize
+ \vec e_z = 
+ {\tiny
+ \begin{pmatrix}
+ 0\\
+ 0\\
+ 1\\
+ \end{pmatrix}
+ }
+ $,
+ </span>
+aligned along three orthogonal directions traditionally named $x$, $y$, and $z$. A rotation takes each basis vector into a linear combination of these basis vectors, and is thu described by a 3-by-3 matrix. This group of rotation is called $SO(3)$. We shall discuss rotation in great detail later; suffice it to mention here that the determinant of a rotation matrix is equal to 1.</li>
+</ul>
+</li>
+<li><p>Rotations in 2-dimensional Euclidean space, namely a plane, form a group called $SO(2)$, consisting of the set of rotations around an axis perpendicular to the plane. Denote a rotation through angle $\phi$ by $R(\phi)$. Then $R(\phi_1)R(\phi_2) &#x3D; R(\phi_1 + \phi_2) &#x3D; R(\phi_2)R(\phi_1)$. These rotations commute.</p>
+</li>
+<li><p>The permutation group $S_4$ rearranges an ordered set of four objects, which we can name arbitrarily, for example,$(A, B, C,D)$ or $(1, 2, 3, 4)$. An example would be a permutation that takes $1 \to 3, 2 \to 4, 3 \to 2$ and $4 \to 1$. As is well known, there are $4!&#x3D;24$ such permutations. The permutation group $S_n$ evidently has $n!$ elements. We will disscuss $S_n$ in detail later.</p>
+</li>
+<li><p>Even permutations of four objects form the group $A_4$. As is well known, a given permutation can be characterized as either even or odd. Half of the 24 permutations in $S_4$ are even, and half are odd. Thus, $A_4$ has 12 elements. The jargon guy tells that A stands for “alternating”.</p>
+</li>
+<li><p>The two square roots of $1, {1, -1}$, form the group $Z_2$ under ordinary multiplication.</p>
+</li>
+<li><p>Similarly, the three cube roots of 1 form the group $Z_3 &#x3D; {1, \omega, \omega^2}$ with $\omega &#x3D; e^{\frac{2\pi i}{3}}$.</p>
+<ul>
+<li>Chugging right along, we note that four roots of 1 form the group $Z_4 &#x3D; {1, i, -1, -i}$, where famously(or infamously) $i &#x3D; e^{\frac{i\pi}{2}}$.</li>
+<li>More generally, the $N$ $N$th roots of 1 form the group $Z_N &#x3D; {e^{\frac{i2\pi j}{N}} : j &#x3D; 0,\cdots,N-1}$. The composition of group elements is defined by $e^{\frac{i2\pi j}{N}}e^{\frac{i2\pi k}{N}} &#x3D; e^{\frac{i2\pi (j+k)}{N}}$</li>
+<li>Quick question: Does the set ${1, i, -1}$ form a group? <details>
+<summary>Answer</summary>
+
+The set ${1, i, -i}$ does not form a group, cause the element $i$ doesn’t have its inverse $i^{-1} &#x3D; -i$</li>
+</ul>
+ </details>
+</li>
+<li><p>Complex numbers of magnitude 1, namely $e^{i\phi}$, form a group called $U(1)$, with $e^{i\phi_1}e^{i\phi_2} &#x3D; e^{i(\phi_1 + \phi_2)}$. Since $e^{i(\phi+2\pi)} &#x3D; e^{i\phi}$, we can restrict $\phi$ range from $0$ to $2\pi$. At the level of physicist rigor, we can think of $U(1)$ as the “continuum limit” of $Z_N$ with $e^{\frac{i2\pi j}{N} }\to e^{i\phi}$</p>
+</li>
+<li><p>The addition of integers mod $N$ generates a group. For example, under addition mod $5$ the set {0, 1, 2, 3, 4} forms a group: $2 + 1 &#x3D; 3, 3 + 2 &#x3D; 0, 4 + 3 &#x3D; 2$, and so on. The composition of the group elements is defined by $j \cdot k &#x3D; j + k\  \mathrm{mod}\  5$. The identity element $I$ is denoted by $0$. The inverse of $2$, for example, is $3$, of $4$ is $1$, and so on. The group is clearly abelian.</p>
+<ul>
+<li>Question(???): Have you seen this group before? <details>
+<summary>Answer</summary>
+
+emm…Is this a question? Maybe not.<br>Oh! It’s just like $Z_N$?<br>We will discuss it later.</li>
+</ul>
+ </details>
+</li>
+<li><p>The addition of real numbers form a group, perhaps surprisingly. The group elements are denoted by a real number $u$ and $u \cdot v \equiv u + v$, where the symbol $+$ is what an elementary school student would call “add”. You can easily check that the axioms are satisfied. The identity element is denoted by $0$, and the inverse of element $u$ is the element $-u$.</p>
+</li>
+<li><p>The additive group of integers is obtained from the additive group of real numbers by restricting $u$ and $v$ in the preceding example to be integers of either sign, including $0$.</p>
+</li>
+<li><p>As many readers know, in Einstein’s theory of special relativity, the spacetime coordinates used by two observers in relative motion with velocity $v$ along the $x$-direction (say) are related by the Lorentz transformation (with $c$ the speed of light):</p>
+<div>
+$$
+    \begin{cases}
+    &ct' = \cosh \varphi\ ct + \sinh \varphi\ x \\
+    &x' = \sinh \varphi\ ct + \cosh \varphi\ x \\
+    &y' = y \\
+    &z' = z \\
+    \end{cases}
+$$
+</div>
+where the "boost angle" $\varphi$ is determined by $\tanh \varphi = v$.(In other words, $\cosh \varphi = 1 / \sqrt{1 - \frac{v^2}{c^2}}$, and $\sinh \varphi = \frac{v}{c} / \sqrt{1 - \frac{v^2}{c^2}}$.) Suppressing the $y$- and $z$-coordinates, we can describe the Lorentz transformation by
+<div>
+$$
+\begin{pmatrix}
+ct'\\
+x'\\
+\end{pmatrix}
+=
+\begin{pmatrix}
+\cosh \varphi & \sinh \varphi \\
+\sinh \varphi & \cosh \varphi \\
+\end{pmatrix}
+\begin{pmatrix}
+ct\\
+x\\
+\end{pmatrix}
+$$
+</div>
+Physically, suppose a third observer is moving at a velocity defined by the boost angle $\varphi_2$ relative to the observer moving at a velocity defined by the boost angle $\varphi_1$ relative to the first observer. Then we expect the third observer to be moving at some velocity determined by $\varphi_1$ and $\varphi_2$ relative to the first observer.(All motion is restricted to be along the $x$-direction for simplicity.) This physical statement is expressed by the mathematical statement that the Lorentz transformation form a group:
+<div>
+$$
+\begin{pmatrix}
+\cosh \varphi_2 & \sinh \varphi_2\\
+\sinh \varphi_2 & \cosh \varphi_2\\
+\end{pmatrix}
+\begin{pmatrix}
+\cosh \varphi_1 & \sinh \varphi_1\\
+\sinh \varphi_1 & \cosh \varphi_1\\
+\end{pmatrix}
+=
+\begin{pmatrix}
+\cosh(\varphi_1+\varphi_2) & \sinh(\varphi_1+\varphi_2)\\
+\sinh(\varphi_1+\varphi_2) & \cosh(\varphi_1+\varphi_2)\\
+\end{pmatrix}
+$$
+</div>
+The boost angles add.
+</li>
+<li><p>Consider the set of $n$-by-$n$ matrices $M$ with determinant equal to $1$. They form a group under ordinary matrix multiplication. The determinant of the product two matrices is equal to the product of the determinants of the two matrices: $\det(M_1M_2)&#x3D;\det(M_1)\det(M_2)$. Thus, $\det(M_1M_2)&#x3D;1$ if $\det(M_1) &#x3D; 1$ and $\det(M_2) &#x3D; 1$: closure is satisfied. Since $\det\ M &#x3D; 1 \neq 0$, the inverse $M^{-1}$ exists. The group is known as $SL(n, R)$, the special linear group with real entries. If the entries are allowed to be complex, the group is called $SL(n, C)$.(Matrices with unit determinant are called special.)</p>
+</li>
+</ol>
+<p>From these examples, we see that groups can be classified according to whether they are finite or infinite, discrete or continuous. Note that a discrete group can well be infinite.</p>
+<h3 id="Concept-of-subgroup"><a href="#Concept-of-subgroup" class="headerlink" title="Concept of subgroup"></a>Concept of subgroup</h3><p>Given a set of entities ${g_\alpha}$ that form a group $G$, if a subset ${h_\beta}$ also form a group, call it $H$, then $H$ is known as a subgroup of $G$ and we write $H \subset G$.</p>
+<p>Examples:</p>
+<ol>
+<li><p>$SO(2) \subset SO(3)$. This shows that, inthe notation ${g_\alpha}$ and ${h_\beta}$ we just used, the index sets denoted by $\alpha$ and $\beta$ can in general be quite different; here $\alpha$ consists of three angles and $\beta$ of one angle.</p>
+</li>
+<li><p>$S_m \subset S_n$ for $m &lt; n$. Permuting three objects is just like permuting five objects but keeping two of five objects untouched. Thus, $S_3 \subset S_5$</p>
+</li>
+<li><p>$A_n \subset S_n$</p>
+</li>
+<li><p>$Z_2 \subset Z_4$, but $Z_2 \not\subset Z_5$</p>
+</li>
+<li><p>$SO(3) \subset SL(3,R)$.</p>
+</li>
+</ol>
+<p>Verify these statements.</p>
+<h3 id="Cyclic-subgroups"><a href="#Cyclic-subgroups" class="headerlink" title="Cyclic subgroups"></a>Cyclic subgroups</h3><p>For a finite group $G$, pick some element $g$ and keep multiplying it by itself. In other words, consider the sequence ${g, g^2&#x3D;gg,g^3&#x3D;g^2g,\cdots}$. As long as the resulting product is not equal to the identity, we can keep going. Since $G$ is finite, the sequence must end at some point with $g^k &#x3D; I$. The set of elements {I, g, g^2, \cdots, g^{k-1}} forms a subgroup $Z_k$. Thus, any finite group has a bunch of cyclic subgroup. If k$k$ is equal to the number of elements in $G$, then the group $G$ is in fact $Z_k$.</p>
+<h3 id="Lagrange’s-theorem"><a href="#Lagrange’s-theorem" class="headerlink" title="Lagrange’s theorem"></a>Lagrange’s theorem</h3><p>Let a group $G$ with $n$ elements have a subgroup $H$ with $M$ elements. Then $m$ is a factor of $n$. In other words,$\frac{n}{m}$ is an integer.</p>
+<p>Proof:  </p>
+<ul>
+<li><p>$H: {h_1,h_2,\cdots,h_m}$ ; $H \subset G$<br>  (Note: Since $H$ forms a group, this list must contain $I$. We do not list any element more than once; thus, $h_a \neq h_b$ for $a \neq b$.)  </p>
+</li>
+<li><p>Let $g_1 \in G$ but $\not\in H$<br>  (in other words, $g_1$ is an element of $G$ outside $H$)</p>
+</li>
+<li><p>list ${h_1g_1,h_2g_1,\cdots,h_mg_1}$, which we denote by ${h_1,\cdots,h_m}g_1$ to save writing.<br>  (Note that this set of elements does not form a group.Can you explain why not?)</p>
+</li>
+<li><p>the elements on the list ${h_1g_1,h_2g_1,\cdots,h_mg_1}$ are all different from one another.<br>  Proof by contradiction:</p>
+<ul>
+<li>For $a \neq b$, if $h_ag_1 &#x3D; h_bg_1$</li>
+<li>$\Rightarrow h_ag_1g_1^{-1} &#x3D; h_bg_1g_1^{-1}$, $\quad$ since $G$ is a group , $g_1^{-1}$ exists.</li>
+<li>$\Rightarrow h_a &#x3D; h_b$</li>
+<li>contradict</li>
+</ul>
+</li>
+<li><p>none of the elements on the list ${h_1,\cdots,h_m}g_1$ are on the list ${h_1,\cdots,h_m}$<br>  Proof by contradiction:</p>
+<ul>
+<li>For $a$ and $b$, if $h_ag_1 &#x3D; h_b$</li>
+<li>$\Rightarrow g_1 &#x3D; h_a^{-1}h_b$</li>
+<li>$\Rightarrow g_1 \in H$</li>
+<li>contradict</li>
+</ul>
+</li>
+<li><p>pick an element $g_2$ of $G$ not in the two previous list, and form ${h_1g_2,h_2g_2,\cdots,h_mg_2} &#x3D; {h_1,\cdots,h_m}g_2$</p>
+  <font  color=DeepSkyBlue>
+      
+  <details>
+    <summary> Question
+
+<p>  How we can find $g_2$, if $m \ge \frac{n}{2}$ ?</p>
+</summary>
+
+<p>As it prove above, at least the two groups ${h_1,\cdots,h_m}$ and ${h_1,\cdots,h_m}g_1$ are in $G$. So $n \ge 2m$. And there are two situations.</p>
+<ul>
+<li>$n &#x3D; 2m$.<br>Then $m \mid n$</li>
+<li>$n \ge 2m$<br>Then we could find $g_2$.</li>
+</ul>
+<p>Some may ask what if $n &#x3D; 2m + 1$, casue we not only have $2m$ elements on the lists above, but also have $g_1$.<br>Remeber that $H$ is a group, thus $g_1I &#x3D; g_1$ is on the list ${h_1,\cdots,h_m}g_1$. So the $(2m + 1)$th element is just $g_2$.</p>
+</li>
+</ul>
+</details>
+
+</font>
+
+<ul>
+<li><p>these m elements on the list ${h_1,\cdots,h_m}g_2$ are all distinct, and none of them are on the two previous lists.(Just prove it like the way above.)</p>
+</li>
+<li><p>Repeat this process. After each step, we ask whether there is any element of $G$ left that is not on the lists already constructed. If yes, then we repeat the process and construct yet another list containing $m$ distinct elements. Eventually, there is no group element left(since $G$ is a finite group). We have constructed $k$ lists, including the original list ${h_1,\cdots,h_m}$, namely, ${h_1,\cdots,h_m}g_j$ for $j &#x3D; 0, 1, 2, \cdots, k-1$(writing $I$ as $g_0$).<br>  Therefore $n&#x3D;mk$, that is, $m$ is a factor of $n$.QED.</p>
+</li>
+</ul>
+<p>As a simple example of Lagrange’s theorem, we can immediately state that $Z_3$ is a subgroup of $Z_12$ but not of $Z_14$. It also follows trivially that if $p$ is prime, then $Z_p$ does not have a nontrivial subgroup. From this you can already sense the intimate relation between group theory and number theory.</p>
+<h3 id="Direct-product-of-groups"><a href="#Direct-product-of-groups" class="headerlink" title="Direct product of groups"></a>Direct product of groups</h3><p>Given two groups $F$ and $G$, whose elements we denote by $f$ and $g$, respectively, we can define another group $H \equiv F \otimes G$, known as the direct product of $F$ and $G$, consisting of th elements $(f,g)$. The product of two elements $(f,g)$ and $(f’, g’)$ of $H$ is given by $(f,g)(f’,g’)&#x3D;(ff’,gg’)$. The identity element of $H$ is evidently given by $(I,I)$, since $(I,I)(f,g)&#x3D;(If,Ig)&#x3D;(f,g)$ and $(f,g)(I,I) &#x3D; (fI,gI) &#x3D; (f,g)$.</p>
+<blockquote>
+<p>If we were insufferable pedants, we would write $I_H &#x3D; (I_F,I_G)$, since the identity elements $I_H,I_F,I_G$ of three groups $H,F,G$ are conceptually quite distubct</p>
+</blockquote>
+<p>Evidently, the inverse of $(f,g)$ is $(f^{-1},g^{-1})$, and $F \otimes G$ has $mn$ elements.</p>
+<h3 id="Klein’s-Vierergruppe-V"><a href="#Klein’s-Vierergruppe-V" class="headerlink" title="Klein’s Vierergruppe V"></a>Klein’s Vierergruppe V</h3><p>A simple example is given by $Z_2 \otimes Z_2$, consisting of the four elements: $I &#x3D; (1,1), A &#x3D; (-1,1), B &#x3D; (1,-1), C &#x3D; (-1,-1)$. For example, we have $AB &#x3D; (-1,-1) &#x3D; C$. Note that this group is to be distinguished from the group $Z_4$ consisting of four elements $1, i, -1, -i$. The square of any element in $Z_2 \otimes Z_2$ is equal to the identity, but this is not true of $Z_4$. In particular, $i^2&#x3D; -1 \neq 1$. </p>
+<p>Incidentally, $Z_2 \otimes Z_2$, also known as Klein’s Vieregruppe(“4-gruop” in German) and denoted by $V$, played an impartant historical role in Klein’s program. </p>
+<p>Note that the elements of $F$, regarded as a subgroup of $F \otimes G$, are written as $(f, I)$. </p>
+<p>The direct product would seem to be a rather “cheap” way of constructing larger groups out of smaller ones, but Nature appears to make use of this possibility. The theory of the strong, weak, and electronmagnetic interaction is based on the group $SU(3) \otimes SU(2) \otimes U(1)$.</p>
+<font color=MediumTurquoise>
+
+<details>
+  <summary>A tenny bit of history:"A pleasant human flavor"</summary>
+
+<p>  Historians of mathematics have debated about who deserves the coveted title of “the founder of group theory.” Worthy contenders include Cauchy, Lagrange, Abel, Ruffini, and Galois. Lagrange was certainly responsible for some of the early concepts, but the sentimental favorite has got to be ´Evariste Galois, what with the ultra romantic story of him feverishly writing down his mathematical ideas the night before a fatal duel at the tender age of 20. Whether the duel was provoked because of the honor of a young woman named du Motel or because of Galois’s political beliefs (for which he had been jailed) is apparently still not settled. In any case, he was the first to use the word “group.” Nice choice.<br>To quote the mathematician G. A. Miller, it is silly to argue about who founded group theory anyway:</p>
+<blockquote>
+<p>We are inclined to attribute the honor of starting a given big theory to an individual just as we are prone to ascribe fundamental theorems to particular men, who frequently have added only a small element to the development of the theorem. Hence the statement that a given individual founded a big theory should not generally be taken very seriously. It adds, however, a pleasant human flavor and awakens in us a noble sense of admiration and appreciation. It is also of value in giving a historical setting and brings into play a sense of the dynamic forces which have contributed to its development instead of presenting to us a cold static scene. Observations become more inspiring when they are permeated with a sense of development.</p>
+</blockquote>
+<p> While symmetry considerations have always been relevant for physics, group theory did not become indispensable for physics until the advent of quantum mechanics, for reasons to be explained in chapter III.1. Eugene Wigner, who received the Nobel Prize in 1963 largely for his use of group theory in physics, recalled the tremendous opposition to group theory among the older generation (including Einstein, who was 50 at the time) when he first started using it around 1929 or so. Schr¨odinger told him that while group theory provided a nice derivation of some results in atomic spectroscopy, “surely no one will still be doing it this way in five years.” Well, a far better theoretical physicist than a prophet!  </p>
+<p> But Wigner’s childhood friend John von Neumann, who helped him with group theory, reassured him, saying “Oh, these are old fogeys. In five years, every student will learn group theory as a matter of course.”</p>
+<p>Pauli coined the term “die Gruppenpest” (“that pesty group business”), which probably captured the mood at the time. Remember that quantum mechanics was still freshly weird, and all this math might be too much for older people to absorb.</p>
+</details>
+
+</font>
+
+<h3 id="Multiplication-table-The-“once-and-only-once-rule”"><a href="#Multiplication-table-The-“once-and-only-once-rule”" class="headerlink" title="Multiplication table: The “once and only once rule”"></a>Multiplication table: The “once and only once rule”</h3><p>A finite group with $n$ elements can be characterized by its multiplication table, as shown here. We construct a square $n$-by-$n$ table, writing the product $g_ig_j$ in the square in the $i$th row and the $j$th column:</p>
+<div>
+$$
+\begin{array}{c|ccc}
+\hline
+\  &\cdots & g_j & \cdots\ \\
+\hline
+\vdots & \ddots \\
+g_i & & g_ig_j \\
+\vdots & & & \ddots\\
+\hline 
+\end{array}
+$$
+</div>
+
+<p>“once and only once rule”:<br>In each row or column, any group element can appear once and only once.</p>
+<p>For $n$ small, all possible multiplication tables and hence all possible finite groups with $n$ elements can readily be constructed. Let us illustrate this for $n &#x3D; 4$. And we shall  do this in two different ways, one laborious, the other “slick”.</p>
+<h3 id="Finite-groups-with-four-elements-The-slow-way"><a href="#Finite-groups-with-four-elements-The-slow-way" class="headerlink" title="Finite groups with four elements: The slow way"></a>Finite groups with four elements: The slow way</h3><p>First, we proceed very slowly, by brute force. Call the four elements $I, A, B, C$.</p>
+<ol>
+<li><p>By definition of the identity, the first row and first column can be filled in automatically:</p>
+<div>
+$$
+\begin{array}{c|cccc}
+\hline
+ & I & A & B & C \\
+\hline
+I & I & A & B & C \\
+A & A \\
+B & B \\
+C & C \\
+\hline 
+\end{array}
+$$
+</div>
+</li>
+<li><p>We are to fill in the second row with $I, B, C$. The first entry in taht row is $A$. There are two possible choice:</p>
+<ol>
+<li>$A^2&#x3D;B$ (It’s the same as $A^2 &#x3D; C$, just rename the element)</li>
+<li>$A^2&#x3D;I$<br> Let’s now follow the first choice, then back to choice two.</li>
+</ol>
+</li>
+<li><p>The multiplication table now reads</p>
+</li>
+</ol>
+<div>
+$$
+\begin{array}{c|cccc}
+\hline
+ & I & A & B & C \\
+\hline
+I & I & A & B & C \\
+A & A & B & 2 & 3 \\
+B & B & 4 & 5 & 6 \\
+C & C \\
+\hline 
+\end{array}
+$$
+</div>
+*For convenience, we numbered some of the boxes yet to be filled in.*
+
+<ol start="4">
+<li>We have to put $C$ and $I$ into boxes 2 and 3. But we cannot put $C$ into box 3, since otherwise the fourth column will break the “once and only once rule”: $C$ would appear twice:</li>
+</ol>
+<div>
+$$
+\begin{array}{c|cccc}
+\hline
+ & I & A & B & C \\
+\hline
+I & I & A & B & C \\
+A & A & B & C & I \\
+B & B & 4 & 5 & 6 \\
+C & C \\
+\hline 
+\end{array}
+$$
+</div>
+
+<ol start="5">
+<li><p>Again by the “once and only once rule”, box 4 can only be $C$ or $I$. The latter choice would mean $BA &#x3D; I$ and hence $B &#x3D; A^{-1}$, but we alredy know from the second row of the multiplication table that $AB &#x3D; C \neq I$. Thus, box can only be $C$. Hence box 5 is $I$, and 6 is $A$.</p>
+</li>
+<li><p>Finally, the last boxes are fixed uniquely by the “once and only once rule”.</p>
+</li>
+</ol>
+<div>
+$$
+\begin{array}{c|cccc}
+\hline
+ & I & A & B & C \\
+\hline
+I & I & A & B & C \\
+A & A & B & C & I \\
+B & B & C & I & A \\
+C & C & I & A & B \\
+\hline 
+\end{array}
+$$
+</div>
+
+<p>Now that we have the multiplication table, we know everything about the group. From the second row, we read off $A^2 &#x3D; B, A^3&#x3D;AA^2&#x3D;AB&#x3D;C,A^4&#x3D;AA^3&#x3D;AC&#x3D;I$. The group is $Z_4$. So, we don’t even have to finish constructing the entire table.</p>
+<p>Now we go back to choice two: $A^2 &#x3D; I$, so</p>
+<div>
+$$
+\begin{array}{c|cccc}
+\hline
+ & I & A & B & C \\
+\hline
+I & I & A & B & C \\
+A & A & I & 2 & 3 \\
+B & B & 4 & 5 & 6 \\
+C & C & 7 & 8 & 9 \\
+\hline 
+\end{array}
+$$
+</div>
+
+<ol>
+<li><p>By the “once and only once rule”, box 2 is $C$ and box 3 is $B$.</p>
+</li>
+<li><p>fill the boxes 4 and 7 for the same reason with $C$ and $B$, thus obtain:</p>
+</li>
+</ol>
+<div>
+$$
+\begin{array}{c|cccc}
+\hline
+ & I & A & B & C \\
+\hline
+I & I & A & B & C \\
+A & A & I & C & B \\
+B & B & C  \\
+C & C & B  \\
+\hline 
+\end{array}
+$$
+</div>
+
+<ol start="3">
+<li>Now it looks like we cloud fill in teh four renaming empty boxes with either<div>
+$$
+\begin{array}{c|c}
+I & A\\
+\hline
+A & I\\
+\end{array}
+$$
+</div>
+or
+<div>
+$$
+\begin{array}{c|c}
+A & I\\
+\hline
+I & A\\
+\end{array}
+$$
+</div>
+But the two choices amount to the same thing. We simply rename $B$ and $C$. Thus, we obtain:
+<div>
+$$
+\begin{array}{c|cccc}
+\hline
+ & I & A & B & C \\
+\hline
+I & I & A & B & C \\
+A & A & I & C & B \\
+B & B & C & I & A \\
+C & C & B & A & I \\
+\hline 
+\end{array}
+$$
+</div>
+It is just $Z_2 \otimes Z_2: A^2 = I, B^2=I, C = AB = BA, C^2 = I$</li>
+</ol>
+<h3 id="A-quick-way-Construct-the-cyclic-subgroups"><a href="#A-quick-way-Construct-the-cyclic-subgroups" class="headerlink" title="A quick way: Construct the cyclic subgroups"></a>A quick way: Construct the cyclic subgroups</h3><p>We know that in a finite group, if we keep multiplying an element by itself, we will reach the identity $I$.</p>
+<p>Civen a group $G$ of four elements ${I, A, B, C}$, we keep multiplying $A$ by itself. If $A^4 &#x3D; I$, then $G &#x3D; Z_4$.By Lagrange’s theorem, the possibility $A^3 &#x3D; I$ is not allowed. If $A^2 &#x3D; I$, then we multiply $B$ bye itself. Either $B^2$ or $B^4$ equals $I$. The latter is ruled out, so the only possibility is that $B^2 &#x3D; I$, and $AB &#x3D; BA &#x3D; C$. Then $G &#x3D; Z_2\otimes Z_2$.</p>
+<h3 id="Presentations"><a href="#Presentations" class="headerlink" title="Presentations"></a>Presentations</h3><p>For large groups, writing down the multiplication table is clearly a losing proposition.  Instead, finite groups are defined by their properties, as in the examples listed above, or by their presentations, which list the elements (sometimes called generators) from which all other elements can be obtained by group multiplication, and the essential relations the generators satisfy. Thus, the groups $Z_4$ and $Z_2 \otimes Z_2$ are defined by their presentations as follows:</p>
+<div>
+$$
+Z_4 : \langle A|A^4=I\rangle \\
+Z_2 \otimes Z_2: \langle A,B | A^2 = B^2 = I, AB = BA \rangle
+$$
+</div>
+
+<p>The two groups are clearly distinct. In particular, $Z_4$ contains only one element that squares to $I$, namely $A^2$.</p>
+<h3 id="Homomorphrism-and-isomorphism"><a href="#Homomorphrism-and-isomorphism" class="headerlink" title="Homomorphrism and isomorphism"></a>Homomorphrism and isomorphism</h3><p>A map $f:G \to G’$ of a group $G$ into the group $G’$ is called a homomorphism if it preserves the multiplicative structure of $G$, that is, if $f(g_1)f(g_2) &#x3D; f(g_1g_2)$. Clearly, this requirement implies that $f(I) &#x3D; I$. A homomorphism becomes an isomorphism if the map is one-to-one and onto.</p>
+<p>Now we can answer the question posed earlier: the additive group of integers mod $N$ is in fact ismorphic to $Z_N$.</p>
+<p>For a more interesting example, consider $Z_2\otimes Z_4$. We usee the additive notation here and thus write the elements as $(n,m)$ and compose them according to $(n,m)\cdot(n’,m’) &#x3D; (n+n’ \mod 2, m + m’ \mod 4)$.  </p>
+<ul>
+<li>We start with $(0,0)$, and add $(1,1)$ repetedly:<br>  $(0,0) \xrightarrow{+(1,1)} (1,1) \to (0,2) \to (1,3) \to (0,4) &#x3D; (0,0)$<br>  we get back to where we start.</li>
+<li>We start with $(0,1)$ and again add $(1,1)$ repeatedly:<br>  $(0,1) \xrightarrow{+(1,1)} (1,2) \to (0,3) \to (1,0) \to (0,1)$<br>  back to where we start.</li>
+</ul>
+<p>Thus we can depict $Z_2 \otimes Z_4$ by a rectangular 2-by-4 discrete lattice on a torus.</p>
+<div align=center>
+
+<p><img src="https://s1.ax1x.com/2022/10/06/x1VCXn.png" loading="lazy"></p>
+</div>
+
+<p>Now we come in for a bit of a surprise. Consider $Z_2 \otimes Z_3$ consisting of $(n,m)$, which we compose by $(n+n’ \mod 2, m+m’ \mod 4)$. We start with $(0,0)$ and add $(1,1)$ repeatedly: $(0,0) \xrightarrow{+(1,1)} (1,1) \to (2,2) &#x3D; (0,2) \to (1,3) &#x3D; (1,0) \to (2,1) &#x3D; (0,1) \to (1,2) \to (2,3) &#x3D; (0,0)$. We are back where we started! In the process, we cycled through all six elements of $Z_2 \otimes Z_3$. We conclude that the six elements $(0,0), (1,1), (0,2), (1,0), (0,1)$ and $(1,2)$ describe $Z_6$.</p>
+<p>Thus, $Z_2\otimes Z_3$ and $Z_6$ are isomorphic; they are literally the same group. Note that this phenomenon, of a possibel isomorphism between $Z_p \otimes Z_q$ and $Z_{pq}$, does not require $p$ and $q$ to be prime, only relative prime(like $Z_4\otimes Z_9$).</p>
+<p>As another example of isomorphism, the group $SO(2)$ and $U(1)$ introduced earlier are isomorphic. The map $f: SO(2) \to U(1)$ is defined simply by $f(R(\phi)) &#x3D; e^{i\phi}$</p>
+<h3 id="Modular-group"><a href="#Modular-group" class="headerlink" title="Modular group"></a>Modular group</h3><p>The modular group has become important in several areas of physics, for example, string theory and condensed matter physics. Consider the set of transformations of one complex number into another given by</p>
+<div>
+$$
+z \to \frac{az +b}{cz + d}
+$$
+</div>
+
+<p>with $a,b,c$ and $d$ integers satisfying $ad-bc&#x3D;1$. The transformation can be specified by the matrix</p>
+<span>
+$
+\bm M = 
+\begin{pmatrix}
+    a & b \\
+    c & d \\
+\end{pmatrix}
+$
+with
+$
+\det \bm M = 1
+$
+</span>
+
+
+<p>Clearly, $\bm M$ and $-\bm M$ correspond to the same transformation above.</p>
+<p>The matrices above define the group $SL(2,Z)$, the specail linear group of 2-by-2 matrices with integer entries. The group results upon identifying $\bm M$ and $-\bm M$ in $SL(2,Z)$ is known as $PSL(2,Z)$ (the letter $P$ stands for “projective”), otherwise known as the modular group.</p>
+<p>The transformation can be generated by repeatedly composing(multiplying together) the two generating transformations:</p>
+<div>
+$$
+S: z \to -\frac{1}{z}
+$$
+</div>
+and
+<div>
+$$
+T: z \to z + 1
+$$
+</div>
+They correspond to the matrices $S = 
+\begin{pmatrix}
+0 & 1\\
+-1 & 0\\
+\end{pmatrix}
+$ and 
+$T = \begin{pmatrix}
+1 & 1\\
+0 & 1\\
+\end{pmatrix}
+$, respectively.
+
+<p>Using the language of presentation, we can write</p>
+<div>
+$$
+PSL(2,Z): \langle S, T | S^2 = I, (ST)^3 = I \rangle
+$$
+</div>
+
+<p>Incidentally, the modular group can be generalized to the triangular group $\mathcal{T}$, denoted by $(2,3,n)$ and presented by</p>
+<div>
+$$
+\mathcal T: \langle S,T|S^2=I, (ST)^3 = I, T^n =I \rangle
+$$
+</div>
+
+<p>The modular group is thus sometimes written as $(2, 3, \infty)$</p>
+<h3 id="Exercises"><a href="#Exercises" class="headerlink" title="Exercises"></a>Exercises</h3><details>
+  <summary>
+
+<p>  The center of group $G$ (denoted by $Z$) is defined to be the set of elements ${z_1,z_2,\cdots}$ that commute with all elements of $G$, that is $z_ig&#x3D;gz_i$ for all $g$. Show that $Z$ is an abelian subgroup of $G$.</p>
+  </summary>
+
+<ul>
+<li>$z_i \in G$ and $z_ig &#x3D; gz_i$</li>
+<li>let $g &#x3D; z_j \in Z$, then $z_iz_j&#x3D;z_jz_i$, thus Z is commute. So ,all we need is to prove $Z$ is a group.</li>
+</ul>
+<ol>
+<li>$\because z_i \in G$ and $G$ is a group<br>$\therefore Z$ is associative.</li>
+<li>$\because Ig&#x3D;gI\ \therefore I \in Z$, in other words, $Z$ has identity.</li>
+<li>$\because G$ is a group $\therefore \exists z_ig_j&#x3D;I$</li>
+<li><div>$$ z_ig=gz_i \to g_jz_ig=g_jgz_i \to g = g_jgz_i \to gg_j = g_jgz_ig_j \to gg_j = g_jg \\
+   \therefore g_j \in Z
+    $$</div>
+So $Z$ has inverse.</li>
+<li>QED.</li>
+</ol>
+</details>
+
+<details>
+<summary>
+
+<p>Let $f(g)$ be a function of elements in a finite group $G$, and consider the sum $\sum_{g\in G}f(g)$. Prove the identity $\sum_{g\in G}f(g) &#x3D; \sum_{g\in G}f(gg’) &#x3D; \sum_{g\in G}f(g’g)$ for $g’$ an arbitrary element of $G$.</p>
+</summary>
+
+<p>By the “once and only once rule”, ${g_i} &#x3D; {g_ig’} &#x3D; {g’g_i}$<br>So, $\sum_{g\in G}f(g) &#x3D; \sum_{g\in G}f(gg’) &#x3D; \sum_{g\in G}f(g’g)$</p>
+</details>
+
+<details>
+<summary>
+
+<p>Show that $Z_2 \otimes Z_4 \neq Z_8$</p>
+</summary>
+
+<p>As we conclude in <em>Homomorphism and isomorphism</em>, we could presentate $Z_2 \otimes Z_4$ and $Z_8$ like:</p>
+<div>
+$$
+Z_2 \otimes Z_4: \langle A, B | A^4 = B^4 = I \rangle \\
+Z_8 : \langle A|A^8 = I \rangle
+$$
+</div>
+Evidently, $Z_2 \otimes Z_4 \neq Z_8$.
+
+</details>
+
+<details>
+<summary>
+
+<p>Find all groups of order 6.</p>
+</summary>
+
+<ol>
+<li>$A^6 &#x3D; I$ the group is $Z_6$</li>
+<li>$A^3 &#x3D; I$ , then ${I, A, A^2,\cdots}$. Considering multiplication, we can’t have $B^3 &#x3D; I$. If $B^2 &#x3D; I$, then we have ${I, A, A^2, B, AB, A^2B}$. Thus, the group is $\langle A,B | A^3 &#x3D; B^2 &#x3D; I, AB &#x3D; BA \rangle$</li>
+<li>$A^2 &#x3D; I$, we’ll be back to situation 2.</li>
+</ol>
+<p>So, we have two groups of order 6: $Z_6$ and $\langle A,B | A^3 &#x3D; B^2 &#x3D; I, AB &#x3D; BA \rangle$.</p>
+</details>
+
+<h3 id="Notes"><a href="#Notes" class="headerlink" title="Notes"></a>Notes</h3><ol>
+<li>group: associativity, identity, inverse.</li>
+<li>Example Groups:<ul>
+<li>group of rotation: $SO(2)$ in 2-dimensional space and $SO(3)$ in 3-dimensional space.</li>
+<li>permutation group $S_n$ and alternating group $A_n$(the group of even permutations of a finite set)</li>
+<li>the $N$ $N$th roots of 1 form the group $Z_N$</li>
+<li>Complex numbers of magnitude 1 form the group $U(1)$</li>
+<li>the set of $n$-by-$n$ matrices $M$ with determinant equal to $1$: $SL(n, Z), SL(n, R), SL(n, C)$, corresponding to entries with integer, real number and complex number</li>
+</ul>
+</li>
+<li>subgroup, cyclic subgroup, Lagrange’s theorem: the order of a group divide its subgroup’s.</li>
+<li>Direct product of groups: $F \otimes G$</li>
+<li>Multiplication table: The “once and only once rule”</li>
+<li>Presentations by generators.</li>
+<li>Homomorphrism and isomorphism</li>
+</ol>
+]]></content>
+      <categories>
+        <category>Physics</category>
+      </categories>
+      <tags>
+        <tag>group theory</tag>
+        <tag>note</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Trackpy--Walkthrough</title>
     <url>/posts/9ce795e5/</url>
     <content><![CDATA[<blockquote>
@@ -570,254 +1198,6 @@ tp<span class="token punctuation">.</span>utils<span class="token punctuation">.
         <tag>python</tag>
         <tag>图像追踪</tag>
         <tag>数据处理</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Arch Linux USB(配置篇)</title>
-    <url>/posts/55b25ac5/</url>
-    <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这篇文章看一看作是<a href="https://zephyrheather.github.io/2021/07/16/arch-linux-usb-an-zhuang-pian/">Arch Linux USB(安装篇)</a>的后续，不过archlinux的自由度很高，每一个人都能配置出高度个人定制化的东西，所以这里也只是结合archwiki和我个人的一些配置简单介绍一下。</p>
-<span id="more"></span>
-
-<p>参考：<a href="https://wiki.archlinux.org/title/General_recommendations_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)#%E4%B8%AD%E5%9B%BD%E5%A4%A7%E9%99%86%E7%94%A8%E6%88%B7%E7%9A%84%E6%8E%A8%E8%8D%90%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88">General recommendations (简体中文)</a>(这个页面还特地做了<a href="https://wiki.archlinux.org/title/General_recommendations_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)#%E4%B8%AD%E5%9B%BD%E5%A4%A7%E9%99%86%E7%94%A8%E6%88%B7%E7%9A%84%E6%8E%A8%E8%8D%90%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88">#中国大陆用户的推荐解决方案</a>)</p>
-<p>以下引文不加注释都引自<a href="https://wiki.archlinux.org/title/General_recommendations_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)#%E4%B8%AD%E5%9B%BD%E5%A4%A7%E9%99%86%E7%94%A8%E6%88%B7%E7%9A%84%E6%8E%A8%E8%8D%90%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88">General recommendations (简体中文)</a></p>
-<h2 id="系统和软件包管理"><a href="#系统和软件包管理" class="headerlink" title="系统和软件包管理"></a>系统和软件包管理</h2><h3 id="系统管理"><a href="#系统管理" class="headerlink" title="系统管理"></a>系统管理</h3><blockquote>
-<p>新安装的系统只有一个<a href="https://en.wikipedia.org/wiki/Superuser">超级用户</a>，即 root。使用 root 进行日常操作是不安全的。应当<a href="https://wiki.archlinux.org/title/User_Management_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">创建</a>普通用户进行日常操作，仅在管理系统时使用 root。不要在服务器上给 root 开放<a href="https://wiki.archlinux.org/title/SSH">SSH</a>登录权限。普通用户的创建方法请参阅 <a href="https://wiki.archlinux.org/title/Users_and_groups_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">用户和用户组</a>。</p>
-<p><a href="https://wiki.archlinux.org/title/Users_and_groups_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">用户和用户组</a>是GNU&#x2F;Linux 权限控制机制的基础。管理员通过调整用户组的成员、所有者，可以控制用户使用系统资源。</p>
-</blockquote>
-<p>换言之，平常用普通用户，只有涉及系统管理时使用root的权限。可以用<code>sudo</code>命令获取临时的root权限，只要在命令前加上<code>sudo</code>就可以。而<code>su</code>命令则是以指定用户登录一个新的shell，比如<code>su - xxx</code>就是登录用户名为xxx的用户，而默认<code>su -</code>登录的就是root。使用<code>exit</code>退出<code>su</code>命令登录的用户，回到原来的shell。</p>
-<p>服务管理：</p>
-<blockquote>
-<p>Arch Linux 使用 <a href="https://wiki.archlinux.org/title/Systemd_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">systemd (简体中文)</a> 管理系统服务。新用户有必要了解其基本使用方法。通常使用 <code># systemctl</code> 命令进行系统管理，参见<a href="https://wiki.archlinux.org/title/Systemd_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)#systemd_%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7">此文</a>。</p>
-</blockquote>
-<p>注意，新的服务都需要用户重新设置和管理，设置哪些服务开机自启动，哪些服务在用的时候手动启动，可以减少资源浪费。</p>
-<p>系统维护：</p>
-<blockquote>
-<p>Arch 是滚动发行系统，软件包的更新速度很快，用户需要花些时间进行 <a href="https://wiki.archlinux.org/title/System_maintenance">系统维护</a>。 <a href="https://wiki.archlinux.org/title/Security">安全</a>页面也给出了很多加强系统安全性的建议和技巧。</p>
-</blockquote>
-<p>微软总是催着你windows系统更新，但是Arch是自己手动更新的。经常看到有人说Arch这样的滚动发行版不稳定，容易滚挂。我反正从来没遇到过，Arch更新虽然是整个系统重新安装的，但是速度很快，而且也很稳定。</p>
-<p>更新系统的时候使用<code>pacman -Syu</code>(要root权限)，注意不要在一堆服务和进程在运行的时候更新系统，最好在刚开机的时候在字符界面就更新，更新之后<code>reboot</code>重启就行。</p>
-<p>虽然一般建议Arch经常更新，但是我曾经半年没更也没什么。就是有时候<code>pacman -Sy</code>安装软件的时候发现lib库和软件已经对不上了，那就更新系统吧。</p>
-<p>另外，安装在USB或者移动硬盘等可移动介质的同学一定要注意，在使用过程中不要拔插，关机前最后一件事一定是<code>sync</code>确保数据同步写入。</p>
-<h3 id="软件包管理"><a href="#软件包管理" class="headerlink" title="软件包管理"></a>软件包管理</h3><p>具体看archwiki学习</p>
-<p>Arch拥有Linux中最丰富的软件包资源，由官方软件仓库和非官方软件仓库(AUR)组成。</p>
-<p>Pacman 是Arch 的软件包管理器(简称包管理器)<br>下面列一些我常用的命令</p>
-<pre class="language-bash" data-language="bash"><code class="language-bash">pacman -Sy 		<span class="token comment"># 更新软件源并安装</span>
-pacman -Ss		<span class="token comment"># 搜索软件</span>
-pacman -Si 		<span class="token comment"># 查看软件包具体信息</span>
-pacman -Syu		<span class="token comment">#更新系统及所有包</span>
-pacman -Qs		<span class="token comment"># 搜索已安装的包</span>
-pacman -Qi		<span class="token comment"># 查看已安装的包的信息</span>
-pacman -Rs		<span class="token comment"># 删除软件包及其依赖</span></code></pre>
-
-<p>有关pacman的一些配置在&#x2F;etc&#x2F;pacman.conf，贴一下我的配置</p>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment">#</span>
-<span class="token comment"># /etc/pacman.conf</span>
-<span class="token comment">#</span>
-<span class="token comment"># See the pacman.conf(5) manpage for option and repository directives</span>
-
-<span class="token comment">#</span>
-<span class="token comment"># GENERAL OPTIONS</span>
-<span class="token comment">#</span>
-<span class="token punctuation">[</span>options<span class="token punctuation">]</span>
-<span class="token comment"># The following paths are commented out with their default values listed.</span>
-<span class="token comment"># If you wish to use different paths, uncomment and update the paths.</span>
-<span class="token comment">#RootDir     = /</span>
-<span class="token comment">#DBPath      = /var/lib/pacman/</span>
-<span class="token comment">#CacheDir    = /var/cache/pacman/pkg/</span>
-<span class="token comment">#LogFile     = /var/log/pacman.log</span>
-<span class="token comment">#GPGDir      = /etc/pacman.d/gnupg/</span>
-<span class="token comment">#HookDir     = /etc/pacman.d/hooks/</span>
-HoldPkg     <span class="token operator">=</span> pacman glibc
-<span class="token comment">#XferCommand = /usr/bin/curl -L -C - -f -o %o %u</span>
-<span class="token comment">#XferCommand = /usr/bin/wget --passive-ftp -c -O %o %u</span>
-<span class="token comment">#CleanMethod = KeepInstalled</span>
-Architecture <span class="token operator">=</span> auto
-
-<span class="token comment"># Pacman won't upgrade packages listed in IgnorePkg and members of IgnoreGroup</span>
-<span class="token comment">#IgnorePkg   =</span>
-<span class="token comment">#IgnoreGroup =</span>
-
-<span class="token comment">#NoUpgrade   =</span>
-<span class="token comment">#NoExtract   =</span>
-
-<span class="token comment"># Misc options</span>
-<span class="token comment">#UseSyslog</span>
-Color
-ILoveCandy
-<span class="token comment">#TotalDownload</span>
-CheckSpace
-<span class="token comment">#VerbosePkgLists</span>
-
-<span class="token comment"># By default, pacman accepts packages signed by keys that its local keyring</span>
-<span class="token comment"># trusts (see pacman-key and its man page), as well as unsigned packages.</span>
-SigLevel    <span class="token operator">=</span> Required DatabaseOptional
-LocalFileSigLevel <span class="token operator">=</span> Optional
-<span class="token comment">#RemoteFileSigLevel = Required</span>
-
-<span class="token comment"># NOTE: You must run `pacman-key --init` before first using pacman; the local</span>
-<span class="token comment"># keyring can then be populated with the keys of all official Arch Linux</span>
-<span class="token comment"># packagers with `pacman-key --populate archlinux`.</span>
-
-<span class="token comment">#</span>
-<span class="token comment"># REPOSITORIES</span>
-<span class="token comment">#   - can be defined here or included from another file</span>
-<span class="token comment">#   - pacman will search repositories in the order defined here</span>
-<span class="token comment">#   - local/custom mirrors can be added here or in separate files</span>
-<span class="token comment">#   - repositories listed first will take precedence when packages</span>
-<span class="token comment">#     have identical names, regardless of version number</span>
-<span class="token comment">#   - URLs will have $repo replaced by the name of the current repo</span>
-<span class="token comment">#   - URLs will have $arch replaced by the name of the architecture</span>
-<span class="token comment">#</span>
-<span class="token comment"># Repository entries are of the format:</span>
-<span class="token comment">#       [repo-name]</span>
-<span class="token comment">#       Server = ServerName</span>
-<span class="token comment">#       Include = IncludePath</span>
-<span class="token comment">#</span>
-<span class="token comment"># The header [repo-name] is crucial - it must be present and</span>
-<span class="token comment"># uncommented to enable the repo.</span>
-<span class="token comment">#</span>
-
-<span class="token comment"># The testing repositories are disabled by default. To enable, uncomment the</span>
-<span class="token comment"># repo name header and Include lines. You can add preferred servers immediately</span>
-<span class="token comment"># after the header, and they will be used before the default mirrors.</span>
-
-<span class="token comment">#[testing]</span>
-<span class="token comment">#Include = /etc/pacman.d/mirrorlist</span>
-
-<span class="token punctuation">[</span>core<span class="token punctuation">]</span>
-Include <span class="token operator">=</span> /etc/pacman.d/mirrorlist
-
-<span class="token punctuation">[</span>extra<span class="token punctuation">]</span>
-Include <span class="token operator">=</span> /etc/pacman.d/mirrorlist
-
-<span class="token comment">#[community-testing]</span>
-<span class="token comment">#Include = /etc/pacman.d/mirrorlist</span>
-
-<span class="token punctuation">[</span>community<span class="token punctuation">]</span>
-Include <span class="token operator">=</span> /etc/pacman.d/mirrorlist
-
-<span class="token comment"># If you want to run 32 bit applications on your x86_64 system,</span>
-<span class="token comment"># enable the multilib repositories as required here.</span>
-
-<span class="token comment">#[multilib-testing]</span>
-<span class="token comment">#Include = /etc/pacman.d/mirrorlist</span>
-
-<span class="token comment">#[multilib]</span>
-<span class="token comment">#Include = /etc/pacman.d/mirrorlist</span>
-
-<span class="token comment"># An example of a custom package repository.  See the pacman manpage for</span>
-<span class="token comment"># tips on creating your own repositories.</span>
-<span class="token comment">#[custom]</span>
-<span class="token comment">#SigLevel = Optional TrustAll</span>
-<span class="token comment">#Server = file:///home/custompkgs</span>
-
-<span class="token punctuation">[</span>archlinuxcn<span class="token punctuation">]</span>
-SigLevel <span class="token operator">=</span> Never
-Server <span class="token operator">=</span> https://mirrors.ustc.edu.cn/archlinuxcn/<span class="token variable">$arch</span></code></pre>
-
-<p>我的配置主要就是取消了<code>Color</code>前的注释，是Pacman 的输出是彩色的更易识别，然后<code>ILoveCandy</code>是我自己加上的，这是Pacman 的一个彩蛋，因为pacman也是那款叫作吃豆人的著名游戏，加上<code>ILoveCandy</code>后会出现吃豆人。</p>
-<p>最后加上了archlinuxcn的源，因为里面提供了更多为中国用户进行优化的软件包，用的是科大的源，加上之后需要<code>pacman -S archlinuxcn-keyring</code>安装对应的密钥。</p>
-<p>主要的pacman 镜像我用的是北外的镜像，在<code>/etc/pacman.d/mirrorlist</code>中更改，一般里面已经按照速度排序排好了，如果没有，可以参见 <a href="https://wiki.archlinux.org/title/Mirrors_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)#%E9%95%9C%E5%83%8F%E7%8A%B6%E6%80%81">#镜像状态</a> 和 <a href="https://wiki.archlinux.org/title/Mirrors_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)#%E6%8C%89%E9%80%9F%E5%BA%A6%E6%8E%92%E5%BA%8F">#按速度排序</a> 查看帮助选择镜像的工具。</p>
-<p>当然也可以和我一样用北外的镜像(不推荐清华的镜像，至少我自己的使用不佳)</p>
-<pre class="language-bash" data-language="bash"><code class="language-bash">Server <span class="token operator">=</span> https://mirrors.bfsu.edu.cn/archlinux/<span class="token variable">$repo</span>/os/<span class="token variable">$arch</span></code></pre>
-
-<p>其他镜像</p>
-<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment">## China</span>
-<span class="token comment">#Server = http://mirrors.163.com/archlinux/$repo/os/$arch</span>
-<span class="token comment">#Server = http://mirrors.aliyun.com/archlinux/$repo/os/$arch</span>
-<span class="token comment">#Server = https://mirrors.aliyun.com/archlinux/$repo/os/$arch</span>
-<span class="token comment">#Server = http://mirrors.bfsu.edu.cn/archlinux/$repo/os/$arch</span>
-<span class="token comment">#Server = https://mirrors.bfsu.edu.cn/archlinux/$repo/os/$arch</span>
-<span class="token comment">#Server = http://mirrors.cqu.edu.cn/archlinux/$repo/os/$arch</span>
-<span class="token comment">#Server = https://mirrors.cqu.edu.cn/archlinux/$repo/os/$arch</span>
-<span class="token comment">#Server = http://mirrors.dgut.edu.cn/archlinux/$repo/os/$arch</span>
-<span class="token comment">#Server = https://mirrors.dgut.edu.cn/archlinux/$repo/os/$arch</span>
-<span class="token comment">#Server = http://mirrors.hit.edu.cn/archlinux/$repo/os/$arch</span>
-<span class="token comment">#Server = https://mirrors.hit.edu.cn/archlinux/$repo/os/$arch</span>
-<span class="token comment">#Server = http://mirror.lzu.edu.cn/archlinux/$repo/os/$arch</span>
-<span class="token comment">#Server = http://mirrors.neusoft.edu.cn/archlinux/$repo/os/$arch</span>
-<span class="token comment">#Server = https://mirrors.neusoft.edu.cn/archlinux/$repo/os/$arch</span>
-<span class="token comment">#Server = http://mirrors.nju.edu.cn/archlinux/$repo/os/$arch</span>
-<span class="token comment">#Server = https://mirrors.nju.edu.cn/archlinux/$repo/os/$arch</span>
-<span class="token comment">#Server = http://mirror.redrock.team/archlinux/$repo/os/$arch</span>
-<span class="token comment">#Server = https://mirror.redrock.team/archlinux/$repo/os/$arch</span>
-<span class="token comment">#Server = https://mirrors.sjtug.sjtu.edu.cn/archlinux/$repo/os/$arch</span>
-<span class="token comment">#Server = http://mirrors.tuna.tsinghua.edu.cn/archlinux/$repo/os/$arch</span>
-<span class="token comment">#Server = https://mirrors.tuna.tsinghua.edu.cn/archlinux/$repo/os/$arch</span>
-<span class="token comment">#Server = http://mirrors.ustc.edu.cn/archlinux/$repo/os/$arch</span>
-<span class="token comment">#Server = https://mirrors.ustc.edu.cn/archlinux/$repo/os/$arch</span>
-<span class="token comment">#Server = http://mirrors.wsyu.edu.cn/archlinux/$repo/os/$arch</span>
-<span class="token comment">#Server = https://mirrors.wsyu.edu.cn/archlinux/$repo/os/$arch</span>
-<span class="token comment">#Server = https://mirrors.xjtu.edu.cn/archlinux/$repo/os/$arch</span>
-<span class="token comment">#Server = http://mirrors.zju.edu.cn/archlinux/$repo/os/$arch</span></code></pre>
-
-<p>记得<code>pacman -S archlinux-keyring</code></p>
-<hr>
-<p>然后是<a href="https://wiki.archlinux.org/title/Arch_User_Repository_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">AUR</a> 的包。</p>
-<blockquote>
-<p>Arch 编译系统提供了编译官方库软件的脚本，而 <a href="https://wiki.archlinux.org/title/Arch_User_Repository_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">AUR</a> 则提供了用户提交的、非官方的软件包编译脚本。这是一个基于 <a href="https://aur.archlinux.org/index.php">web 界面</a>或通过 <a href="https://wiki.archlinux.org/title/AUR_helper_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">AUR 工具</a>访问的非官方软件仓库。</p>
-</blockquote>
-<p>aur里面有更多的软件包可以选择，当然由于是非官方，也会有无人维护的情况。</p>
-<p>基于web界面是指，aur的包可以到<a href="https://aur.archlinux.org/">https://aur.archlinux.org/</a> 这个网页上去查找相关信息。</p>
-<p>由于aur的包不能由pacman 直接安装，所以需要采取一下方法：</p>
-<ol>
-<li>从 AUR 下载包含 <a href="https://wiki.archlinux.org/title/PKGBUILD_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">PKGBUILD</a> 和其他安装文件（比如 <a href="https://wiki.archlinux.org/title/Systemd">systemd</a> 和补丁，通常不是实际代码）的 tar 包。</li>
-<li>用命令 <code>tar -xvf packagename.tar.gz</code> 解包到一个仅用于编译 AUR 的空闲文件夹。</li>
-<li>验证 <a href="https://wiki.archlinux.org/title/PKGBUILD_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">PKGBUILD</a> 和其它相关文件，确保其中不含有恶意代码。</li>
-<li>在上述文件夹中运行 <code>makepkg -si</code>。命令会自动调用 <a href="https://wiki.archlinux.org/title/Pacman_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">pacman</a> 解决依赖关系，然后下载代码、编译并打包。然后安装软件包。</li>
-</ol>
-<p>我一般跳过了验证那一步，<del>(懒得验证)</del>，对AUR受信用户（简称 TU）展现出充分的信任</p>
-<p>当然，使用<a href="https://wiki.archlinux.org/title/AUR_helper_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">AUR 工具</a> 会简单一些(因为上面那个方法其实也蛮简单了)</p>
-<p>具体查看wiki，我用过yay，因为已经pacman封装了，所以语法和pacman一样。</p>
-<h2 id="图形界面"><a href="#图形界面" class="headerlink" title="图形界面"></a>图形界面</h2><h3 id="从字符到图形"><a href="#从字符到图形" class="headerlink" title="从字符到图形"></a>从字符到图形</h3><p><code>pacman -Sy xorg-server</code>安装X服务器</p>
-<blockquote>
-<p><a href="https://en.wikipedia.org/wiki/X_Window_System">X 窗口管理系统</a>(<strong>X11</strong>或者<strong>X</strong>) 是基于网络的显示协议，提供了窗口功能，包含建立图形用户界面(GUI)的标准工具和协议。<a href="https://wiki.archlinux.org/title/Xorg_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">Xorg</a>是X窗口系统11版本的开源实现，提供图形用户界面, 安装和配置请阅读<a href="https://wiki.archlinux.org/title/Xorg_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">Xorg</a>。</p>
-<p><a href="https://wiki.archlinux.org/title/Wayland_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">Wayland</a> 是新的显示服务协议，Weston 是参考实现。目前还处于开发阶段，支持的程序很少。</p>
-</blockquote>
-<p>只有X能够进入图形界面了，不过只有最基本的框架，需要配合 <a href="https://wiki.archlinux.org/title/%E6%A1%8C%E9%9D%A2%E7%8E%AF%E5%A2%83">桌面环境</a>(DE)才能使用。</p>
-<blockquote>
-<p>桌面环境通常提供图标、小程序（applets）、窗口、工具栏、文件夹、壁纸、应用程序和拖放等功能。使用<a href="https://wiki.archlinux.org/title/GNOME_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">GNOME</a>、<a href="https://wiki.archlinux.org/title/KDE_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">KDE</a>、<a href="https://wiki.archlinux.org/title/LXDE_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">LXDE</a>、<a href="https://wiki.archlinux.org/title/Xfce_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">Xfce</a>这类<a href="https://wiki.archlinux.org/title/%E6%A1%8C%E9%9D%A2%E7%8E%AF%E5%A2%83">桌面环境</a>，是最简单的配置方法. <a href="https://wiki.archlinux.org/title/Category:Desktop_environments">Category:Desktop environments</a> 包含了各种桌面环境。</p>
-</blockquote>
-<p>其中KDE和GNOME是两个功能完全的主流桌面环境，KDE体积更加大一点。由于U盘大小有限，我使用的是轻量化的Xfce。</p>
-<p>对于Xfce，只需要<code>pacman Sy xfce4</code>，我没有使用额外的显示管理器(也就是从图形界面登录用户并自动启动图形界面)，一方面从字符界面启动更加轻量，另一方面并不是每一次都有进入图形界面的需要。Xfce自带从字符界面启动的命令<code>startxfce4</code></p>
-<p>后来我更倾向于使用i3wm作为桌面环境，更加轻量快速， <a href="https://wiki.archlinux.org/title/Start_X_at_Login_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">Start X at Login</a> 提供了直接从终端启动的轻量方法。i3wm的定制化程度更高，也意味着配置需要一定的精力，这里就不展开了。</p>
-<h3 id="浏览器"><a href="#浏览器" class="headerlink" title="浏览器"></a>浏览器</h3><p>毫无疑问<code>pacman -Sy firefox</code></p>
-<p>当你打开浏览器输入诸如<code>www.baidu.com</code>之类的中文网页，你会发现一堆矩形之类的乱码。</p>
-<h3 id="从英文到中文"><a href="#从英文到中文" class="headerlink" title="从英文到中文"></a>从英文到中文</h3><p>因为你还没有安装字体，所以无法正常显示中文。</p>
-<p><code>pacman -Sy wqy-microhei</code>文泉驿的中文字体之一。还有其他字体，可以自己去发现。</p>
-<p>然后就能看到中文了。</p>
-<p>同时在启动桌面环境的命令前加上指定用中文启动，就可以以中文为默认语言使用桌面环境，例：<code>LANG=zh_CN.UTF-8 startxfce4</code></p>
-<h3 id="声音"><a href="#声音" class="headerlink" title="声音"></a>声音</h3><p>如果和我一样使用了轻量化的桌面环境，一般要手动调整声音，<code>pacman -Sy alsa-utils</code>安装声音配置相关的一些工具，其中<code>alsamixer</code>命令可以在终端中用类似图形化的方式调整声音</p>
-<p>有时候没有声音还要设置默认声卡，有时候没有混音还得自己手动开启dmix.这里就不展开了。</p>
-<h3 id="输入法"><a href="#输入法" class="headerlink" title="输入法"></a>输入法</h3><p>参见 <a href="https://wiki.archlinux.org/title/Fcitx_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">Fcitx (简体中文)</a> 、 <a href="https://wiki.archlinux.org/title/Fcitx5_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">Fcitx5 (简体中文)</a> 或 <a href="https://wiki.archlinux.org/title/IBus_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">Ibus</a>。</p>
-<p>我使用的是Fcitx5，是fcitx的最新版本，<code>pacman -Sy fcitx5-im fcitx5-chinese-addons</code>，里面有图形界面的配置工具</p>
-<p>欲在程序中正常启用 Fcitx5, 需设置以下环境变量，并重新登录：</p>
-<pre class="language-bash" data-language="bash"><code class="language-bash">~/.pam_environment
--------------------------------------------------
-GTK_IM_MODULE <span class="token assign-left variable">DEFAULT</span><span class="token operator">=</span>fcitx
-QT_IM_MODULE  <span class="token assign-left variable">DEFAULT</span><span class="token operator">=</span>fcitx
-<span class="token environment constant">XMODIFIERS</span>    <span class="token assign-left variable">DEFAULT</span><span class="token operator">=</span><span class="token punctuation">\</span>@im<span class="token operator">=</span>fcitx
-INPUT_METHOD  <span class="token assign-left variable">DEFAULT</span><span class="token operator">=</span>fcitx
-SDL_IM_MODULE <span class="token assign-left variable">DEFAULT</span><span class="token operator">=</span>fcitx
-GLFW_IM_MODULE <span class="token assign-left variable">DEFAULT</span><span class="token operator">=</span>ibus</code></pre>
-
-<p>还有一个小工具在fcitx5上可以使用搜狗输入法的皮肤，大家自己查吧</p>
-<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><p>类似于记事本的工具：leafpad或者mousepad</p>
-<p>音乐：netease-cloud-music, yesplaymusic, iease-music(后两个都是网易云的第三方客户端，非常漂亮)</p>
-<p>ofiice: <a href="https://wiki.archlinux.org/title/WPS_Office_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">WPS Office (简体中文)</a>或者<a href="https://wiki.archlinux.org/title/LibreOffice_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">LibreOffice (简体中文)</a></p>
-<p>视频音频的播放： <a href="https://wiki.archlinux.org/title/VLC_media_player">VLC</a></p>
-<p>邮件客户端：Mailspring (也是颜值很高，而且有一些实用的功能)</p>
-<p>终端模拟器：**<a href="https://wiki.archlinux.org/title/Tilda">Tilda</a>** — 可配置的下拉终端模拟器(很方便，可以随时唤出)</p>
-<p>其他的大家看<a href="https://wiki.archlinux.org/title/List_of_applications_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">List of applications</a>各取所需吧。</p>
-<hr>
-<p>希望看到大家自己的Arch！</p>
-]]></content>
-      <categories>
-        <category>GNU/Linux</category>
-      </categories>
-      <tags>
-        <tag>Arch Linux</tag>
-        <tag>Linux配置</tag>
       </tags>
   </entry>
   <entry>
@@ -1342,6 +1722,254 @@ rtt min/avg/max/mdev <span class="token operator">=</span> <span class="token nu
       </categories>
       <tags>
         <tag>Arch Linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Arch Linux USB(配置篇)</title>
+    <url>/posts/55b25ac5/</url>
+    <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这篇文章看一看作是<a href="https://zephyrheather.github.io/2021/07/16/arch-linux-usb-an-zhuang-pian/">Arch Linux USB(安装篇)</a>的后续，不过archlinux的自由度很高，每一个人都能配置出高度个人定制化的东西，所以这里也只是结合archwiki和我个人的一些配置简单介绍一下。</p>
+<span id="more"></span>
+
+<p>参考：<a href="https://wiki.archlinux.org/title/General_recommendations_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)#%E4%B8%AD%E5%9B%BD%E5%A4%A7%E9%99%86%E7%94%A8%E6%88%B7%E7%9A%84%E6%8E%A8%E8%8D%90%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88">General recommendations (简体中文)</a>(这个页面还特地做了<a href="https://wiki.archlinux.org/title/General_recommendations_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)#%E4%B8%AD%E5%9B%BD%E5%A4%A7%E9%99%86%E7%94%A8%E6%88%B7%E7%9A%84%E6%8E%A8%E8%8D%90%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88">#中国大陆用户的推荐解决方案</a>)</p>
+<p>以下引文不加注释都引自<a href="https://wiki.archlinux.org/title/General_recommendations_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)#%E4%B8%AD%E5%9B%BD%E5%A4%A7%E9%99%86%E7%94%A8%E6%88%B7%E7%9A%84%E6%8E%A8%E8%8D%90%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88">General recommendations (简体中文)</a></p>
+<h2 id="系统和软件包管理"><a href="#系统和软件包管理" class="headerlink" title="系统和软件包管理"></a>系统和软件包管理</h2><h3 id="系统管理"><a href="#系统管理" class="headerlink" title="系统管理"></a>系统管理</h3><blockquote>
+<p>新安装的系统只有一个<a href="https://en.wikipedia.org/wiki/Superuser">超级用户</a>，即 root。使用 root 进行日常操作是不安全的。应当<a href="https://wiki.archlinux.org/title/User_Management_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">创建</a>普通用户进行日常操作，仅在管理系统时使用 root。不要在服务器上给 root 开放<a href="https://wiki.archlinux.org/title/SSH">SSH</a>登录权限。普通用户的创建方法请参阅 <a href="https://wiki.archlinux.org/title/Users_and_groups_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">用户和用户组</a>。</p>
+<p><a href="https://wiki.archlinux.org/title/Users_and_groups_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">用户和用户组</a>是GNU&#x2F;Linux 权限控制机制的基础。管理员通过调整用户组的成员、所有者，可以控制用户使用系统资源。</p>
+</blockquote>
+<p>换言之，平常用普通用户，只有涉及系统管理时使用root的权限。可以用<code>sudo</code>命令获取临时的root权限，只要在命令前加上<code>sudo</code>就可以。而<code>su</code>命令则是以指定用户登录一个新的shell，比如<code>su - xxx</code>就是登录用户名为xxx的用户，而默认<code>su -</code>登录的就是root。使用<code>exit</code>退出<code>su</code>命令登录的用户，回到原来的shell。</p>
+<p>服务管理：</p>
+<blockquote>
+<p>Arch Linux 使用 <a href="https://wiki.archlinux.org/title/Systemd_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">systemd (简体中文)</a> 管理系统服务。新用户有必要了解其基本使用方法。通常使用 <code># systemctl</code> 命令进行系统管理，参见<a href="https://wiki.archlinux.org/title/Systemd_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)#systemd_%E5%9F%BA%E6%9C%AC%E5%B7%A5%E5%85%B7">此文</a>。</p>
+</blockquote>
+<p>注意，新的服务都需要用户重新设置和管理，设置哪些服务开机自启动，哪些服务在用的时候手动启动，可以减少资源浪费。</p>
+<p>系统维护：</p>
+<blockquote>
+<p>Arch 是滚动发行系统，软件包的更新速度很快，用户需要花些时间进行 <a href="https://wiki.archlinux.org/title/System_maintenance">系统维护</a>。 <a href="https://wiki.archlinux.org/title/Security">安全</a>页面也给出了很多加强系统安全性的建议和技巧。</p>
+</blockquote>
+<p>微软总是催着你windows系统更新，但是Arch是自己手动更新的。经常看到有人说Arch这样的滚动发行版不稳定，容易滚挂。我反正从来没遇到过，Arch更新虽然是整个系统重新安装的，但是速度很快，而且也很稳定。</p>
+<p>更新系统的时候使用<code>pacman -Syu</code>(要root权限)，注意不要在一堆服务和进程在运行的时候更新系统，最好在刚开机的时候在字符界面就更新，更新之后<code>reboot</code>重启就行。</p>
+<p>虽然一般建议Arch经常更新，但是我曾经半年没更也没什么。就是有时候<code>pacman -Sy</code>安装软件的时候发现lib库和软件已经对不上了，那就更新系统吧。</p>
+<p>另外，安装在USB或者移动硬盘等可移动介质的同学一定要注意，在使用过程中不要拔插，关机前最后一件事一定是<code>sync</code>确保数据同步写入。</p>
+<h3 id="软件包管理"><a href="#软件包管理" class="headerlink" title="软件包管理"></a>软件包管理</h3><p>具体看archwiki学习</p>
+<p>Arch拥有Linux中最丰富的软件包资源，由官方软件仓库和非官方软件仓库(AUR)组成。</p>
+<p>Pacman 是Arch 的软件包管理器(简称包管理器)<br>下面列一些我常用的命令</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash">pacman -Sy 		<span class="token comment"># 更新软件源并安装</span>
+pacman -Ss		<span class="token comment"># 搜索软件</span>
+pacman -Si 		<span class="token comment"># 查看软件包具体信息</span>
+pacman -Syu		<span class="token comment">#更新系统及所有包</span>
+pacman -Qs		<span class="token comment"># 搜索已安装的包</span>
+pacman -Qi		<span class="token comment"># 查看已安装的包的信息</span>
+pacman -Rs		<span class="token comment"># 删除软件包及其依赖</span></code></pre>
+
+<p>有关pacman的一些配置在&#x2F;etc&#x2F;pacman.conf，贴一下我的配置</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment">#</span>
+<span class="token comment"># /etc/pacman.conf</span>
+<span class="token comment">#</span>
+<span class="token comment"># See the pacman.conf(5) manpage for option and repository directives</span>
+
+<span class="token comment">#</span>
+<span class="token comment"># GENERAL OPTIONS</span>
+<span class="token comment">#</span>
+<span class="token punctuation">[</span>options<span class="token punctuation">]</span>
+<span class="token comment"># The following paths are commented out with their default values listed.</span>
+<span class="token comment"># If you wish to use different paths, uncomment and update the paths.</span>
+<span class="token comment">#RootDir     = /</span>
+<span class="token comment">#DBPath      = /var/lib/pacman/</span>
+<span class="token comment">#CacheDir    = /var/cache/pacman/pkg/</span>
+<span class="token comment">#LogFile     = /var/log/pacman.log</span>
+<span class="token comment">#GPGDir      = /etc/pacman.d/gnupg/</span>
+<span class="token comment">#HookDir     = /etc/pacman.d/hooks/</span>
+HoldPkg     <span class="token operator">=</span> pacman glibc
+<span class="token comment">#XferCommand = /usr/bin/curl -L -C - -f -o %o %u</span>
+<span class="token comment">#XferCommand = /usr/bin/wget --passive-ftp -c -O %o %u</span>
+<span class="token comment">#CleanMethod = KeepInstalled</span>
+Architecture <span class="token operator">=</span> auto
+
+<span class="token comment"># Pacman won't upgrade packages listed in IgnorePkg and members of IgnoreGroup</span>
+<span class="token comment">#IgnorePkg   =</span>
+<span class="token comment">#IgnoreGroup =</span>
+
+<span class="token comment">#NoUpgrade   =</span>
+<span class="token comment">#NoExtract   =</span>
+
+<span class="token comment"># Misc options</span>
+<span class="token comment">#UseSyslog</span>
+Color
+ILoveCandy
+<span class="token comment">#TotalDownload</span>
+CheckSpace
+<span class="token comment">#VerbosePkgLists</span>
+
+<span class="token comment"># By default, pacman accepts packages signed by keys that its local keyring</span>
+<span class="token comment"># trusts (see pacman-key and its man page), as well as unsigned packages.</span>
+SigLevel    <span class="token operator">=</span> Required DatabaseOptional
+LocalFileSigLevel <span class="token operator">=</span> Optional
+<span class="token comment">#RemoteFileSigLevel = Required</span>
+
+<span class="token comment"># NOTE: You must run `pacman-key --init` before first using pacman; the local</span>
+<span class="token comment"># keyring can then be populated with the keys of all official Arch Linux</span>
+<span class="token comment"># packagers with `pacman-key --populate archlinux`.</span>
+
+<span class="token comment">#</span>
+<span class="token comment"># REPOSITORIES</span>
+<span class="token comment">#   - can be defined here or included from another file</span>
+<span class="token comment">#   - pacman will search repositories in the order defined here</span>
+<span class="token comment">#   - local/custom mirrors can be added here or in separate files</span>
+<span class="token comment">#   - repositories listed first will take precedence when packages</span>
+<span class="token comment">#     have identical names, regardless of version number</span>
+<span class="token comment">#   - URLs will have $repo replaced by the name of the current repo</span>
+<span class="token comment">#   - URLs will have $arch replaced by the name of the architecture</span>
+<span class="token comment">#</span>
+<span class="token comment"># Repository entries are of the format:</span>
+<span class="token comment">#       [repo-name]</span>
+<span class="token comment">#       Server = ServerName</span>
+<span class="token comment">#       Include = IncludePath</span>
+<span class="token comment">#</span>
+<span class="token comment"># The header [repo-name] is crucial - it must be present and</span>
+<span class="token comment"># uncommented to enable the repo.</span>
+<span class="token comment">#</span>
+
+<span class="token comment"># The testing repositories are disabled by default. To enable, uncomment the</span>
+<span class="token comment"># repo name header and Include lines. You can add preferred servers immediately</span>
+<span class="token comment"># after the header, and they will be used before the default mirrors.</span>
+
+<span class="token comment">#[testing]</span>
+<span class="token comment">#Include = /etc/pacman.d/mirrorlist</span>
+
+<span class="token punctuation">[</span>core<span class="token punctuation">]</span>
+Include <span class="token operator">=</span> /etc/pacman.d/mirrorlist
+
+<span class="token punctuation">[</span>extra<span class="token punctuation">]</span>
+Include <span class="token operator">=</span> /etc/pacman.d/mirrorlist
+
+<span class="token comment">#[community-testing]</span>
+<span class="token comment">#Include = /etc/pacman.d/mirrorlist</span>
+
+<span class="token punctuation">[</span>community<span class="token punctuation">]</span>
+Include <span class="token operator">=</span> /etc/pacman.d/mirrorlist
+
+<span class="token comment"># If you want to run 32 bit applications on your x86_64 system,</span>
+<span class="token comment"># enable the multilib repositories as required here.</span>
+
+<span class="token comment">#[multilib-testing]</span>
+<span class="token comment">#Include = /etc/pacman.d/mirrorlist</span>
+
+<span class="token comment">#[multilib]</span>
+<span class="token comment">#Include = /etc/pacman.d/mirrorlist</span>
+
+<span class="token comment"># An example of a custom package repository.  See the pacman manpage for</span>
+<span class="token comment"># tips on creating your own repositories.</span>
+<span class="token comment">#[custom]</span>
+<span class="token comment">#SigLevel = Optional TrustAll</span>
+<span class="token comment">#Server = file:///home/custompkgs</span>
+
+<span class="token punctuation">[</span>archlinuxcn<span class="token punctuation">]</span>
+SigLevel <span class="token operator">=</span> Never
+Server <span class="token operator">=</span> https://mirrors.ustc.edu.cn/archlinuxcn/<span class="token variable">$arch</span></code></pre>
+
+<p>我的配置主要就是取消了<code>Color</code>前的注释，是Pacman 的输出是彩色的更易识别，然后<code>ILoveCandy</code>是我自己加上的，这是Pacman 的一个彩蛋，因为pacman也是那款叫作吃豆人的著名游戏，加上<code>ILoveCandy</code>后会出现吃豆人。</p>
+<p>最后加上了archlinuxcn的源，因为里面提供了更多为中国用户进行优化的软件包，用的是科大的源，加上之后需要<code>pacman -S archlinuxcn-keyring</code>安装对应的密钥。</p>
+<p>主要的pacman 镜像我用的是北外的镜像，在<code>/etc/pacman.d/mirrorlist</code>中更改，一般里面已经按照速度排序排好了，如果没有，可以参见 <a href="https://wiki.archlinux.org/title/Mirrors_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)#%E9%95%9C%E5%83%8F%E7%8A%B6%E6%80%81">#镜像状态</a> 和 <a href="https://wiki.archlinux.org/title/Mirrors_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)#%E6%8C%89%E9%80%9F%E5%BA%A6%E6%8E%92%E5%BA%8F">#按速度排序</a> 查看帮助选择镜像的工具。</p>
+<p>当然也可以和我一样用北外的镜像(不推荐清华的镜像，至少我自己的使用不佳)</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash">Server <span class="token operator">=</span> https://mirrors.bfsu.edu.cn/archlinux/<span class="token variable">$repo</span>/os/<span class="token variable">$arch</span></code></pre>
+
+<p>其他镜像</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token comment">## China</span>
+<span class="token comment">#Server = http://mirrors.163.com/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = http://mirrors.aliyun.com/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = https://mirrors.aliyun.com/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = http://mirrors.bfsu.edu.cn/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = https://mirrors.bfsu.edu.cn/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = http://mirrors.cqu.edu.cn/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = https://mirrors.cqu.edu.cn/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = http://mirrors.dgut.edu.cn/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = https://mirrors.dgut.edu.cn/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = http://mirrors.hit.edu.cn/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = https://mirrors.hit.edu.cn/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = http://mirror.lzu.edu.cn/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = http://mirrors.neusoft.edu.cn/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = https://mirrors.neusoft.edu.cn/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = http://mirrors.nju.edu.cn/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = https://mirrors.nju.edu.cn/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = http://mirror.redrock.team/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = https://mirror.redrock.team/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = https://mirrors.sjtug.sjtu.edu.cn/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = http://mirrors.tuna.tsinghua.edu.cn/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = https://mirrors.tuna.tsinghua.edu.cn/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = http://mirrors.ustc.edu.cn/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = https://mirrors.ustc.edu.cn/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = http://mirrors.wsyu.edu.cn/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = https://mirrors.wsyu.edu.cn/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = https://mirrors.xjtu.edu.cn/archlinux/$repo/os/$arch</span>
+<span class="token comment">#Server = http://mirrors.zju.edu.cn/archlinux/$repo/os/$arch</span></code></pre>
+
+<p>记得<code>pacman -S archlinux-keyring</code></p>
+<hr>
+<p>然后是<a href="https://wiki.archlinux.org/title/Arch_User_Repository_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">AUR</a> 的包。</p>
+<blockquote>
+<p>Arch 编译系统提供了编译官方库软件的脚本，而 <a href="https://wiki.archlinux.org/title/Arch_User_Repository_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">AUR</a> 则提供了用户提交的、非官方的软件包编译脚本。这是一个基于 <a href="https://aur.archlinux.org/index.php">web 界面</a>或通过 <a href="https://wiki.archlinux.org/title/AUR_helper_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">AUR 工具</a>访问的非官方软件仓库。</p>
+</blockquote>
+<p>aur里面有更多的软件包可以选择，当然由于是非官方，也会有无人维护的情况。</p>
+<p>基于web界面是指，aur的包可以到<a href="https://aur.archlinux.org/">https://aur.archlinux.org/</a> 这个网页上去查找相关信息。</p>
+<p>由于aur的包不能由pacman 直接安装，所以需要采取一下方法：</p>
+<ol>
+<li>从 AUR 下载包含 <a href="https://wiki.archlinux.org/title/PKGBUILD_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">PKGBUILD</a> 和其他安装文件（比如 <a href="https://wiki.archlinux.org/title/Systemd">systemd</a> 和补丁，通常不是实际代码）的 tar 包。</li>
+<li>用命令 <code>tar -xvf packagename.tar.gz</code> 解包到一个仅用于编译 AUR 的空闲文件夹。</li>
+<li>验证 <a href="https://wiki.archlinux.org/title/PKGBUILD_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">PKGBUILD</a> 和其它相关文件，确保其中不含有恶意代码。</li>
+<li>在上述文件夹中运行 <code>makepkg -si</code>。命令会自动调用 <a href="https://wiki.archlinux.org/title/Pacman_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">pacman</a> 解决依赖关系，然后下载代码、编译并打包。然后安装软件包。</li>
+</ol>
+<p>我一般跳过了验证那一步，<del>(懒得验证)</del>，对AUR受信用户（简称 TU）展现出充分的信任</p>
+<p>当然，使用<a href="https://wiki.archlinux.org/title/AUR_helper_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">AUR 工具</a> 会简单一些(因为上面那个方法其实也蛮简单了)</p>
+<p>具体查看wiki，我用过yay，因为已经pacman封装了，所以语法和pacman一样。</p>
+<h2 id="图形界面"><a href="#图形界面" class="headerlink" title="图形界面"></a>图形界面</h2><h3 id="从字符到图形"><a href="#从字符到图形" class="headerlink" title="从字符到图形"></a>从字符到图形</h3><p><code>pacman -Sy xorg-server</code>安装X服务器</p>
+<blockquote>
+<p><a href="https://en.wikipedia.org/wiki/X_Window_System">X 窗口管理系统</a>(<strong>X11</strong>或者<strong>X</strong>) 是基于网络的显示协议，提供了窗口功能，包含建立图形用户界面(GUI)的标准工具和协议。<a href="https://wiki.archlinux.org/title/Xorg_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">Xorg</a>是X窗口系统11版本的开源实现，提供图形用户界面, 安装和配置请阅读<a href="https://wiki.archlinux.org/title/Xorg_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">Xorg</a>。</p>
+<p><a href="https://wiki.archlinux.org/title/Wayland_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">Wayland</a> 是新的显示服务协议，Weston 是参考实现。目前还处于开发阶段，支持的程序很少。</p>
+</blockquote>
+<p>只有X能够进入图形界面了，不过只有最基本的框架，需要配合 <a href="https://wiki.archlinux.org/title/%E6%A1%8C%E9%9D%A2%E7%8E%AF%E5%A2%83">桌面环境</a>(DE)才能使用。</p>
+<blockquote>
+<p>桌面环境通常提供图标、小程序（applets）、窗口、工具栏、文件夹、壁纸、应用程序和拖放等功能。使用<a href="https://wiki.archlinux.org/title/GNOME_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">GNOME</a>、<a href="https://wiki.archlinux.org/title/KDE_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">KDE</a>、<a href="https://wiki.archlinux.org/title/LXDE_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">LXDE</a>、<a href="https://wiki.archlinux.org/title/Xfce_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">Xfce</a>这类<a href="https://wiki.archlinux.org/title/%E6%A1%8C%E9%9D%A2%E7%8E%AF%E5%A2%83">桌面环境</a>，是最简单的配置方法. <a href="https://wiki.archlinux.org/title/Category:Desktop_environments">Category:Desktop environments</a> 包含了各种桌面环境。</p>
+</blockquote>
+<p>其中KDE和GNOME是两个功能完全的主流桌面环境，KDE体积更加大一点。由于U盘大小有限，我使用的是轻量化的Xfce。</p>
+<p>对于Xfce，只需要<code>pacman Sy xfce4</code>，我没有使用额外的显示管理器(也就是从图形界面登录用户并自动启动图形界面)，一方面从字符界面启动更加轻量，另一方面并不是每一次都有进入图形界面的需要。Xfce自带从字符界面启动的命令<code>startxfce4</code></p>
+<p>后来我更倾向于使用i3wm作为桌面环境，更加轻量快速， <a href="https://wiki.archlinux.org/title/Start_X_at_Login_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">Start X at Login</a> 提供了直接从终端启动的轻量方法。i3wm的定制化程度更高，也意味着配置需要一定的精力，这里就不展开了。</p>
+<h3 id="浏览器"><a href="#浏览器" class="headerlink" title="浏览器"></a>浏览器</h3><p>毫无疑问<code>pacman -Sy firefox</code></p>
+<p>当你打开浏览器输入诸如<code>www.baidu.com</code>之类的中文网页，你会发现一堆矩形之类的乱码。</p>
+<h3 id="从英文到中文"><a href="#从英文到中文" class="headerlink" title="从英文到中文"></a>从英文到中文</h3><p>因为你还没有安装字体，所以无法正常显示中文。</p>
+<p><code>pacman -Sy wqy-microhei</code>文泉驿的中文字体之一。还有其他字体，可以自己去发现。</p>
+<p>然后就能看到中文了。</p>
+<p>同时在启动桌面环境的命令前加上指定用中文启动，就可以以中文为默认语言使用桌面环境，例：<code>LANG=zh_CN.UTF-8 startxfce4</code></p>
+<h3 id="声音"><a href="#声音" class="headerlink" title="声音"></a>声音</h3><p>如果和我一样使用了轻量化的桌面环境，一般要手动调整声音，<code>pacman -Sy alsa-utils</code>安装声音配置相关的一些工具，其中<code>alsamixer</code>命令可以在终端中用类似图形化的方式调整声音</p>
+<p>有时候没有声音还要设置默认声卡，有时候没有混音还得自己手动开启dmix.这里就不展开了。</p>
+<h3 id="输入法"><a href="#输入法" class="headerlink" title="输入法"></a>输入法</h3><p>参见 <a href="https://wiki.archlinux.org/title/Fcitx_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">Fcitx (简体中文)</a> 、 <a href="https://wiki.archlinux.org/title/Fcitx5_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">Fcitx5 (简体中文)</a> 或 <a href="https://wiki.archlinux.org/title/IBus_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">Ibus</a>。</p>
+<p>我使用的是Fcitx5，是fcitx的最新版本，<code>pacman -Sy fcitx5-im fcitx5-chinese-addons</code>，里面有图形界面的配置工具</p>
+<p>欲在程序中正常启用 Fcitx5, 需设置以下环境变量，并重新登录：</p>
+<pre class="language-bash" data-language="bash"><code class="language-bash">~/.pam_environment
+-------------------------------------------------
+GTK_IM_MODULE <span class="token assign-left variable">DEFAULT</span><span class="token operator">=</span>fcitx
+QT_IM_MODULE  <span class="token assign-left variable">DEFAULT</span><span class="token operator">=</span>fcitx
+<span class="token environment constant">XMODIFIERS</span>    <span class="token assign-left variable">DEFAULT</span><span class="token operator">=</span><span class="token punctuation">\</span>@im<span class="token operator">=</span>fcitx
+INPUT_METHOD  <span class="token assign-left variable">DEFAULT</span><span class="token operator">=</span>fcitx
+SDL_IM_MODULE <span class="token assign-left variable">DEFAULT</span><span class="token operator">=</span>fcitx
+GLFW_IM_MODULE <span class="token assign-left variable">DEFAULT</span><span class="token operator">=</span>ibus</code></pre>
+
+<p>还有一个小工具在fcitx5上可以使用搜狗输入法的皮肤，大家自己查吧</p>
+<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><p>类似于记事本的工具：leafpad或者mousepad</p>
+<p>音乐：netease-cloud-music, yesplaymusic, iease-music(后两个都是网易云的第三方客户端，非常漂亮)</p>
+<p>ofiice: <a href="https://wiki.archlinux.org/title/WPS_Office_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">WPS Office (简体中文)</a>或者<a href="https://wiki.archlinux.org/title/LibreOffice_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">LibreOffice (简体中文)</a></p>
+<p>视频音频的播放： <a href="https://wiki.archlinux.org/title/VLC_media_player">VLC</a></p>
+<p>邮件客户端：Mailspring (也是颜值很高，而且有一些实用的功能)</p>
+<p>终端模拟器：**<a href="https://wiki.archlinux.org/title/Tilda">Tilda</a>** — 可配置的下拉终端模拟器(很方便，可以随时唤出)</p>
+<p>其他的大家看<a href="https://wiki.archlinux.org/title/List_of_applications_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">List of applications</a>各取所需吧。</p>
+<hr>
+<p>希望看到大家自己的Arch！</p>
+]]></content>
+      <categories>
+        <category>GNU/Linux</category>
+      </categories>
+      <tags>
+        <tag>Arch Linux</tag>
+        <tag>Linux配置</tag>
       </tags>
   </entry>
   <entry>
